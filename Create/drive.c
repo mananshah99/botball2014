@@ -9,7 +9,7 @@ int main()
 	create_drive_direct_dist(50); //50 centimeters
 	//block here, square up, and get to the next box area
 
-	//while boolean i move forward
+	//while boolean i
 	//  if either touch sensor hits
 	//    i becomes false
 	//    square up
