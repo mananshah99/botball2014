@@ -1,3 +1,4 @@
+#include <cmath.h>
 void servo_off(int servo)
 {
 	set_servo_position(servo,-1);
