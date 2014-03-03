@@ -8,5 +8,6 @@ int main()
 	left(90,0);
 	forward(20.00);
 	right(90,0);
+	printf("finished");
 	return 0;
 }
