@@ -17,7 +17,7 @@ int main()
 		}
 		create_drive_direct(100,1000);
 	}
-	
+	printf("finished");
 	
 	create_disconnect()
 	return 0;
