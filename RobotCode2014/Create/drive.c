@@ -4,7 +4,7 @@
 void forward_bump()
 { while(create_wait_event(LEFT_BUMP) == 0) create_drive_direct(300,300); }
 void backward_bump()
-{ while(create_wait_event(LEFT_BUMP) == 0) create_drive_direct(-300,300); }
+{ while(create_wait_event(LEFT_BUMP) == 0) create_drive_direct(-300,-300); }
 
 int main()
 {
