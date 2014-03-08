@@ -1,7 +1,7 @@
 // Created on Fri February 14 2014
 
 #include ".\drive.h"
-#include "generic.h"
+#include ".\generic.h"
 #include ".\slowservo.h"
 
 int main()
