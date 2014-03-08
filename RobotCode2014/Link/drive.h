@@ -11,7 +11,7 @@
 #define SPDl 1000.
 #define SPDr 1000. 
 #define rdistmult (SPDr/SPDl)
-
+// CHANGE KS FOR ROBOT
 #define ks 15.5//distance from one wheel to another in cm
 #define wheeldiameter 5.5 //this is in cm
 
