@@ -1,7 +1,5 @@
-
 #ifndef _DRIVE_H_
 #define _DRIVE_H_
-
 
 //primary driving code
 #define MOT_LEFT 0//Jaybot edition!
@@ -19,9 +17,13 @@
 #define LBUMP digital(14)
 #define RBUMP digital(15) //left/right back bump sensors (used for square_back())
 
+//fd and back definitions - to fix if code breaks
+#define fd(MOT) motor(MOT, 100);
+#define bk(MOT) motor(MOT, -100);
 
 #define drive_off() off(MOT_RIGHT) ;off(MOT_LEFT)
 #define drive(mL,mR) mav(MOT_LEFT,mL);mav(MOT_RIGHT,mR)
+
 void square_back()
 {
 	int _A = 0,_B = 0;
@@ -51,7 +53,35 @@ void square_back()
 	drive_off();//turn both motors off at end
 }
 
-
+//same logic as square back, flipped back and forward
+void square_forward()
+{
+	int _A = 0,_B = 0;
+	float time = seconds();//used for timeout
+	fd(MOT_LEFT);
+	fd(MOT_RIGHT);
+	while((_A == 0 || _B == 0) && (seconds()-time < 10))//while the bump sensors are false & it has been less than 10 seconds
+	// move backwards, if the bot is bumped, turn the motor off, and break out of the loop
+	{
+		if (LBUMP){//if the left sensor is pressed
+			off(MOT_LEFT);//turn towards wall
+			_A = 1;
+			} else {
+			fd(MOT_LEFT);//otherwise, approach the wall more
+			_A = 0;
+		}
+		
+		if (RBUMP){//if the right sensor is pressed
+			off(MOT_RIGHT);//turn towards wall
+			_B = 1;
+			} else {
+			fd(MOT_RIGHT);//otherwise, approach the wall more
+			_B = 0;
+		}
+		msleep(1);//give other processes time to do things
+	}
+	drive_off();//turn both motors off at end
+}
 void right(float degrees, float radius){//turn right a number of degrees with a certain radius
 	int turnrspeed;
 	long turnl=(long)round((((2*radius+ks)*CMtoBEMF)*PI)*degrees/360.);
