@@ -5,11 +5,12 @@
 #include ".\slowservo.h"
 
 #define ARM 3//arm port
+#define light_start_sensor 0
 // change "ks" and motor ports in library
 
 int main()
 {
-	light_start();
+	light_start(light_start_sensor);
 	forward(40.00);
 	left(90,ks/2);
 	forward(20.00);
