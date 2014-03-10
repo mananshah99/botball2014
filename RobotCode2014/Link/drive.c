@@ -13,16 +13,15 @@ int main()
 	forward(40.00);
 	left(90,ks/2);
 	forward(20.00);
-	right(90,ks/2);//get over to the scoring area
+	right(90,ks/2);
 	motor(ARM,50);//move arm up
-	forward(2.5);//move forward so hangers are directly above the scoring pipe
-	motor(ARM,-30);//move arm down to drop hangers
-	left(30,ks/2);
-	right(40,ks/2);
-	left(10,ks/2);//turn back to be straight against scoring area
-	backward(2.5);//back up
+	forward(20.00);//get over to the scoring area
+	motor(ARM,-30);//move arm down to drop hangers on ledge
+	left(40,ks/2);
+	right(50,ks/2);
+	left(10,ks/2);//deposit hangers and push them to the sides
+	backward(5.00);//back up
 	motor(ARM,20);
-	left(50,ks/2);
 	forward(5.00);
 	motor(ARM,-20);
 	backward(10.00);
