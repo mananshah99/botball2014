@@ -1,7 +1,6 @@
 #define DEFAULT_OPTION 0
 #define Get_Mode() currstate = menu[options()].snum
 
-
 struct menuitem{
 	int snum;
 	char* name;

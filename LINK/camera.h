@@ -21,6 +21,7 @@ void cam_block(){//updates the camera, and waits until success
 }
 
 //self tester
+//dont use as of 3142014
 #ifdef TEST
 int main()
 {
