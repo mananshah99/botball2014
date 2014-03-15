@@ -1,13 +1,12 @@
 // Created on Fri February 14 2014
-
-#include ".\drive.h"
-#include ".\generic.h"
-#include ".\slowservo.h"
+//#include "./drive.h"
+//#include "./generic.h"
 
 #define ARM 3//arm port
 #define light_start_sensor 0
 // change "ks" and motor ports in library
 
+#ifdef MAIN
 int main()
 {
 	light_start(light_start_sensor);
@@ -22,7 +21,8 @@ int main()
 	right(50,ks/2);
 	left(10,ks/2);//deposit hangers and push them to the sides
 	backward(5.00);//back up, going to get blue hangers next
-	for(int i=0; i<2; i++)
+	int i;
+	for(i=0; i<2; i++)
 	{
 		motor(ARM,-50);
 		forward(5.00);//get arm down to the blue hangers
@@ -45,4 +45,4 @@ int main()
 	printf("finished");
 	return 0;
 }
-
+#endif

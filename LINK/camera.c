@@ -1,5 +1,5 @@
 //general use of the camera
-#define TEST 0
+
 float _start_time;
 
 void start()
