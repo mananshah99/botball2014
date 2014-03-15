@@ -1,8 +1,16 @@
 // Created on Thu Jun 6 2013
+/*
+*
+* AS OF 3142014, this is only a test file. Use to recycle code, don't run.
+*
+*
+*
+*
+*/
 
 #define COL_GREEN 0
-#include "./generic.h"
-#include "./drive.h"
+//#include "./generic.h"
+//#include "./drive.h"
 
 //radians per pixel- they're square pixels though, so fovx==fovy
 #define fovx ((20*DEGTORAD)/mdptx)
@@ -14,6 +22,7 @@
 #define OFFSET 10
 #define HEIGHT (9.5-1.2)//camera center minus tribble center
 
+#ifdef OK
 int main()
 {
 	double ang = 15.9;
@@ -88,3 +97,4 @@ void leftish(double radius){//turn right
 	mav(MOT_RIGHT, SPD);
 	mav(MOT_LEFT,turnlspeed);
 }
+#endif

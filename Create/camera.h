@@ -1,5 +1,6 @@
 //general use of the camera
-#define TEST 0
+//define TEST if you cant to self test the camera
+//#define TEST 0
 float _start_time;
 
 void start()
@@ -20,6 +21,7 @@ void cam_block(){//updates the camera, and waits until success
 }
 
 //self tester
+//dont use as of 3142014
 #ifdef TEST
 int main()
 {

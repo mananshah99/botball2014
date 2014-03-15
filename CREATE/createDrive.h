@@ -150,14 +150,6 @@ void create_recieve(){
 	create_read_block(bptr,1);
 	
 }
-void create_square(){
-	//should continue driving 5 cm 
-	//while the bumper is false
-	//TODO: Check this
-	while(create_write_byte(251)==false){
-		create_forward(5,100);
-	}
-}
 // blocks program until create finishes
 void create_block()
 {

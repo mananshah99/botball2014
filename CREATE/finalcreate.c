@@ -16,10 +16,7 @@
 void serial_init()
 {
 }
-void create_write_byte(int num)
-{
-	//NUMBYTES++;
-}
+
 #endif
 int get_high_byte2(int v)
 {
