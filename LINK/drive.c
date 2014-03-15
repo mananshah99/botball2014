@@ -17,6 +17,7 @@ int main()
 	forward(40.00);
 	left(90,ks/2);
 	forward(20.00);
+	//add clearing out exercise bench and botguy before hangers
 	right(90,ks/2);
 	motor(ARM,50);//move arm up
 	forward(20.00);//get over to the scoring area
@@ -25,13 +26,14 @@ int main()
 	right(50,ks/2);
 	left(10,ks/2);//deposit hangers and push them to the sides
 	backward(5.00);//back up, going to get blue hangers next
+	//HAVE THIS LOOPS WORK
 	int i;
 	for(i=0; i<2; i++)
 	{
 		motor(ARM,-50);
 		forward(5.00);//get arm down to the blue hangers
 		motor(ARM,20);
-		forward(5.00);
+		forward(5.00);//check if breaks something
 		motor(ARM,-20);
 		backward(10.00);
 		motor(ARM,40);
