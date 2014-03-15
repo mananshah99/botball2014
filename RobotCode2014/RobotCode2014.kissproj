@@ -1,4 +1,4 @@
 [General]
 AUTO_COMPILE_DEPS=true
 COMPILE_LIB=false
-LINKS=@Invalid()
+LINKS=Link/drive.h
