@@ -1,7 +1,0 @@
-[General]
-AUTO_COMPILE_DEPS=true
-COMPILE_LIB=false
-<<<<<<< HEAD
-=======
-LINKS=Link/drive.h
->>>>>>> b01e34a6cc612f5a75315659c5a6e6b08827df7e
