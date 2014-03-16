@@ -1,25 +1,21 @@
 //UTILITY
 float bound(float num, float max)
 {
-	if (num > max)
-	return max;
-	else if (num < -max)
-	return -max;
-	else
-	return num;
+	if (num > max) return max;
+	else if (num < -max) return -max;
+	else return num;
 }
 int in_range(int input, int wanted, int fudge)
 {
 	if (wanted+fudge >= input && wanted-fudge <= input)
 	return 1;
-	else
-	return 0;
+	else return 0;
 }
 float ET_distance(int port){
     return ((sqrt(100.0/analog10(port)))-2.2);
 }
 
-#define WAIT(thing); while(!(thing)){msleep(10);}
+#define WAIT(x); while(!(x)){msleep(10);}
 #define gmpc(port) get_motor_position_counter(port)
 
 #define DEGTORAD 0.017453292519943295769236907684886
@@ -40,31 +36,22 @@ void light_start(int sensor)
 	while(!b_button() && !c_button())//INTERACTION BUTTON
 	{
 		curr = light_s();
-		if (curr > max)
-		{max = curr;}
-		if (curr < min)
-		{min = curr;}
+		if (curr > max) max = curr;
+		if (curr < min) min = curr;
+		
 		avg = (max+min)/2;
 		display_printf(5,0,"%d   ",max);
 		display_printf(5,1,"%d   ",min);
 		display_printf(6,2,"%d   ",curr);
 		display_printf(5,3,"%d   ",avg);
-		if (curr > avg)
-		{
-			display_printf(10,5,"XX");
-		}
-		else
-		{
-			display_printf(10,5,"OO");
-		}
+		
+		if (curr > avg) display_printf(10,5,"XX");
+		else display_printf(10,5,"OO");
 		msleep(50);
 	}
 	display_clear();
 	display_printf(0,4,"Prepared to begin: c to skip");
-	while(light_s() > avg && !(c_button()))
-	{
-		msleep(50);
-	}
+	while(light_s() > avg && !(c_button())) msleep(50);
 }
 
 //TIMING
@@ -84,7 +71,7 @@ void now()
 
 void wait_till(float t)
 {
-	now();
+    now();
     msleep(((long)(t*1000))-curr_time());
 }
 
@@ -123,9 +110,7 @@ void servo_set(int port,int end,float time)//,float increment)
 //camera stuff
 
 int cam_area(int channel){//returns largest blob in channel, or 0 if none
-	if (get_object_count(channel) > 0){
-		return get_object_area(channel,0);
-	}
+	if (get_object_count(channel) > 0) return get_object_area(channel,0);
 	return 0;
 }
 void update_wait(){//updates the camera, and waits until success
