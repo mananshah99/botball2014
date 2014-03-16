@@ -10,14 +10,6 @@
 #define BUTTON_PLAY 17//TODO: finish all events.  p16 of create docs
 #define SEN_0 18
 
-//this is to get around kiss-c's lack of intelligence and lack of the inclusion of an ACTUAL WRITE_BYTE FUNCTION THAT WORKS ON BOTH THINGS
-#ifndef __IROBOT_CREATE_H__
-//int NUMBYTES;
-void serial_init()
-{
-}
-
-#endif
 int get_high_byte2(int v)
 {
     return (v >>8);
@@ -32,3 +24,4 @@ int get_low_byte2(int v)
 
 #define create_write_int(integer) create_write_byte(get_high_byte2(integer));create_write_byte(get_low_byte2(integer))
 #endif
+

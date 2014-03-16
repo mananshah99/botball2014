@@ -1,6 +1,5 @@
 #ifndef _FINALCREATESCRIPTING
 #define _FINALCREATESCRIPTING
-#include "finalcreate.c"
 int BYTES[120], curr_byte = 0;
 void init_script()
 {
