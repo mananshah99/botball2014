@@ -33,13 +33,16 @@ void backward_bump()
 int main()
 {
 	/**INITIALIZE CODE**/
+	printf("Connecting...\n");
 	create_connect();
 	create_full();
 	camera_open(LOW_RES);
 	start(); //from the camera library
+	printf("Complete!\n");
+	shut_down_in(120.); //IMPORTANT!
 	
 	/**FIRST BLOCK PICKUP POSITION**/
-	
+
 	create_wait_time(20); //20 deciseconds for the link to pass	
 	forward_bump(); //drives and blocks all the way
 	create_block(); //finish the bump
@@ -48,7 +51,15 @@ int main()
 	/**COLOR SORTING AND SERVO MOVEMENT**/
 	arm_open();
 	cam_block();
-	
+	while(!(cam_area(C_ORANGE) > 3500)) //haven't found an orange blob
+	{
+		//move right
+		cam_update();
+	}
+	else
+	{
+		//found a blob! pick it up
+	}
 	
 	create_drive_direct_dist(-FULL,-FULL,50);
 	
