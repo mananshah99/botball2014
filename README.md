@@ -15,6 +15,22 @@ Robot Code for the 2014 competition.
 * Fix the LINK drive path (wheels currently break)
 * Write LINK servo code to pick up hangers
 
+* Fix the values and test the following code (in /CREATE/main.c)
+
+```c
+#define SERV_ARM 1
+
+//arm functions
+void arm_close(){
+	set_servo_position(SERV_ARM,2040);
+}
+void arm_open(){
+	set_servo_position(SERV_ARM,646);
+}
+void arm_half(){
+	set_servo_position(SERV_ARM,1800);
+}
+```
 
 ## How to Contribute
 1. **Check the To Do Section**: choose a pending task that hasn't yet been completed and help us add that functionality to the schedule
