@@ -45,6 +45,23 @@ else
 	//found a blob! pick it up
 }
 ```
+* **low priority**: Test slowservo (doesn't take 5 seconds to move up with this code)  
+
+```c
+#define servo_test
+#ifdef servo_test
+int main()
+{
+	enable_servos();
+	servo_slow(1,1007,5000);
+	msleep(10000);
+	disable_servos();
+	printf("Done!\n");
+	return 0;
+}
+#endif
+```
+
 ## How to Contribute
 1. **Check the To Do Section**: choose a pending task that hasn't yet been completed and help us add that functionality to the schedule
 2. **Fork this Repository**: fork either the main or development branches to your account (if you're not currently a contributor) and make proposed changes
