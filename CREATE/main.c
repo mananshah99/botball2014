@@ -4,6 +4,7 @@
 #include "./camera.h"
 
 #define FULL 100
+#define C_ORANGE 1
 //TODO Fix this based on the actual port for the servo arm
 #define SERV_ARM 1
 
