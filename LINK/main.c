@@ -13,7 +13,7 @@
 #ifdef MAIN
 int main()
 {
-	light_start(light_start_sensor);
+	//light_start(light_start_sensor);
 	forward(40.00);
 	left(90,ks/2);
 	forward(20.00);
@@ -21,7 +21,9 @@ int main()
 	right(90,ks/2);
 	motor(ARM,50);//move arm up
 	forward(20.00);//get over to the scoring area
-	motor(ARM,-30);//move arm down to drop hangers on ledge
+}
+	#endif
+	/*motor(ARM,-30);//move arm down to drop hangers on ledge
 	left(40,ks/2);
 	right(50,ks/2);
 	left(10,ks/2);//deposit hangers and push them to the sides
@@ -52,3 +54,4 @@ int main()
 	return 0;
 }
 #endif
+*/
