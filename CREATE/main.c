@@ -4,11 +4,17 @@
 #include "./camera.h"
 
 #define FULL 100
-#define C_ORANGE 1
 //TODO Fix this based on the actual port for the servo arm
 #define SERV_ARM 1
+#define TOPHAT 2
+
+/**#defines for which method to run**/
+#define MAIN 
+//#define ARMTEST
+/***********************************/
 
 //arm functions
+//CHECK THESE VALUES BEFORE TESTING
 void arm_close(){
 	set_servo_position(SERV_ARM,2040);
 }
@@ -31,13 +37,29 @@ void backward_bump()
 	while(get_create_lbump()==0);
 }
 
+#ifdef ARMTEST
+//tester for the arm functions
+int main()
+{
+	printf("Arm Opening..");
+	arm_open();
+	msleep(10000);
+	printf("Arm Midway...");
+	arm_half();
+	msleep(10000);
+	printf("Arm Closing...");
+	arm_close();
+	msleep(10000);
+}
+#endif
+
+#ifdef MAIN
 int main()
 {
 	/**INITIALIZE CODE**/
 	printf("Connecting...\n");
 	create_connect();
 	create_full();
-	camera_open(LOW_RES);
 	start(); //from the camera library
 	printf("Complete!\n");
 	shut_down_in(120.); //IMPORTANT!
@@ -50,14 +72,13 @@ int main()
 	//we're now in front of the first goal (NOT TESTED)
 	
 	/**COLOR SORTING AND SERVO MOVEMENT**/
-	arm_open();
-	cam_block();
-	
+	arm_open();	
 	//run the getcubes function for 30 seconds
 	//note that getCubes() is not complete yet 
 	run_for(30.,getCubes());
 	
 	arm_close();
+	
 	/**SECOND BLOCK PICKUP POSITION**/
 	
 	create_drive_direct_dist(-FULL,-FULL,50);
@@ -80,7 +101,6 @@ int main()
 	/**COLOR SORTING AND SERVO MOVEMENT, 2**/
 	
 	arm_open();
-	cam_block();
 	
 	//run the getcubes function for 30 seconds
 	//note that getCubes() is not complete yet 
@@ -96,39 +116,17 @@ int main()
 	create_disconnect();
 	return 0;
 }
+#endif
 
 void getCubes()
 {
-	while(!(cam_area(C_ORANGE) > 3500)) //haven't found an orange blob
+	while(!(analog(TOPHAT)<700) //haven't found an orange blob (normally around 800-900)
 	{
 		//move right
-		cam_update();
 	}
 	else
 	{
-		//found a blob! pick it up
+		arm_half(); //should move and close the arm around the block
+		
 	}
 }
-
-/*
-#define MOT_ARM  3 //the mot_arm that isn't the create
-#define SEN_ARM() (digital(15))
-
-void liftArm()
-{
-	fd(MOT_ARM);
-	create_motor_slow(80);
-	WAIT(SEN_ARM());
-
-	mrp(MOT_ARM,0,1000);
-	create_motor_slow(10);
-	msleep(1000);
-	create_motor_slow(25);
-
-	WAIT(SEN_ARM());
-	ao();
-
-	create_motor_slow(0);
-	mrp(MOT_ARM,0,1000);
-}
-*/
