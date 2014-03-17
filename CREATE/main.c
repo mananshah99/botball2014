@@ -46,20 +46,18 @@ int main()
 	create_wait_time(20); //20 deciseconds for the link to pass	
 	forward_bump(); //drives and blocks all the way
 	create_block(); //finish the bump
-	//we're now (theoretically) right in front of the first goal (NOT TESTED)
+	//we're now in front of the first goal (NOT TESTED)
 	
 	/**COLOR SORTING AND SERVO MOVEMENT**/
 	arm_open();
 	cam_block();
-	while(!(cam_area(C_ORANGE) > 3500)) //haven't found an orange blob
-	{
-		//move right
-		cam_update();
-	}
-	else
-	{
-		//found a blob! pick it up
-	}
+	
+	//run the getcubes function for 30 seconds
+	//note that getCubes() is not complete yet 
+	run_for(30.,getCubes());
+	
+	arm_close();
+	/**SECOND BLOCK PICKUP POSITION**/
 	
 	create_drive_direct_dist(-FULL,-FULL,50);
 	
@@ -75,11 +73,40 @@ int main()
 	//TODO: Get the actual distance (replace 30)
 	create_drive_direct_dist(-FULL,FULL,30);
 	create_right(87,0,60);
+	forward_bump();
+	//we're now in front of the second goal (NOT TESTED)
+	
+	/**COLOR SORTING AND SERVO MOVEMENT, 2**/
+	
+	arm_open();
+	cam_block();
+	
+	//run the getcubes function for 30 seconds
+	//note that getCubes() is not complete yet 
+	run_for(30.,getCubes());
+	arm_close();
+	
+	/**COMPLETED PICKUP**/
+	
+	//dump here
 	
 	//next box area after squaring up
 	printf("finished");
 	create_disconnect();
 	return 0;
+}
+
+void getCubes()
+{
+	while(!(cam_area(C_ORANGE) > 3500)) //haven't found an orange blob
+	{
+		//move right
+		cam_update();
+	}
+	else
+	{
+		//found a blob! pick it up
+	}
 }
 
 /*
