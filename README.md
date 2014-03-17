@@ -6,12 +6,12 @@ Robot Code for the 2014 competition.
 - The CREATE folder is for the Create robot
 
 ## To Do
-
+###**TOP PRIORITY: TEST LINK DRIVEPATH (3/16/2014)**
 * Test camera files
-* **currently working**: write working orange blob pickup code
+* **currently working**: write create orange blob pickup code
 * Better byte writing functionality for Create
 * Write Create dumping function for the orange blobs 
-* Test the CREATE drive path
+* Test the Create drive path
 * **currently working**: Fix the LINK drive path (wheels currently break)
 * Write LINK servo code to pick up hangers
 
@@ -32,19 +32,8 @@ void arm_half(){
 }
 ```
 * Write LINK place blue hangers function (in ```/LINK/main.c```)
-* Check threshold/does this code work as intended? (in ```/CREATE/main.c```)
+* ~~Check threshold/does camera code work as intended? (in ```/CREATE/main.c```)~~ **using top hat sensor as of 3/16/2014**
 
-```c
-while(!(cam_area(C_ORANGE) > 3500)) //haven't found an orange blob
-{
-	//move right
-	cam_update();
-}
-else
-{
-	//found a blob! pick it up
-}
-```
 * **low priority**: Test slowservo (doesn't take 5 seconds to move up with this code)  
 
 ```c
