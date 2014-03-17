@@ -14,7 +14,7 @@ void servo_slow(int port, int end, float time)
 			//printf("%f\n",curr);
 			set_servo_position(port,curr);
 			curr+=i;
-			sleep(increment);
+			msleep(increment*1000);
 		}
 	}
 	else if (start < end)
@@ -24,7 +24,7 @@ void servo_slow(int port, int end, float time)
 			//printf("%f\n",curr);
 			set_servo_position(port,curr);
 			curr+=i;
-			sleep(increment);
+			msleep(increment*1000);
 		}
 	}
 	set_servo_position(port,end);
