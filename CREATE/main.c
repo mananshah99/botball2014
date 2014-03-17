@@ -1,40 +1,21 @@
 #include "./createDrive.h"
 #include "./createSlow.h"
 #include "./generic.h"
+#include "./camera.h"
 
 #define FULL 100
-
+//TODO Fix this based on the actual port for the servo arm
 #define SERV_ARM 1
+
+//arm functions
 void arm_close(){
 	set_servo_position(SERV_ARM,2040);
 }
 void arm_open(){
 	set_servo_position(SERV_ARM,646);
 }
-void arm_half()
-{
+void arm_half(){
 	set_servo_position(SERV_ARM,1800);
-}
-
-#define MOT_ARM  3 //the mot_arm that isn't the create
-#define SEN_ARM() (digital(15))
-
-void liftArm()
-{
-	fd(MOT_ARM);//fd(MOT_ARM2);
-	create_motor_slow(80);
-	WAIT(SEN_ARM());
-
-	mrp(MOT_ARM,0,1000);
-	create_motor_slow(10);
-	msleep(1000);
-	create_motor_slow(25);
-
-	WAIT(SEN_ARM());
-	ao();
-
-	create_motor_slow(0);
-	mrp(MOT_ARM,0,1000);
 }
 
 //bump functions
@@ -51,16 +32,23 @@ void backward_bump()
 
 int main()
 {
+	/**INITIALIZE CODE**/
 	create_connect();
+	create_full();
+	camera_open(LOW_RES);
+	start(); //from the camera library
 	
-	create_wait_time(20); //20 deciseconds for the link to pass
-	create_drive_direct_dist(FULL,FULL,50); //50 centimeters
+	/**FIRST BLOCK PICKUP POSITION**/
 	
-	//block here, square up, and get to the next box area
-	forward_bump();
+	create_wait_time(20); //20 deciseconds for the link to pass	
+	forward_bump(); //drives and blocks all the way
 	create_block(); //finish the bump
+	//we're now (theoretically) right in front of the first goal (NOT TESTED)
 	
-	/**COLOR SORTING AND SERVO MOVEMENT HERE**/
+	/**COLOR SORTING AND SERVO MOVEMENT**/
+	arm_open();
+	cam_block();
+	
 	
 	create_drive_direct_dist(-FULL,-FULL,50);
 	
@@ -82,3 +70,26 @@ int main()
 	create_disconnect();
 	return 0;
 }
+
+/*
+#define MOT_ARM  3 //the mot_arm that isn't the create
+#define SEN_ARM() (digital(15))
+
+void liftArm()
+{
+	fd(MOT_ARM);
+	create_motor_slow(80);
+	WAIT(SEN_ARM());
+
+	mrp(MOT_ARM,0,1000);
+	create_motor_slow(10);
+	msleep(1000);
+	create_motor_slow(25);
+
+	WAIT(SEN_ARM());
+	ao();
+
+	create_motor_slow(0);
+	mrp(MOT_ARM,0,1000);
+}
+*/
