@@ -8,7 +8,7 @@
 #define light_start_sensor 0
 
 // change "ks" and motor ports in library
-
+//CHANGE ALL THE ARM COMMANDS TO SLOWSERVO ARM COMMANDS
 //keep this defined for running the main function
 #ifdef MAIN
 int main()
@@ -26,7 +26,6 @@ int main()
 	right(50,ks/2);
 	left(10,ks/2);//deposit hangers and push them to the sides
 	backward(5.00);//back up, going to get blue hangers next
-	//HAVE THIS LOOPS WORK
 	int i;
 	for(i=0; i<2; i++)
 	{
