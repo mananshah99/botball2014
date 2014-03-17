@@ -6,12 +6,12 @@ Robot Code for the 2014 competition.
 - The CREATE folder is for the Create robot
 
 ## To Do
-
+###**TOP PRIORITY: TEST LINK DRIVEPATH (3/16/2014)**
 * Test camera files
 * **currently working**: write working orange blob pickup code
 * Better byte writing functionality for Create
 * Write Create dumping function for the orange blobs 
-* Test the CREATE drive path
+* Test the Create drive path
 * **currently working**: Fix the LINK drive path (wheels currently break)
 * Write LINK servo code to pick up hangers
 
