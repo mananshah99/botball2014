@@ -1,3 +1,12 @@
+/*
+* Main program for CREATE driving
+* 
+* Assumes that the arm to pick up the cubes is facing to the right
+* as the create moves alongside the PVC pipe
+*
+*
+*/
+
 #include "./createDrive.h"
 #include "./createSlow.h"
 #include "./generic.h"
@@ -11,31 +20,10 @@
 /**#defines for which method to run**/
 #define MAIN 
 //#define ARMTEST
-/***********************************/
 
-//arm functions
-//CHECK THESE VALUES BEFORE TESTING
-void arm_close(){
-	set_servo_position(SERV_ARM,2040);
-}
-void arm_open(){
-	set_servo_position(SERV_ARM,646);
-}
-void arm_half(){
-	set_servo_position(SERV_ARM,1800);
-}
-
-//bump functions
-void forward_bump(c)
-{
-	do{ create_drive_direct(300,300); }
-	while(get_create_lbump()==0);
-}
-void backward_bump()
-{ 
-	do{ create_drive_direct(-300,-300); }
-	while(get_create_lbump()==0);
-}
+int ccount = 0;
+void resetcount(){ccount = 0;}
+/**ARM TEST - BASIC FUNCTIONALITY**/
 
 #ifdef ARMTEST
 //tester for the arm functions
@@ -52,6 +40,8 @@ int main()
 	msleep(10000);
 }
 #endif
+
+/*************MAIN************/
 
 #ifdef MAIN
 int main()
@@ -122,11 +112,38 @@ void getCubes()
 {
 	while(!(analog(TOPHAT)<700) //haven't found an orange blob (normally around 800-900)
 	{
-		//move right
+		//move to the right
+		create_drive_direct(10,10,2);
 	}
 	else
 	{
 		arm_half(); //should move and close the arm around the block
-		
+		ccount++;
+		if(ccount!=3)getCubes();
+		else resetcount(); //no recursive call, function ends
 	}
+}
+
+//arm functions
+//CHECK THESE VALUES BEFORE TESTING
+void arm_close(){
+	set_servo_position(SERV_ARM,2040);
+}
+void arm_open(){
+	set_servo_position(SERV_ARM,646);
+}
+void arm_half(){
+	set_servo_position(SERV_ARM,1800);
+}
+
+//bump functions
+void forward_bump(c)
+{
+	do{ create_drive_direct(300,300); }
+	while(get_create_lbump()==0);
+}
+void backward_bump()
+{ 
+	do{ create_drive_direct(-300,-300); }
+	while(get_create_lbump()==0);
 }
