@@ -8,11 +8,11 @@ Robot Code for the 2014 competition.
 ## To Do
 
 * Test camera files
-* **currently working: write working orange blob pickup code**
+* **currently working**: write working orange blob pickup code
 * Better byte writing functionality for Create
 * Write Create dumping function for the orange blobs 
 * Test the CREATE drive path
-* Fix the LINK drive path (wheels currently break)
+* **currently working**: Fix the LINK drive path (wheels currently break)
 * Write LINK servo code to pick up hangers
 
 * Fix the values and test the following code (in ```/CREATE/main.c```)
@@ -45,7 +45,6 @@ else
 	//found a blob! pick it up
 }
 ```
-
 ## How to Contribute
 1. **Check the To Do Section**: choose a pending task that hasn't yet been completed and help us add that functionality to the schedule
 2. **Fork this Repository**: fork either the main or development branches to your account (if you're not currently a contributor) and make proposed changes
