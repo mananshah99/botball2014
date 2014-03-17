@@ -45,6 +45,7 @@ int main()
 		backward(10.00);
 		motor(ARM,10);
 		forward(7.00);//collect one bottom blue multiplier hanger and deliver top
+		backward(5.00);
 	}
 	//go back a little
 	//do same thing as the regular hangers to place blue on top
