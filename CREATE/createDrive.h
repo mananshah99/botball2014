@@ -11,7 +11,8 @@
 #define SEN_0 18
 
 //this is to get around kiss-c's lack of intelligence and lack of the inclusion of an ACTUAL WRITE_BYTE FUNCTION THAT WORKS ON BOTH THINGS
-/*#ifndef __IROBOT_CREATE_H__
+/*
+#ifndef __IROBOT_CREATE_H__
 //int NUMBYTES;
 void serial_init()
 {
@@ -20,7 +21,9 @@ void create_write_byte(int num)
 {
 	//NUMBYTES++;
 }
-#endif*/
+#endif
+*/
+
 #define get_high_byte2(a) ((a)>>8)
 #define get_low_byte2(a) ((a)&255)
 
@@ -32,13 +35,15 @@ void create_wait_time(int time)//time is in deciseconds
 	create_write_byte(155);
 	create_write_byte(time);
 }
-/*void create_special_connect(){
+
+void create_special_connect(){
 	serial_init();
 	create_write_byte(128);
 	create_write_byte(132);
 	create_power_led(250,254);
 	atexit(create_disconnect);
-}*/
+}
+
 void create_wait_dist(int dist)//dist is in mm
 {
 	create_write_byte(156);

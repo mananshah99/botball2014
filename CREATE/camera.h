@@ -1,6 +1,7 @@
 //general use of the camera
 //define TEST if you cant to self test the camera
 //#define TEST 0
+
 float _start_time;
 
 void start()

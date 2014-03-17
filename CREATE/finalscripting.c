@@ -1,14 +1,13 @@
 #ifndef _FINALCREATESCRIPTING
 #define _FINALCREATESCRIPTING
+
 int BYTES[120], curr_byte = 0;
 void init_script()
 {
     int i;
     curr_byte = 0;
     for(i = 0;i < 120;i++)
-      {
-        BYTES[i] = -1;
-    }
+    BYTES[i] = -1;
 }
 void serial_byte(int byte)
 {

@@ -24,4 +24,3 @@ int get_low_byte2(int v)
 
 #define create_write_int(integer) create_write_byte(get_high_byte2(integer));create_write_byte(get_low_byte2(integer))
 #endif
-
