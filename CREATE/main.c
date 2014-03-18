@@ -49,24 +49,26 @@ int main()
 	/**INITIALIZE CODE**/
 	printf("Connecting...\n");
 	create_connect();
-	create_full();
-	start(); //from the camera library
+	create_full(); //needed?
 	printf("Complete!\n");
 	shut_down_in(120.); //IMPORTANT!
 	
 	/**FIRST BLOCK PICKUP POSITION**/
 
 	create_wait_time(20); //20 deciseconds for the link to pass	
-	forward_bump(); //drives and blocks all the way
+	forward_bump(); //forward to pvc pipe
 	create_block(); //finish the bump
-	//we're now in front of the first goal (NOT TESTED)
+	//we're now in front of the first goal 
+	
+	create_drive_direct_dist(-FULL-FULL,20); //more or less? 
+	create_right(87,0,60); 
+	forward_bump();
+	//move backwards and search
 	
 	/**COLOR SORTING AND SERVO MOVEMENT**/
 	arm_open();	
-	//run the getcubes function for 30 seconds
-	//note that getCubes() is not complete yet 
+	//run getcubes for 30 seconds 
 	run_for(30.,getCubes());
-	
 	arm_close();
 	
 	/**SECOND BLOCK PICKUP POSITION**/
@@ -74,11 +76,11 @@ int main()
 	create_drive_direct_dist(-FULL,-FULL,50);
 	
 	/*
-	 Angle is 87 because 90 degrees never works
+	 Angle is 187 to make a full turn 
 	 Radius is 0 
 	 Speed is 60 (too fast?)
 	*/
-	create_right(87,0,60);
+	create_right(175,0,60);
 	//drive to the other end of the board
 	forward_bump();
 	
@@ -91,9 +93,6 @@ int main()
 	/**COLOR SORTING AND SERVO MOVEMENT, 2**/
 	
 	arm_open();
-	
-	//run the getcubes function for 30 seconds
-	//note that getCubes() is not complete yet 
 	run_for(30.,getCubes());
 	arm_close();
 	
@@ -112,20 +111,18 @@ void getCubes()
 {
 	while(!(analog(TOPHAT)<700) //haven't found an orange blob (normally around 800-900)
 	{
-		//move to the right
 		create_drive_direct(10,10,2);
 	}
 	else
 	{
 		arm_half(); //should move and close the arm around the block
 		ccount++;
-		if(ccount!=3)getCubes();
+		if(ccount!=2)getCubes();
 		else resetcount(); //no recursive call, function ends
 	}
 }
 
 //arm functions
-//CHECK THESE VALUES BEFORE TESTING
 void arm_close(){
 	set_servo_position(SERV_ARM,2040);
 }
@@ -137,7 +134,7 @@ void arm_half(){
 }
 
 //bump functions
-void forward_bump(c)
+void forward_bump()
 {
 	do{ create_drive_direct(300,300); }
 	while(get_create_lbump()==0);
