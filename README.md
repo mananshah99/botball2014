@@ -56,3 +56,5 @@ int main()
 1. **Check the To Do Section**: choose a pending task that hasn't yet been completed and help us add that functionality to the schedule
 2. **Fork this Repository**: fork either the main or development branches to your account (if you're not currently a contributor) and make proposed changes
 3. **Send a Pull Request**: we'll review the changes and merge them if applicable
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mananshah99/robotcode14/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
