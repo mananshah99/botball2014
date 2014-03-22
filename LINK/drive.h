@@ -2,7 +2,7 @@
 #define _DRIVE_H_
 
 //primary driving code
-#define MOT_LEFT 0//Jaybot edition!
+#define MOT_LEFT 0
 #define MOT_RIGHT 1
 #define PI 3.14159265358979
 #define SPD 1000
@@ -10,7 +10,7 @@
 #define SPDr 1000. 
 #define rdistmult (SPDr/SPDl)
 // CHANGE KS FOR ROBOT
-#define ks 15.5//distance from one wheel to another in cm
+#define ks 10//distance from one wheel to another in cm
 #define wheeldiameter 5.5 //this is in cm
 
 #define CMtoBEMF (921/wheeldiameter/PI) //921 is how many backemf ticks there are in a full wheel, take the number of units per rotation, divide by circumference

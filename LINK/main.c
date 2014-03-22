@@ -53,7 +53,7 @@ int main()
 }
 #endif
 
-//#define drive_path_test
+#define drive_path_test
 #ifdef drive_path_test
 int main()
 {
