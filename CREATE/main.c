@@ -13,16 +13,19 @@
 #include "./camera.h"
 
 #define FULL 100
-//TODO Fix this based on the actual port for the servo arm
-#define SERV_ARM 1
+
+//TODO Fix this based on the actual port for the arm
+#define MOTARM 1
 #define TOPHAT 2
+#define TBUTTON 8 //port 8
 
 /**#defines for which method to run**/
-#define MAIN 
-//#define ARMTEST
+//#define MAIN 
+#define ARMTEST
 
 int ccount = 0;
-void resetcount(){ccount = 0;}
+void resetcount() {ccount = 0;}
+
 /**ARM TEST - BASIC FUNCTIONALITY**/
 
 #ifdef ARMTEST
@@ -31,9 +34,6 @@ int main()
 {
 	printf("Arm Opening..");
 	arm_open();
-	msleep(10000);
-	printf("Arm Midway...");
-	arm_half();
 	msleep(10000);
 	printf("Arm Closing...");
 	arm_close();
@@ -51,28 +51,29 @@ int main()
 	create_connect();
 	create_full(); //needed?
 	printf("Complete!\n");
-	shut_down_in(120.); //IMPORTANT!
+	shut_down_in(120.); 
 	
 	/**FIRST BLOCK PICKUP POSITION**/
 
 	create_wait_time(20); //20 deciseconds for the link to pass	
 	forward_bump(); //forward to pvc pipe
 	create_block(); //finish the bump
+
 	//we're now in front of the first goal 
 	
 	create_drive_direct_dist(-FULL-FULL,20); //more or less? 
 	create_right(87,0,60); 
 	forward_bump();
-	//move backwards and search
-	
-	/**COLOR SORTING AND SERVO MOVEMENT**/
+
+	//search moving backwards across the cubes
+
+	/**COLOR SORTING AND ARM MOVEMENT**/
 	arm_open();	
 	//run getcubes for 30 seconds 
 	run_for(30.,getCubes());
 	arm_close();
 	
 	/**SECOND BLOCK PICKUP POSITION**/
-	
 	create_drive_direct_dist(-FULL,-FULL,50);
 	
 	/*
@@ -88,9 +89,9 @@ int main()
 	create_drive_direct_dist(-FULL,FULL,30);
 	create_right(87,0,60);
 	forward_bump();
-	//we're now in front of the second goal (NOT TESTED)
+	//we're now in front of the second goal 
 	
-	/**COLOR SORTING AND SERVO MOVEMENT, 2**/
+	/**COLOR SORTING AND ARM MOVEMENT, 2**/
 	
 	arm_open();
 	run_for(30.,getCubes());
@@ -110,28 +111,30 @@ int main()
 void getCubes()
 {
 	while(!(analog(TOPHAT)<700) //haven't found an orange blob (normally around 800-900)
-	{
-		create_drive_direct(10,10,2);
-	}
+	{ create_drive_direct(10,10,2); }
 	else
 	{
 		arm_half(); //should move and close the arm around the block
 		ccount++;
-		if(ccount!=2)getCubes();
+		if(ccount!=2) getCubes();
 		else resetcount(); //no recursive call, function ends
 	}
 }
 
 //arm functions
-void arm_close(){
-	set_servo_position(SERV_ARM,2040);
-}
+//1 indicates the switch is closed
+//0 indicates the switch is open
 void arm_open(){
-	set_servo_position(SERV_ARM,646);
+	while(digital(TBUTTON)==0) motor(MOTARM, 70);
 }
-void arm_half(){
-	set_servo_position(SERV_ARM,1800);
+
+//moves arm backwards for 5 seconds
+void arm_close(){
+	run_for(5.,movArm(-70));
 }
+
+void movArm(int spd)
+{ motor(MOTARM, spd); }
 
 //bump functions
 void forward_bump()
