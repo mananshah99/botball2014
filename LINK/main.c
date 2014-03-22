@@ -10,10 +10,10 @@
 #include "./drive.h"			// driving library
 #include "./generic.h"			// generic functionality 
 
-//#define MAIN
-#define DPTEST
+#define MAIN
+//#define DPTEST
 
-#define ARM 3					// arm port
+#define ARM 0					// arm port
 #define LS 0					// light sensor port
 
 // TODO: change ks and motor ports in library
@@ -37,6 +37,7 @@
 #ifdef MAIN
 int main()
 {
+	servo_slow(ARM, TOP, 1);
 	light_start(LS);			// light start
 	forward(40.00);				// forward for 40 cm	
 	left(97, ks/2);				// left 90 degrees (97 because the function undershoots)
@@ -44,7 +45,7 @@ int main()
 	
 	/**TODO: add clearing out exercise bench and botguy before hangers**/
 	
-	right(97,ks/2);					// right 90 degrees
+	right(117,ks/2);					// right 90 degrees
 	servo_slow(ARM, MID, 10);		// move arm up (slowservo) to put the hangers into the scoring area
 	forward(20.00);					// get over to the scoring area
 	servo_slow(ARM, MID-100, 20);	// move arm down to drop hangers on ledge
@@ -66,14 +67,14 @@ int main()
 		forward(5.00);				// check if breaks something
 		servo_slow(ARM,TOP-20,10);
 		backward(10.00);	
-		servo_slow(ARM,MED,10);
+		servo_slow(ARM,MID,10);
 		forward(10.00);
-		servo_slow(ARM,MED+10,10);
+		servo_slow(ARM,MID+10,10);
 		backward(7.00);
 		forward(2.00);
-		servo_slow(ARM,MED,10);
+		servo_slow(ARM,MID,10);
 		backward(10.00);
-		servo_slow(ARM,MED+10,10);
+		servo_slow(ARM,MID+10,10);
 		forward(7.00);			//collect one bottom blue multiplier hanger and deliver top
 		backward(5.00);
 	}
