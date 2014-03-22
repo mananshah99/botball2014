@@ -18,7 +18,7 @@
 
 // TODO: change ks and motor ports in library
 
-/*******SERVO IMPORTANT VALUES*******
+/*******ARM SERVO IMPORTANT VALUES****
 *
 *	Position		Value
 *	----------------------
@@ -62,18 +62,18 @@ int main()
 	for(i=0; i<2; i++) {			// moves each blue hanger up 
 		servo_slow(ARM, TOP, 10);	// move to the top 
 		forward(5.00);				// get arm down to the blue hangers
-		motor(ARM,20);				// 
+		servo_slow(ARM,TOP+20,10);				// 
 		forward(5.00);				// check if breaks something
-		motor(ARM,-20);				
-		backward(10.00);			
-		motor(ARM,40);			
+		servo_slow(ARM,TOP-20,10);
+		backward(10.00);	
+		servo_slow(ARM,MED,10);
 		forward(10.00);
-		motor(ARM,10);
+		servo_slow(ARM,MED+10,10);
 		backward(7.00);
 		forward(2.00);
-		motor(ARM,-10);
+		servo_slow(ARM,MED,10);
 		backward(10.00);
-		motor(ARM,10);
+		servo_slow(ARM,MED+10,10);
 		forward(7.00);			//collect one bottom blue multiplier hanger and deliver top
 		backward(5.00);
 	}
