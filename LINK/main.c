@@ -19,7 +19,7 @@ int main()
 	forward(20.00);
 	//add clearing out exercise bench and botguy before hangers
 	right(90,ks/2);
-	motor(ARM,50);//move arm up
+	servo_slow(ARM,1000,10);//move arm up
 	forward(20.00);//get over to the scoring area
 	motor(ARM,-30);//move arm down to drop hangers on ledge
 	left(40,ks/2);
@@ -49,6 +49,21 @@ int main()
 	//go back a little
 	//do same thing as the regular hangers to place blue on top
 	printf("finished");
+	return 0;
+}
+#endif
+
+//#define drive_path_test
+#ifdef drive_path_test
+int main()
+{
+	forward(40.00);
+	left(90,ks/2);
+	forward(20.00);
+	//add clearing out exercise bench and botguy before hangers
+	right(90,ks/2);
+	servo_slow(ARM,1000,10);//move arm up
+	forward(20.00);//get over to the scoring area
 	return 0;
 }
 #endif
