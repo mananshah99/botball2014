@@ -13,7 +13,6 @@ Robot Code for the 2014 competition.
 * Better byte writing functionality for Create
 * Write Create dumping function for the orange blobs 
 * Test the Create drive path
-* **currently working**: Fix the LINK drive path (wheels currently break)
 * Write LINK servo code to pick up hangers
 
 * Fix the values and test the following code (in ```/CREATE/main.c```)
