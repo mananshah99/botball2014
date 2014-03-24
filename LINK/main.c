@@ -2,13 +2,13 @@
 * Main program for LINK driving
 * 
 * Need to fix 
-* 	1. motor -> servo
-* 	2. the arm needs distance
+* 	1. the arm needs distance in order to function
 *
 */
 
 #include "./drive.h"			// driving library
-#include "./generic.h"			// generic functionality 
+#include "./generic.h"			// generic functionality
+#include "./slowservo.h"		//
 
 #define MAIN
 //#define DPTEST
@@ -29,18 +29,20 @@
 * servo_slow(int port, int end, float time) 
 * 
 *************************************/
-#define TOP 400
-#define MID 1000
+#define TOP 285
+#define DROP 480
+#define MID 1116
 #define BOT 1800
 
 //Define MAIN to run the primary program 
 #ifdef MAIN
 int main()
 {
-	servo_slow(ARM, TOP, 1);
-	light_start(LS);			// light start
+	enable_servos();
+	servo_slow(ARM,BOT,5);
+	//light_start(LS);			// light start
 	forward(40.00);				// forward for 40 cm	
-	left(97, ks/2);				// left 90 degrees (97 because the function undershoots)
+	left(110,ks/2);				// left 90 degrees (97 because the function undershoots)
 	forward(20.00);				// forward 20 cm
 	
 	/**TODO: add clearing out exercise bench and botguy before hangers**/
@@ -53,8 +55,8 @@ int main()
 	//wiggle to drop off the hangers
 	
 	left(40,ks/2);				// left 30 degrees
-	right(50,ks/2);				// right 50 degrees
-	left(10,ks/2);				// deposit hangers and push them to the sides
+	right(60,ks/2);				// right 50 degrees
+	left(20,ks/2);				// deposit hangers and push them to the sides, left 20 degrees back
 	backward(5.00);				// back up 5 cm, going to get blue hangers next
 	
 	/**TODO: FIX WITH SLOWSERVO**/
@@ -65,7 +67,7 @@ int main()
 		forward(5.00);				// get arm down to the blue hangers
 		servo_slow(ARM,TOP+20,10);				// 
 		forward(5.00);				// check if breaks something
-		servo_slow(ARM,TOP-20,10);
+		servo_slow(ARM,DROP,10);
 		backward(10.00);	
 		servo_slow(ARM,MID,10);
 		forward(10.00);
@@ -89,6 +91,7 @@ int main()
 #ifdef DPTEST
 int main()
 {
+	enable_servos();
 	forward(40.00);
 	left(90,ks/2);
 	forward(20.00);
