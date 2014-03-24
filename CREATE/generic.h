@@ -11,9 +11,11 @@ int in_range(int input, int wanted, int fudge)
 	return 1;
 	else return 0;
 }
+
+/*
 float ET_distance(int port){
     return ((sqrt(100.0/analog10(port)))-2.2);
-}
+}*/
 
 #define WAIT(x); while(!(x)){msleep(10);}
 #define gmpc(port) get_motor_position_counter(port)

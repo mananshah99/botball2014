@@ -5,6 +5,7 @@
 #define CLIFF 10
 #define BUMP 5
 #define LEFT_BUMP 6
+#define LEFT_BUMP 6
 #define RIGHT_BUMP 7
 #define BUTTON_ADVANCED 16
 #define BUTTON_PLAY 17//TODO: finish all events.  p16 of create docs
@@ -36,13 +37,14 @@ void create_wait_time(int time)//time is in deciseconds
 	create_write_byte(time);
 }
 
+/*
 void create_special_connect(){
 	serial_init();
 	create_write_byte(128);
 	create_write_byte(132);
 	create_power_led(250,254);
 	atexit(create_disconnect);
-}
+}*/
 
 void create_wait_dist(int dist)//dist is in mm
 {
