@@ -7,7 +7,7 @@ Robot Code for the 2014 competition.
 
 ## To Do
 ###**PRIORITY 1: ADD MICROSERVO AND TEST LINK ARM PICKUP**
-###**PRIORITY 2: **TEST CREATE DRIVEPATH WITH MICROSERVO**
+###**PRIORITY 2: TEST CREATE DRIVEPATH WITH MICROSERVO**
 * Test camera files
 * **currently working**: write create orange blob pickup code
 * Better byte writing functionality for Create
