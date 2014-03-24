@@ -6,25 +6,80 @@
 *
 *
 */
-
+#include <stdio.h>
 #include "./createDrive.h"
 #include "./createSlow.h"
 #include "./generic.h"
-#include "./camera.h"
 
 #define FULL 100
 
-//TODO Fix this based on the actual port for the arm
-#define MOTARM 1
+//TODO Fix these ports
+#define MOTARM 0
 #define TOPHAT 2
 #define TBUTTON 8 //port 8
+#define DEBUG
+
+//show debugging? 
+#ifdef DEBUG 
+  #define SHOW(x) printf("DEBUG: "); x 
+#else 
+  #define SHOW(x) 
+#endif
 
 /**#defines for which method to run**/
-//#define MAIN 
-#define ARMTEST
 
+#define MAIN 
+//#define ARMTEST
+
+//variables for counting the cubes
 int ccount = 0;
 void resetcount() {ccount = 0;}
+
+void getCubes()
+{
+	while(!(analog(TOPHAT)<700))//haven't found an orange blob (normally around 800-900)
+	{ 
+		create_drive_direct_dist(10,10,2); 
+	}
+	//arm_half(); //should move and close the arm around the block
+	ccount++;
+	if(ccount!=2) getCubes();
+	else resetcount(); //no recursive call, function ends
+}
+
+//arm functions
+//1 indicates the switch is closed
+//0 indicates the switch is open
+void arm_open(){
+	SHOW(printf("Here"));
+	do{
+		fd(MOTARM);
+		SHOW(printf("doing the do"));
+		SHOW(printf("%d\n", digital(TBUTTON)));
+	}
+	while(digital(TBUTTON)==0);
+}
+
+//moves arm backwards for 5 seconds
+void arm_close(){
+	//run_for(5.,movArm(-70));
+}
+
+void movArm(int spd)
+{ motor(MOTARM, spd); }
+
+//bump functions
+//drive forward until a bumper's hit
+void forward_bump()
+{
+	do{ create_drive_direct(300,300); }
+	while(get_create_lbump()==0);
+}
+void backward_bump()
+{ 
+	do{ create_drive_direct(-300,-300); }
+	while(get_create_lbump()==0);
+}
 
 /**ARM TEST - BASIC FUNCTIONALITY**/
 
@@ -32,12 +87,9 @@ void resetcount() {ccount = 0;}
 //tester for the arm functions
 int main()
 {
-	printf("Arm Opening..");
+	//successful
+	SHOW(printf("Arm Opening.."));
 	arm_open();
-	msleep(10000);
-	printf("Arm Closing...");
-	arm_close();
-	msleep(10000);
 }
 #endif
 
@@ -47,30 +99,31 @@ int main()
 int main()
 {
 	/**INITIALIZE CODE**/
-	printf("Connecting...\n");
+	SHOW(printf("Connecting...\n"));
 	create_connect();
-	create_full(); //needed?
-	printf("Complete!\n");
+	SHOW(printf("Complete!\n"));
 	shut_down_in(120.); 
 	
 	/**FIRST BLOCK PICKUP POSITION**/
 
+	printf("First block pickup position running...");
 	create_wait_time(20); //20 deciseconds for the link to pass	
 	forward_bump(); //forward to pvc pipe
-	create_block(); //finish the bump
-
+	create_block(); //finish the bump	
 	//we're now in front of the first goal 
 	
-	create_drive_direct_dist(-FULL-FULL,20); //more or less? 
+	create_drive_direct_dist(-FULL,-FULL,20); //more or less? 
 	create_right(87,0,60); 
 	forward_bump();
+	
+	printf("In front of the cubes");
 
 	//search moving backwards across the cubes
 
 	/**COLOR SORTING AND ARM MOVEMENT**/
 	arm_open();	
 	//run getcubes for 30 seconds 
-	run_for(30.,getCubes());
+	getCubes();
 	arm_close();
 	
 	/**SECOND BLOCK PICKUP POSITION**/
@@ -94,7 +147,7 @@ int main()
 	/**COLOR SORTING AND ARM MOVEMENT, 2**/
 	
 	arm_open();
-	run_for(30.,getCubes());
+	getCubes();
 	arm_close();
 	
 	/**COMPLETED PICKUP**/
@@ -107,43 +160,3 @@ int main()
 	return 0;
 }
 #endif
-
-void getCubes()
-{
-	while(!(analog(TOPHAT)<700) //haven't found an orange blob (normally around 800-900)
-	{ create_drive_direct(10,10,2); }
-	else
-	{
-		arm_half(); //should move and close the arm around the block
-		ccount++;
-		if(ccount!=2) getCubes();
-		else resetcount(); //no recursive call, function ends
-	}
-}
-
-//arm functions
-//1 indicates the switch is closed
-//0 indicates the switch is open
-void arm_open(){
-	while(digital(TBUTTON)==0) motor(MOTARM, 70);
-}
-
-//moves arm backwards for 5 seconds
-void arm_close(){
-	run_for(5.,movArm(-70));
-}
-
-void movArm(int spd)
-{ motor(MOTARM, spd); }
-
-//bump functions
-void forward_bump()
-{
-	do{ create_drive_direct(300,300); }
-	while(get_create_lbump()==0);
-}
-void backward_bump()
-{ 
-	do{ create_drive_direct(-300,-300); }
-	while(get_create_lbump()==0);
-}

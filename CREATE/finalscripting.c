@@ -14,6 +14,7 @@ void serial_byte(int byte)
     BYTES[curr_byte] = byte;
     curr_byte++;
 }
+
 void serial_int(int integer)
 {
     BYTES[curr_byte] = get_high_byte2(integer);
