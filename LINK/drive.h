@@ -10,7 +10,7 @@
 #define SPDr 1000. 
 #define rdistmult (SPDr/SPDl)
 // CHANGE KS FOR ROBOT
-#define ks 10//distance from one wheel to another in cm
+#define ks 7//distance from one wheel to another in cm
 #define wheeldiameter 5.5 //this is in cm
 
 #define CMtoBEMF (921/wheeldiameter/PI) //921 is how many backemf ticks there are in a full wheel, take the number of units per rotation, divide by circumference
