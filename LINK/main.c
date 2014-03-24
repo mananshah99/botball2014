@@ -78,20 +78,20 @@ int main()
 	
 	int i;			
 	for(i=0; i<2; i++) {			// moves each blue hanger up 
-		servo_slow(ARM, TOP, 10);	// move to the top 
+		set_servo_position(ARM, TOP);	// move to the top 
 		forward(5.00);				// get arm down to the blue hangers
-		servo_slow(ARM,TOP+20,10);				// 
+		set_servo_position(ARM,TOP+20);				// 
 		forward(5.00);				// check if breaks something
-		servo_slow(ARM,DROP,10);
+		set_servo_position(ARM,DROP);
 		backward(10.00);	
-		servo_slow(ARM,MID,10);
+		set_servo_position(ARM,MID);
 		forward(10.00);
-		servo_slow(ARM,MID+10,10);
+		set_servo_position(ARM,MID+10);
 		backward(7.00);
 		forward(2.00);
-		servo_slow(ARM,MID,10);
+		set_servo_position(ARM,MID);
 		backward(10.00);
-		servo_slow(ARM,MID+10,10);
+		set_servo_position(ARM,MID+10);
 		forward(7.00);			//collect one bottom blue multiplier hanger and deliver top
 		backward(5.00);
 	}
