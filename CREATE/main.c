@@ -17,6 +17,7 @@
 #define MOTARM 0
 #define TOPHAT 2
 #define TBUTTON 8 //port 8
+#define MICRO 0
 #define DEBUG
 
 //show debugging? 
@@ -28,8 +29,8 @@
 
 /**#defines for which method to run**/
 
-#define MAIN 
-//#define ARMTEST
+//#define MAIN 
+#define ARMTEST
 
 //variables for counting the cubes
 int ccount = 0;
@@ -50,24 +51,25 @@ void getCubes()
 //arm functions
 //1 indicates the switch is closed
 //0 indicates the switch is open
+
+//1751 to -1740
 void arm_open(){
 	SHOW(printf("Here"));
 	do{
-		fd(MOTARM);
-		SHOW(printf("doing the do"));
-		SHOW(printf("%d\n", digital(TBUTTON)));
+		bk(MOTARM);
 	}
 	while(digital(TBUTTON)==0);
 }
 
-//moves arm backwards for 5 seconds
 void arm_close(){
-	//run_for(5.,movArm(-70));
+	mrp(MOTARM, 1000, 3491);
 }
 
-void movArm(int spd)
-{ motor(MOTARM, spd); }
+void micro_crash(){
+	set_servo_position(MICRO, 1994);
+}
 
+//1994
 //bump functions
 //drive forward until a bumper's hit
 void forward_bump()
@@ -90,6 +92,11 @@ int main()
 	//successful
 	SHOW(printf("Arm Opening.."));
 	arm_open();
+	bmd(MOTARM);
+	enable_servo(MICRO);
+	micro_crash();
+	arm_close();
+	bmd(MOTARM);
 }
 #endif
 
