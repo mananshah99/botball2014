@@ -5,6 +5,8 @@ Robot Code for the 2014 competition.
 - The LINK folder is for the Link robot
 - The CREATE folder is for the Create robot
 
+
+NOTE: ALWAYS ENABLE SERVOS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ## To Do
 ###**PRIORITY 1: ADD MICROSERVO AND TEST LINK ARM PICKUP**
 ###**PRIORITY 2: TEST CREATE DRIVEPATH WITH MICROSERVO**
