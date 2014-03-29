@@ -31,16 +31,20 @@
 * 
 *************************************/
 
-/***
-	Hanger holder miniservo position values
-Position	Value
-Left close	Unknown
-Right close	unknown
-***/
 #define TOP 285
 #define DROP 480
 #define MID 1116
 #define BOT 1655
+
+/***
+	Hanger holder miniservo position values
+Position	Value
+LEFT-CLOSE	Unknown //holding hangers on the left side of the arm
+RIGHT-CLOSE	unknown //holding hangers of the right side of the arm
+***/
+
+#define LEFT-CLOSE ?
+#define RIGHT-CLOSE ?
 
 //Define MAIN to run the primary program 
 #ifdef MAIN
@@ -50,6 +54,9 @@ int main()
 	enable_servos();
 	printf("here\n");
 	set_servo_position(ARM,BOT);
+	msleep(500);
+	set_servo_position(HANDER-HOLDER, RIGHT-CLOSE)
+	msleep(500);
 	forward(40.00);				// forward for 40 cm	
 	left(220,ks/2);				// left 90 degrees (more because the function undershoots)
 	forward(30.00);				// forward 30 cm

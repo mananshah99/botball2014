@@ -5,6 +5,8 @@ Robot Code for the 2014 competition.
 - The LINK folder is for the Link robot
 - The CREATE folder is for the Create robot
 
+
+
 ## To Do
 ###**PRIORITY 1: ADD MICROSERVO AND TEST LINK ARM PICKUP**
 ###**PRIORITY 2: TEST CREATE DRIVEPATH WITH MICROSERVO**
@@ -16,6 +18,9 @@ Robot Code for the 2014 competition.
 * Write LINK servo code to pick up hangers
 
 * Find replacement for run_for, or edit the following function (in ```/CREATE/main.c```)
+
+NOTE: ALWAYS ENABLE SERVOS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 
 ```c
 void getCubes()
