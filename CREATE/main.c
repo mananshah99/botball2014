@@ -29,8 +29,8 @@
 
 /**#defines for which method to run**/
 
-//#define MAIN 
-#define ARMTEST
+#define MAIN 
+//#define ARMTEST
 
 //variables for counting the cubes
 int ccount = 0;
