@@ -15,7 +15,7 @@
 
 #define ARM 0					// arm port
 #define LS 0					// light sensor port
-#define HANGER-HOLDER 3			// mini-servo for holding hangers in's port
+#define HANGER_HOLDER 3			// mini-servo for holding hangers in's port
 
 // TODO: change ks and motor ports in library
 
@@ -39,12 +39,12 @@
 /***
 	Hanger holder miniservo position values
 Position	Value
-LEFT-CLOSE	Unknown //holding hangers on the left side of the arm
-RIGHT-CLOSE	unknown //holding hangers of the right side of the arm
+LEFT_CLOSE	2000 //holding hangers on the left side of the arm
+RIGHT_CLOSE	0 //holding hangers of the right side of the arm
 ***/
 
-#define LEFT-CLOSE ?
-#define RIGHT-CLOSE ?
+#define LEFT_CLOSE 2000
+#define RIGHT_CLOSE 0
 
 //Define MAIN to run the primary program 
 #ifdef MAIN
@@ -53,9 +53,9 @@ int main()
 	//light_start(LS);			// light start
 	enable_servos();
 	printf("here\n");
+	set_servo_position(HANGER_HOLDER, RIGHT_CLOSE);
+	msleep(1000);
 	set_servo_position(ARM,BOT);
-	msleep(500);
-	set_servo_position(HANDER-HOLDER, RIGHT-CLOSE)
 	msleep(500);
 	forward(40.00);				// forward for 40 cm	
 	left(220,ks/2);				// left 90 degrees (more because the function undershoots)
@@ -65,14 +65,16 @@ int main()
 	
 	right(220,ks/2);	// right 90 degrees
 	printf("going to lift up servo\n");
-	msleep(1000);
-	set_servo_position(ARM, TOP);		// move arm up, not slowservo anymore (slowservo) to put the hangers into the scoring area
 	msleep(1500);
+	set_servo_position(ARM, TOP);		// move arm up, not slowservo anymore (slowservo) to put the hangers into the scoring area
+	msleep(2000);
 	printf("done\n");
 	forward(15.00);	// get over to the scoring area
 	msleep(100);	// stop to stop the arm shaking
 	forward(15.00);
+	msleep(1000);
 	set_servo_position(ARM, DROP);	// move arm down to drop hangers on ledge
+	msleep(1000);
 	
 	//wiggle to drop off the hangers
 	

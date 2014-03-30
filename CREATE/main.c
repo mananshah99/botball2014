@@ -33,18 +33,24 @@
 //#define ARMTEST
 
 //variables for counting the cubes
-int ccount = 0;
+int cCount = 0;
 void resetcount() {ccount = 0;}
+int time = 0;
 
 void getCubes()
 {
 	while(!(analog(TOPHAT)<700))//haven't found an orange blob (normally around 800-900)
 	{ 
 		create_drive_direct_dist(10,10,2); 
+		time++;
+		if(time > //some number)
+		{
+			return;
+		}
 	}
 	//arm_half(); //should move and close the arm around the block
-	ccount++;
-	if(ccount!=2) getCubes();
+	cCount++;
+	if(cCount!=2) getCubes();
 	else resetcount(); //no recursive call, function ends
 }
 
