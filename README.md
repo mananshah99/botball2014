@@ -6,10 +6,10 @@ Robot Code for the 2014 competition.
 - The CREATE folder is for the Create robot
 
 
-
 ## To Do
-###**PRIORITY 1: ADD MICROSERVO AND TEST LINK ARM PICKUP**
-###**PRIORITY 2: TEST CREATE DRIVEPATH WITH MICROSERVO**
+**If something's wrong, check if your servos are enabled. Thank me later.**
+###**PRIORITY 1: GET HANGERS SMOOTHLY ON LINK**
+###**PRIORITY 2: FIX GETCUBES FOR CREATE**
 * Test camera files
 * **currently working**: write create orange blob pickup code
 * Better byte writing functionality for Create
@@ -19,7 +19,6 @@ Robot Code for the 2014 competition.
 
 * Find replacement for run_for, or edit the following function (in ```/CREATE/main.c```)
 
-NOTE: ALWAYS ENABLE SERVOS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 ```c
