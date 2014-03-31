@@ -84,7 +84,8 @@ int main()
 	set_servo_position(ARM, DROP);	// move arm down to drop hangers on ledge
 	msleep(1000);
 	set_servo_position(HANGER_HOLDER, LEFT_CLOSE);
-	mrp(MOT_RIGHT, 500, -1544);
+	msleep(500);
+	mrp(MOT_LEFT, 500, -1544); // let go of hangers onto the ledge
 	//left(220,ks/2); //let go of hangers onto the ledge
 	
 	//wiggle to drop off the hangers (BACKUP CODE)
@@ -92,11 +93,13 @@ int main()
 	/*left(40,ks/2);				// left 30 degrees
 	right(60,ks/2);				// right 50 degrees
 	left(20,ks/2);*/				// deposit hangers and push them to the sides, left 20 degrees back
-	backward(5.00);	// back up 5 cm, going to get blue hangers next
+	mrp(MOT_LEFT, 500, 1544); // undo the turn to be straight again
+	backward(10.00);	// back up 10 cm, going to get blue hangers next
 	msleep(500);
 	
 	
-	/** Don't FIX WITH SLOWSERVO anymore, slowservo broken**/
+	
+	/** Don't FIX WITH SLOWSERVO anymore, slowservo library broken**/
 	
 	int i;			
 	for(i=0; i<2; i++) {			// moves each blue hanger up 
