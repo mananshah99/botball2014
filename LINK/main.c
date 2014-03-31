@@ -1,3 +1,4 @@
+//Created in Spring 2014
 /*
 * Main program for LINK driving
 * 
@@ -17,7 +18,8 @@
 #define LS 0					// light sensor port
 #define HANGER_HOLDER 3			// mini-servo for holding hangers in's port
 
-// TODO: change ks and motor ports in library
+// NOTE: RIGHT MOTOR TURN 90 DEGREES TO THE LEFT:
+// mrp(MOT_RIGHT, Power, -1544)
 
 /*******ARM SERVO IMPORTANT VALUES****
 *
@@ -59,31 +61,42 @@ int main()
 	msleep(500);
 	forward(40.00);				// forward for 40 cm	
 	left(220,ks/2);				// left 90 degrees (more because the function undershoots)
-	forward(30.00);				// forward 30 cm
+	forward(33.00);				// forward 33 cm
 	
-	/**TODO: add clearing out exercise bench and botguy before hangers**/
+	/**TODO: add clearing out exercise bench and botguy before hangers maybe, but it does it by itself**/
 	
-	right(220,ks/2);	// right 90 degrees
+	right(250,ks/2);	// right 90 degrees, but uses the arm to move cube,so adding more, changed to using both wheels
+	msleep(1000);
+	left(30,ks/2); 		//push cube away from robot
+	/*mrp(MOT_LEFT,400,5);
+	mrp(MOT_RIGHT,-400,5); //turn 90 degrees*/
 	printf("going to lift up servo\n");
-	msleep(1500);
+	msleep(1000);
+	bmd(MOT_LEFT);
+	bmd(MOT_RIGHT);
 	set_servo_position(ARM, TOP);		// move arm up, not slowservo anymore (slowservo) to put the hangers into the scoring area
 	msleep(2000);
 	printf("done\n");
 	forward(15.00);	// get over to the scoring area
 	msleep(100);	// stop to stop the arm shaking
-	forward(15.00);
+	forward(14.00);
 	msleep(1000);
 	set_servo_position(ARM, DROP);	// move arm down to drop hangers on ledge
 	msleep(1000);
+	set_servo_position(HANGER_HOLDER, LEFT_CLOSE);
+	mrp(MOT_RIGHT, 500, -1544);
+	//left(220,ks/2); //let go of hangers onto the ledge
 	
-	//wiggle to drop off the hangers
+	//wiggle to drop off the hangers (BACKUP CODE)
 	
-	left(40,ks/2);				// left 30 degrees
+	/*left(40,ks/2);				// left 30 degrees
 	right(60,ks/2);				// right 50 degrees
-	left(20,ks/2);				// deposit hangers and push them to the sides, left 20 degrees back
-	backward(5.00);				// back up 5 cm, going to get blue hangers next
+	left(20,ks/2);*/				// deposit hangers and push them to the sides, left 20 degrees back
+	backward(5.00);	// back up 5 cm, going to get blue hangers next
+	msleep(500);
 	
-	/**TODO: FIX WITH SLOWSERVO**/
+	
+	/** Don't FIX WITH SLOWSERVO anymore, slowservo broken**/
 	
 	int i;			
 	for(i=0; i<2; i++) {			// moves each blue hanger up 
