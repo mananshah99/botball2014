@@ -3,9 +3,11 @@
 * 
 * Assumes that the arm to pick up the cubes is facing to the right
 * as the create moves alongside the PVC pipe
-*
+* -1212
+-639
 *
 */
+
 #include <stdio.h>
 #include "./createDrive.h"
 #include "./createSlow.h"
@@ -13,12 +15,19 @@
 
 #define FULL 100
 
+/* Grabber positions
+ *	Closed: 635
+ *	Open: 2047
+ */
+
+
 //TODO Fix these ports
 #define MOTARM 0
 #define TOPHAT 2
+#define GRABBER 1
 #define TBUTTON 8 //port 8
 #define MICRO 0
-#define DEBUG
+#define DEBUG 
 
 //show debugging? 
 #ifdef DEBUG 
@@ -31,28 +40,6 @@
 
 #define MAIN 
 //#define ARMTEST
-
-//variables for counting the cubes
-int cCount = 0;
-void resetcount() {ccount = 0;}
-int time = 0;
-
-void getCubes()
-{
-	while(!(analog(TOPHAT)<700))//haven't found an orange blob (normally around 800-900)
-	{ 
-		create_drive_direct_dist(10,10,2); 
-		time++;
-		if(time > //some number)
-		{
-			return;
-		}
-	}
-	//arm_half(); //should move and close the arm around the block
-	cCount++;
-	if(cCount!=2) getCubes();
-	else resetcount(); //no recursive call, function ends
-}
 
 //arm functions
 //1 indicates the switch is closed
@@ -74,6 +61,34 @@ void arm_close(){
 void micro_crash(){
 	set_servo_position(MICRO, 1994);
 }
+
+//variables for counting the cubes
+int cCount = 0;
+void resetcount() {cCount = 0;}
+int time = 0;
+
+void getCubes()
+{
+	printf("init: %d\n",analog(TOPHAT));
+	while(!(analog(TOPHAT)<900))//haven't found an orange blob (normally around 800-900)
+	{ 
+		printf("value: %d\n",analog(TOPHAT));
+		create_backward(2,10); 
+		time++;
+		//if(time > 30) //some number)
+		//	return;
+	}
+	printf("FOUND A CUBE: %d\n",analog(TOPHAT));
+	enable_servo(GRABBER);
+	set_servo_position(GRABBER, 635);
+	disable_servos();
+	//arm_close();
+	//arm_half(); //should move and close the arm around the block
+	cCount++;
+	if(cCount!=2) getCubes();
+	else resetcount(); //no recursive call, function ends
+}
+
 
 //1994
 //bump functions
@@ -116,28 +131,34 @@ int main()
 	create_connect();
 	SHOW(printf("Complete!\n"));
 	shut_down_in(120.); 
-	
+	mrp(MOTARM, 1000, 573);
+
 	/**FIRST BLOCK PICKUP POSITION**/
 
 	printf("First block pickup position running...");
+	
 	create_wait_time(20); //20 deciseconds for the link to pass	
 	forward_bump(); //forward to pvc pipe
 	create_block(); //finish the bump	
+	create_backward(50,100);
+	create_block();
 	//we're now in front of the first goal 
-	
-	create_drive_direct_dist(-FULL,-FULL,20); //more or less? 
-	create_right(87,0,60); 
-	forward_bump();
+	create_right(90,0,60); 
+	create_block();
 	
 	printf("In front of the cubes");
 
 	//search moving backwards across the cubes
 
 	/**COLOR SORTING AND ARM MOVEMENT**/
-	arm_open();	
-	//run getcubes for 30 seconds 
+
+	arm_open();
+	bmd(MOTARM);
 	getCubes();
+	enable_servo(MICRO);
+	micro_crash();
 	arm_close();
+	bmd(MOTARM);
 	
 	/**SECOND BLOCK PICKUP POSITION**/
 	create_drive_direct_dist(-FULL,-FULL,50);
