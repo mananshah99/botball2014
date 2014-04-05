@@ -67,7 +67,8 @@ int main()
 	
 	right(250,ks/2);	// right 90 degrees, but uses the arm to move cube,so adding more, changed to using both wheels
 	msleep(1000);
-	left(30,ks/2); 		//push cube away from robot
+	left(10,ks/2); 		//push cube away from robot
+	backward(10.00);	//sometimes arm hits the bottom rack
 	/*mrp(MOT_LEFT,400,5);
 	mrp(MOT_RIGHT,-400,5); //turn 90 degrees*/
 	printf("going to lift up servo\n");
