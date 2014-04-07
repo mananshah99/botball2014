@@ -25,7 +25,7 @@
 *
 *	Position		Value
 *	----------------------
-*	Top				400		
+*	Top				330		
 *	Middle			1000
 *	Bottom			1800
 *
@@ -33,7 +33,7 @@
 * 
 *************************************/
 
-#define TOP 285
+#define TOP 330
 #define DROP 480
 #define MID 1116
 #define BOT 1655
@@ -50,7 +50,7 @@ RIGHT_CLOSE	0 //holding hangers of the right side of the arm
 
 //Define MAIN to run the primary program 
 #ifdef MAIN
-int main()
+int main()	//start position is with back against PVC pipe and left side one inch from left pipe surrounding starting box
 {
 	//light_start(LS);			// light start
 	enable_servos();
@@ -59,34 +59,34 @@ int main()
 	msleep(1000);
 	set_servo_position(ARM,BOT);
 	msleep(500);
-	forward(40.00);				// forward for 40 cm	
+	forward(50.00);				// forward for 40 cm	
 	left(220,ks/2);				// left 90 degrees (more because the function undershoots)
-	forward(33.00);				// forward 33 cm
+	forward(30.00);				// forward 33 cm
 	
-	/**TODO: add clearing out exercise bench and botguy before hangers maybe, but it does it by itself**/
+	/**TODO: add clearing out exercise bench and botguy before hangers maybe, but it does it by itself with the turning**/
 	
-	right(250,ks/2);	// right 90 degrees, but uses the arm to move cube,so adding more, changed to using both wheels
+	right(250,ks/2);	// right 90 degrees, but uses the arm to move cube,so adding more, not changed to using both wheels anymore
 	msleep(1000);
-	left(10,ks/2); 		//push cube away from robot
-	backward(10.00);	//sometimes arm hits the bottom rack
+	left(20,ks/2); 		//push cube away from robot
+	backward(10.00);	//sometimes arm hits the bottom rack after
 	/*mrp(MOT_LEFT,400,5);
 	mrp(MOT_RIGHT,-400,5); //turn 90 degrees*/
-	printf("going to lift up servo\n");
+	printf("going to lift up arm\n");
 	msleep(1000);
 	bmd(MOT_LEFT);
 	bmd(MOT_RIGHT);
 	set_servo_position(ARM, TOP);		// move arm up, not slowservo anymore (slowservo) to put the hangers into the scoring area
 	msleep(2000);
-	printf("done\n");
-	forward(15.00);	// get over to the scoring area
-	msleep(100);	// stop to stop the arm shaking
-	forward(14.00);
+	printf("At Hangers\n");
+	forward(20.00);	// get over to the scoring area
+	msleep(200);	// stop to stop the arm shaking
+	forward(18.00);
 	msleep(1000);
 	set_servo_position(ARM, DROP);	// move arm down to drop hangers on ledge
 	msleep(1000);
 	set_servo_position(HANGER_HOLDER, LEFT_CLOSE);
-	msleep(500);
-	mrp(MOT_LEFT, 500, -1544); // let go of hangers onto the ledge
+	msleep(2000);
+	mrp(MOT_LEFT, -500, 500 /*1544*/); // let go of hangers onto the ledge, maybe 1544 (90 degrees)
 	//left(220,ks/2); //let go of hangers onto the ledge
 	
 	//wiggle to drop off the hangers (BACKUP CODE)
@@ -94,6 +94,9 @@ int main()
 	/*left(40,ks/2);				// left 30 degrees
 	right(60,ks/2);				// right 50 degrees
 	left(20,ks/2);*/				// deposit hangers and push them to the sides, left 20 degrees back
+	
+	/* testing code so commenting rest of code
+	
 	mrp(MOT_LEFT, 500, 1544); // undo the turn to be straight again
 	backward(10.00);	// back up 10 cm, going to get blue hangers next
 	msleep(500);
@@ -101,7 +104,7 @@ int main()
 	
 	
 	/** Don't FIX WITH SLOWSERVO anymore, slowservo library broken**/
-	
+	/*
 	int i;			
 	for(i=0; i<2; i++) {			// moves each blue hanger up 
 		set_servo_position(ARM, TOP);	// move to the top 
@@ -121,9 +124,11 @@ int main()
 		forward(7.00);			//collect one bottom blue multiplier hanger and deliver top
 		backward(5.00);
 	}
-	
+	*/
 	//TODO: go back a little - do same thing as the regular hangers to place blue on top
 	
+	
+	ao();
 	printf("finished");
 	return 0;
 }
