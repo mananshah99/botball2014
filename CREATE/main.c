@@ -3,8 +3,11 @@
 * 
 * Assumes that the arm to pick up the cubes is facing to the right
 * as the create moves alongside the PVC pipe
-* -1212
-* -639
+*
+*
+* Calibrate the threshold values before competition
+* with bright lights
+*
 *
 */
 
@@ -14,36 +17,23 @@
 #include "./generic.h"
 
 #define FULL 100
-
-/* Grabber positions
- *	Closed: 635
- *	Open: 2047
-*/
-
-
-//TODO Fix these ports
 #define MOTARM 0
 #define TOPHAT 2
 #define GRABBER 1
 #define TBUTTON 8 //port 8
 #define MICRO 0
+//debug?
 #define DEBUG 
 
-//show debugging? 
 #ifdef DEBUG 
-  #define SHOW(x) printf("DEBUG: "); x 
+	#define SHOW(x) printf("DEBUG: "); x 
 #else 
-#define SHOW(x) 
+	#define SHOW(x) 
 #endif
 
 /**#defines for which method to run**/
-
 #define MAIN 
 //#define ARMTEST
-
-//arm functions
-//1 indicates the switch is closed
-//0 indicates the switch is open
 
 //1751 to -1740
 void arm_open(){
@@ -70,16 +60,18 @@ int time = 0;
 void closeHandle() 
 {
 	printf("FOUND A CUBE: %d\n",analog(TOPHAT));
-	create_backward(5,100);
+	
+	create_backward(50,100);
 	create_block();
+	SHOW(printf("moved..."));
 	msleep(1000);
-	set_servo_position(GRABBER, 635);
+	set_servo_position(GRABBER, 400);
 }
 
 void getCubes()
 {
-	printf("init: %d\n",analog(TOPHAT));
-	while(!(analog(TOPHAT)<750)) //haven't found an orange blob
+	printf("-----RESTART RUN----- init: %d\n",analog(TOPHAT));
+	while(!(analog(TOPHAT)<780)) //haven't found an orange blob
 	{ 
 		printf("value: %d\n",analog(TOPHAT));
 		create_backward(2,10); 
@@ -116,17 +108,18 @@ void backward_bump()
 /**ARM TEST - BASIC FUNCTIONALITY**/
 
 #ifdef ARMTEST
+
 //tester for the arm functions
 int main()
 {
-//successful
+	//successful
 	SHOW(printf("Arm Opening.."));
 	arm_open();
 	bmd(MOTARM);
 	enable_servo(MICRO);
 	micro_crash();
 	arm_close();
-bmd(MOTARM);
+	bmd(MOTARM);
 }
 #endif
 
@@ -150,14 +143,14 @@ int main()
 	
 	printf("First block pickup position running...");
 	
-	create_wait_time(20); //20 deciseconds for the link to pass	
-	forward_bump(); //forward to pvc pipe
-	create_block(); //finish the bump	
-	create_backward(65,100);
+	create_wait_time(20); 	//20 deciseconds for the link to pass	
+	forward_bump(); 		//forward to pvc pipe
+	create_block(); 		//finish the bump	
+	create_backward(76,100);
 	create_block();
 	
 	//we're now in front of the first goal 
-	create_right(80,0,60); 
+	create_right(82,0,60); 
 	create_block();
 	
 	printf("In front of the cubes");
