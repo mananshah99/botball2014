@@ -25,7 +25,7 @@
 *
 *	Position		Value
 *	----------------------
-*	Top				330		
+*	Top				350		
 *	Middle			1000
 *	Bottom			1800
 *
@@ -33,7 +33,7 @@
 * 
 *************************************/
 
-#define TOP 330
+#define TOP 350
 #define DROP 480
 #define MID 1116
 #define BOT 1655
@@ -79,14 +79,15 @@ int main()	//start position is with back against PVC pipe and left side one inch
 	msleep(2000);
 	printf("At Hangers\n");
 	forward(20.00);	// get over to the scoring area
-	msleep(200);	// stop to stop the arm shaking
-	forward(18.00);
+	msleep(1500);	// stop to stop the arm shaking
+	set_servo_position(HANGER_HOLDER, LEFT_CLOSE);
+	msleep(3000);
+	forward(16.00);
 	msleep(1000);
 	set_servo_position(ARM, DROP);	// move arm down to drop hangers on ledge
 	msleep(1000);
-	set_servo_position(HANGER_HOLDER, LEFT_CLOSE);
-	msleep(2000);
-	mrp(MOT_LEFT, -500, 500 /*1544*/); // let go of hangers onto the ledge, maybe 1544 (90 degrees)
+	motor(MOT_LEFT, -100);
+	msleep(500);
 	//left(220,ks/2); //let go of hangers onto the ledge
 	
 	//wiggle to drop off the hangers (BACKUP CODE)
@@ -107,22 +108,22 @@ int main()	//start position is with back against PVC pipe and left side one inch
 	/*
 	int i;			
 	for(i=0; i<2; i++) {			// moves each blue hanger up 
-	set_servo_position(ARM, TOP);	// move to the top 
-	forward(5.00);				// get arm down to the blue hangers
-	set_servo_position(ARM,TOP+20);				// 
-	forward(5.00);				// check if breaks something
-	set_servo_position(ARM,DROP);
-	backward(10.00);	
-	set_servo_position(ARM,MID);
-	forward(10.00);
-	set_servo_position(ARM,MID+10);
-	backward(7.00);
-	forward(2.00);
-	set_servo_position(ARM,MID);
-	backward(10.00);
-	set_servo_position(ARM,MID+10);
-	forward(7.00);			//collect one bottom blue multiplier hanger and deliver top
-	backward(5.00);
+		set_servo_position(ARM, TOP);	// move to the top 
+		forward(5.00);				// get arm down to the blue hangers
+		set_servo_position(ARM,TOP+20);				// 
+		forward(5.00);				// check if breaks something
+		set_servo_position(ARM,DROP);
+		backward(10.00);	
+		set_servo_position(ARM,MID);
+		forward(10.00);
+		set_servo_position(ARM,MID+10);
+		backward(7.00);
+		forward(2.00);
+		set_servo_position(ARM,MID);
+		backward(10.00);
+		set_servo_position(ARM,MID+10);
+		forward(7.00);			//collect one bottom blue multiplier hanger and deliver top
+		backward(5.00);
 	}
 	*/
 	//TODO: go back a little - do same thing as the regular hangers to place blue on top
@@ -140,11 +141,11 @@ int main()
 	enable_servos();
 	forward(40.00);
 	left(90,ks/2);
-forward(20.00);
-//add clearing out exercise bench and botguy before hangers
-right(90,ks/2);
-servo_slow(ARM,1000,10);//move arm up
-forward(20.00);//get over to the scoring area
-return 0;
+	forward(20.00);
+	//add clearing out exercise bench and botguy before hangers
+	right(90,ks/2);
+	servo_slow(ARM,1000,10);//move arm up
+	forward(20.00);//get over to the scoring area
+	return 0;
 }
 #endif
