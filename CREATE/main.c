@@ -18,7 +18,7 @@
 
 #define FULL 100
 #define MOTARM 0
-#define TOPHAT 2
+#define ET 2
 #define GRABBER 1
 #define TBUTTON 8 //port 8
 #define MICRO 0
@@ -59,7 +59,7 @@ int time = 0;
 
 void closeHandle() 
 {
-	printf("FOUND A CUBE: %d\n",analog(TOPHAT));
+	printf("FOUND A CUBE: %d\n",analog(ET));
 	
 	create_backward(50,100);
 	create_block();
@@ -70,10 +70,10 @@ void closeHandle()
 
 void getCubes()
 {
-	printf("-----RESTART RUN----- init: %d\n",analog(TOPHAT));
-	while(!(analog(TOPHAT)<780)) //haven't found an orange blob
+	printf("-----RESTART RUN-----\n init: %d\n",analog(ET));
+	while(!(analog(ET)>300)) //haven't found a cube
 	{ 
-		printf("value: %d\n",analog(TOPHAT));
+		printf("value: %d\n",analog(ET));
 		create_backward(2,10); 
 	}
 	
@@ -128,11 +128,12 @@ int main()
 #ifdef MAIN
 int main()
 {
-	//enable grabber, is this going to fix anything? 
+	/**INITIALIZE CODE**/
+	
+	set_analog_pullup(2,0);
 	enable_servos();
 	set_servo_position(GRABBER, 2047);
 	
-	/**INITIALIZE CODE**/
 	SHOW(printf("Connecting...\n"));
 	create_connect();
 	SHOW(printf("Complete!\n"));
@@ -164,14 +165,17 @@ int main()
 	getCubes();
 	
 	/**SECOND BLOCK PICKUP POSITION**/
+	
+	//change this to drive around the LINK
 	create_drive_direct_dist(-FULL,-FULL,50);
 	
 	/*
-	Angle is 187 to make a full turn 
-	Radius is 0 
-	Speed is 60 (too fast?)
-	*/
+	 * Angle is 187 to make a full turn 
+	 * Radius is 0 
+	 * Speed is 60 (too fast?)
+	 */
 	create_right(175,0,60);
+	
 	//drive to the other end of the board
 	forward_bump();
 	
@@ -179,7 +183,6 @@ int main()
 	create_drive_direct_dist(-FULL,FULL,30);
 	create_right(87,0,60);
 	forward_bump();
-	//we're now in front of the second goal 
 	
 	/**COLOR SORTING AND ARM MOVEMENT, 2**/
 	
