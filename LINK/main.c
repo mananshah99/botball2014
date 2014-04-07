@@ -91,9 +91,9 @@ int main()	//start position is with back against PVC pipe and left side one inch
 	
 	//wiggle to drop off the hangers (BACKUP CODE)
 	
-	/*left(40,ks/2);				// left 30 degrees
-	right(60,ks/2);				// right 50 degrees
-	left(20,ks/2);*/				// deposit hangers and push them to the sides, left 20 degrees back
+//Not using this	left(40,ks/2);				// left 30 degrees
+					/*right(60,ks/2);				// right 50 degrees
+					left(20,ks/2);*/				// deposit hangers and push them to the sides, left 20 degrees back*/
 	
 	/* testing code so commenting rest of code
 	
@@ -107,22 +107,22 @@ int main()	//start position is with back against PVC pipe and left side one inch
 	/*
 	int i;			
 	for(i=0; i<2; i++) {			// moves each blue hanger up 
-		set_servo_position(ARM, TOP);	// move to the top 
-		forward(5.00);				// get arm down to the blue hangers
-		set_servo_position(ARM,TOP+20);				// 
-		forward(5.00);				// check if breaks something
-		set_servo_position(ARM,DROP);
-		backward(10.00);	
-		set_servo_position(ARM,MID);
-		forward(10.00);
-		set_servo_position(ARM,MID+10);
-		backward(7.00);
-		forward(2.00);
-		set_servo_position(ARM,MID);
-		backward(10.00);
-		set_servo_position(ARM,MID+10);
-		forward(7.00);			//collect one bottom blue multiplier hanger and deliver top
-		backward(5.00);
+	set_servo_position(ARM, TOP);	// move to the top 
+	forward(5.00);				// get arm down to the blue hangers
+	set_servo_position(ARM,TOP+20);				// 
+	forward(5.00);				// check if breaks something
+	set_servo_position(ARM,DROP);
+	backward(10.00);	
+	set_servo_position(ARM,MID);
+	forward(10.00);
+	set_servo_position(ARM,MID+10);
+	backward(7.00);
+	forward(2.00);
+	set_servo_position(ARM,MID);
+	backward(10.00);
+	set_servo_position(ARM,MID+10);
+	forward(7.00);			//collect one bottom blue multiplier hanger and deliver top
+	backward(5.00);
 	}
 	*/
 	//TODO: go back a little - do same thing as the regular hangers to place blue on top
@@ -140,11 +140,11 @@ int main()
 	enable_servos();
 	forward(40.00);
 	left(90,ks/2);
-	forward(20.00);
-	//add clearing out exercise bench and botguy before hangers
-	right(90,ks/2);
-	servo_slow(ARM,1000,10);//move arm up
-	forward(20.00);//get over to the scoring area
-	return 0;
+forward(20.00);
+//add clearing out exercise bench and botguy before hangers
+right(90,ks/2);
+servo_slow(ARM,1000,10);//move arm up
+forward(20.00);//get over to the scoring area
+return 0;
 }
 #endif
