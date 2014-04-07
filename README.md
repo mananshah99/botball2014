@@ -5,47 +5,44 @@ Robot Code for the 2014 competition.
 - The LINK folder is for the Link robot
 - The CREATE folder is for the Create robot
 
-
-## To Do
-**If something's wrong, check if your servos are enabled.**
-**Calibrate threshold values for the create based on light exposure**
-**Release hangers smoothly. Then square up. Create will go past while Link squares up.**
-
-## Starting Positionsd
+## Starting Positions
 * Link robot starts at the left side of the starting box, with the back against the pipe, left wheel is 2 in. from left pipe. The arm is facing towards the rest of the table.
 * Create starts at the right bottom corner, with bumper facing towards the cube rack.
 
-###**PRIORITY 1: GET HANGERS SMOOTHLY ON LINK**
-###**PRIORITY 2: FIX GETCUBES FOR CREATE**
+## To Do
+
+**If something's wrong, check if your servos are enabled.**
+
+* Calibrate threshold values for the create based on light exposure.
+* PRIORITY 2: Release hangers smoothly. Then square up. Create will go past while Link squares up.
 * Test camera files
-* **currently working**: write create orange blob pickup code
+* ~~Write create orange blob pickup code~~
 * Better byte writing functionality for Create
 * Write Create dumping function for the orange blobs 
-* Test the Create drive path
+* Test the Create drivepath
 * Write LINK servo code to pick up hangers
 
-* Calibrate threshold and fix cube pickup for getCubes() (in ```/CREATE/main.c```)
+* Tune and add possible cube count check in getCubes() (in ```/CREATE/main.c```)
 
 ```c
 void getCubes()
 {
-	printf("-----RESTART RUN-----\n init: %d\n",analog(TOPHAT));
-	while(!(analog(TOPHAT)<780)) //haven't found an orange blob
+	printf("-----RESTART RUN-----\n init: %d\n",analog_et(ET));
+	while(!(analog_et(ET)>480)) //haven't found a cube
 	{ 
-		printf("value: %d\n",analog(TOPHAT));
+		printf("value: %d\n",analog_et(ET));
 		create_backward(2,10); 
+		tdist+=2;
+		SHOW(printf("tdist is %d\n", tdist));
 	}
 	
 	closeHandle();
 	msleep(1000);
 	set_servo_position(GRABBER, 2047);
-	//arm_close();
-	//arm_half(); //should move and close the arm around the block
-	
-	cCount++;
-	if(cCount!=2) getCubes();
+		
+	if(tdist<500) getCubes();
 	else {
-		resetcount(); //no recursive call, function ends
+		tdist=0;
 		arm_close();
 	}
 }
