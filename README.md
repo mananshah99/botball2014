@@ -9,6 +9,11 @@ Robot Code for the 2014 competition.
 ## To Do
 **If something's wrong, check if your servos are enabled.**
 **Calibrate threshold values for the create based on light exposure**
+**Release hangers smoothly. Then square up. Create will go past while Link squares up.**
+
+## Starting Positionsd
+* Link robot starts at the left side of the starting box, with the back against the pipe, left wheel is 2 in. from left pipe. The arm is facing towards the rest of the table.
+* Create starts at the right bottom corner, with bumper facing towards the cube rack.
 
 ###**PRIORITY 1: GET HANGERS SMOOTHLY ON LINK**
 ###**PRIORITY 2: FIX GETCUBES FOR CREATE**
