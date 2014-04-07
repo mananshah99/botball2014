@@ -49,7 +49,7 @@ void getCubes()
 ```
 
 * Write LINK place blue hangers function (in ```/LINK/main.c```)
-* ~~Check threshold/does camera code work as intended? (in ```/CREATE/main.c```)~~ **using top hat sensor as of 3/16/2014**
+* ~~Check threshold/does camera code work as intended? (in ```/CREATE/main.c```)~~ **using ET sensor as of 4/7/2014**
 
 * **low priority**: Test slowservo repeatedly (doesn't take 5 seconds to move up with this code)  
 
