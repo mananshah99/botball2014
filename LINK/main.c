@@ -3,7 +3,7 @@
 * Main program for LINK driving
 * 
 * Need to fix 
-* 	1. the arm needs distance in order to function
+* 	1. Backing out from release of first set of hangers
 *
 */
 
@@ -11,8 +11,6 @@
 #include "./generic.h"			// generic functionality
 #include "./slowservo.h"		//
 
-#define MAIN
-//#define DPTEST
 
 #define ARM 0					// arm port
 #define LS 0					// light sensor port
@@ -48,7 +46,12 @@ RIGHT_CLOSE	0 //holding hangers of the right side of the arm
 #define LEFT_CLOSE 2000
 #define RIGHT_CLOSE 0
 
-//Define MAIN to run the primary program 
+//Define MAIN to run the primary program
+
+#define MAIN
+//#define DPTEST
+//#define hanger_release_test
+
 #ifdef MAIN
 int main()	//start position is with back against PVC pipe and left side one inch from left pipe surrounding starting box
 {
@@ -62,12 +65,9 @@ int main()	//start position is with back against PVC pipe and left side one inch
 	forward(50.00);				// forward for 40 cm	
 	left(220,ks/2);				// left 90 degrees (more because the function undershoots)
 	forward(30.00);				// forward 33 cm
-	
-	/**TODO: add clearing out exercise bench and botguy before hangers maybe, but it does it by itself with the turning**/
-	
 	right(250,ks/2);	// right 90 degrees, but uses the arm to move cube,so adding more, not changed to using both wheels anymore
 	msleep(1000);
-	left(20,ks/2); 		//push cube away from robot
+	left(20,ks/2); 		//push exercise bench away from robot
 	backward(10.00);	//sometimes arm hits the bottom rack after
 	/*mrp(MOT_LEFT,400,5);
 	mrp(MOT_RIGHT,-400,5); //turn 90 degrees*/
@@ -75,28 +75,42 @@ int main()	//start position is with back against PVC pipe and left side one inch
 	msleep(1000);
 	bmd(MOT_LEFT);
 	bmd(MOT_RIGHT);
-	set_servo_position(ARM, TOP);		// move arm up, not slowservo anymore (slowservo) to put the hangers into the scoring area
-	msleep(2000);
+	set_servo_position(ARM, TOP);		// move arm up to top ledge
+	msleep(1500);
 	printf("At Hangers\n");
 	forward(20.00);	// get over to the scoring area
-	msleep(1500);	// stop to stop the arm shaking
+	msleep(1000);	// stop to stop the arm shaking
 	set_servo_position(HANGER_HOLDER, LEFT_CLOSE);
-	msleep(3000);
+	msleep(2000);
 	forward(16.00);
 	msleep(1000);
 	set_servo_position(ARM, DROP);	// move arm down to drop hangers on ledge
 	msleep(1000);
-	motor(MOT_LEFT, -100);
-	msleep(500);
-	//left(220,ks/2); //let go of hangers onto the ledge
+	motor(MOT_LEFT,50);		//going to push it to the right and then turn arm away
+	motor(MOT_RIGHT, -50);	//using both wheels to turn
+	msleep(1000);
+	bmd(MOT_LEFT);
+	bmd(MOT_RIGHT);
+	mrp(MOT_LEFT, 400, -800);		//left(220,ks/2); //let go of hangers onto the ledge
+	msleep(1000);
 	
-	//wiggle to drop off the hangers (BACKUP CODE)
+	
+	printf("Leaving Hangers\n");	// Going to do another form of wiggling
+/*  (BACKUP CODE)  wiggle to drop off the hangers 
 	
 //Not using this	left(40,ks/2);				// left 30 degrees
-					/*right(60,ks/2);				// right 50 degrees
-					left(20,ks/2);*/				// deposit hangers and push them to the sides, left 20 degrees back*/
+					right(60,ks/2);				// right 50 degrees
+					left(20,ks/2);				// deposit hangers and push them to the sides, left 20 degrees back*/
+	/*
 	
-	/* testing code so commenting rest of code
+	backward(10.00);	//fully let go of hangers, then square up twice on pipes behind
+	msleep(500);
+	right(20,ks/2);
+	msleep(500);
+	backward(50.00);*/
+	
+	
+	/* TESTING SO COMMENTING REST OF CODE
 	
 	mrp(MOT_LEFT, 500, 1544); // undo the turn to be straight again
 	backward(10.00);	// back up 10 cm, going to get blue hangers next
@@ -135,6 +149,7 @@ int main()	//start position is with back against PVC pipe and left side one inch
 }
 #endif
 
+//THIS IS THE DRIVE PATH TEST
 #ifdef DPTEST
 int main()
 {
@@ -146,6 +161,16 @@ int main()
 	right(90,ks/2);
 	servo_slow(ARM,1000,10);//move arm up
 	forward(20.00);//get over to the scoring area
+	return 0;
+}
+#endif
+
+//THIS IS THE HANGER RELEASE TEST
+
+#ifdef hanger_release_test
+int main()
+{
+	printf("Hello, World!\n");
 	return 0;
 }
 #endif
