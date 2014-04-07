@@ -4,10 +4,7 @@
 * Assumes that the arm to pick up the cubes is facing to the right
 * as the create moves alongside the PVC pipe
 *
-*
-* Calibrate the threshold values before competition
-* with bright lights
-*
+* 
 *
 */
 
@@ -20,7 +17,7 @@
 #define MOTARM 0
 #define ET 2
 #define GRABBER 1
-#define TBUTTON 8 //port 8
+#define TBUTTON 8 
 #define MICRO 0
 //debug?
 #define DEBUG 
@@ -52,16 +49,13 @@ void micro_crash(){
 	set_servo_position(MICRO, 1994);
 }
 
-//variables for counting the cubes
-int cCount = 0;
-void resetcount() {cCount = 0;}
-int time = 0;
+int tdist = 0;
 
 void closeHandle() 
 {
 	printf("FOUND A CUBE: %d\n",analog(ET));
-	
 	create_backward(50,100);
+	tdist+=50;
 	create_block();
 	SHOW(printf("moved..."));
 	msleep(1000);
@@ -70,30 +64,33 @@ void closeHandle()
 
 void getCubes()
 {
+	printf("analog pullup for the ET in runtime is %d\n", get_analog_pullup(ET));
+	set_analog_pullup(ET,0);
+	printf("analog pullup for the ET after fix is %d\n", get_analog_pullup(ET));
 	printf("-----RESTART RUN-----\n init: %d\n",analog(ET));
 	while(!(analog(ET)>300)) //haven't found a cube
 	{ 
 		printf("value: %d\n",analog(ET));
 		create_backward(2,10); 
+		tdist+=2;
+		SHOW(printf("tdist is %d\n", tdist));
 	}
 	
 	closeHandle();
 	msleep(1000);
 	set_servo_position(GRABBER, 2047);
+	
 	//arm_close();
 	//arm_half(); //should move and close the arm around the block
 	
-	cCount++;
-	if(cCount!=2) getCubes();
+	if(tdist<500) getCubes();
 	else {
-		resetcount(); //no recursive call, function ends
+		tdist=0;
 		arm_close();
 	}
 }
 
-//1994
 //bump functions
-//drive forward until a bumper's hit
 void forward_bump()
 {
 	do{ create_drive_direct(300,300); }
@@ -105,24 +102,6 @@ void backward_bump()
 	while(get_create_lbump()==0);
 }
 
-/**ARM TEST - BASIC FUNCTIONALITY**/
-
-#ifdef ARMTEST
-
-//tester for the arm functions
-int main()
-{
-	//successful
-	SHOW(printf("Arm Opening.."));
-	arm_open();
-	bmd(MOTARM);
-	enable_servo(MICRO);
-	micro_crash();
-	arm_close();
-	bmd(MOTARM);
-}
-#endif
-
 /*************MAIN************/
 
 #ifdef MAIN
@@ -130,7 +109,8 @@ int main()
 {
 	/**INITIALIZE CODE**/
 	
-	set_analog_pullup(2,0);
+	set_analog_pullup(ET,0);
+	SHOW(printf("analog pullup is %d\n", get_analog_pullup(ET)));
 	enable_servos();
 	set_servo_position(GRABBER, 2047);
 	
@@ -198,5 +178,23 @@ int main()
 	printf("finished");
 	create_disconnect();
 	return 0;
+}
+#endif
+
+/**ARM TEST - BASIC FUNCTIONALITY**/
+
+#ifdef ARMTEST
+
+//tester for the arm functions
+int main()
+{
+	//successful
+	SHOW(printf("Arm Opening.."));
+	arm_open();
+	bmd(MOTARM);
+	enable_servo(MICRO);
+	micro_crash();
+	arm_close();
+	bmd(MOTARM);
 }
 #endif
