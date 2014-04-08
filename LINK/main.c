@@ -48,10 +48,10 @@ RIGHT_CLOSE	0 //holding hangers of the right side of the arm
 
 //Define MAIN to run the primary program
 
-//#define MAIN
+#define MAIN
 //#define DPTEST
 //#define hanger_release_test
-#define left_motor_test
+//#define left_motor_test
 
 #ifdef MAIN
 int main()	//start position is with back against PVC pipe and left side one inch from left pipe surrounding starting box
@@ -93,8 +93,9 @@ int main()	//start position is with back against PVC pipe and left side one inch
 	msleep(1000);
 	bmd(MOT_LEFT);
 	bmd(MOT_RIGHT);
+	msleep(500);	//stop it running
 	mrp(MOT_LEFT, 1000, -800);		//left(220,ks/2); //let go of hangers onto the ledge
-	msleep(1000);
+	msleep(2000);
 	
 	
 	printf("Leaving Hangers\n");	// Going to do another form of wiggling
@@ -195,5 +196,7 @@ int main()
 		//bmd(MOT_LEFT);
 		//bmd(MOT_RIGHT);
 		mrp(MOT_LEFT, 1000, -800);
+		msleep(2000);
+		printf("done\n");
 	}
 #endif
