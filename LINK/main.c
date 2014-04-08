@@ -102,14 +102,15 @@ int main()
 	msleep(1000);
 	motor(MOT_LEFT,50);			//going to push it to the right and then turn arm away
 	motor(MOT_RIGHT, -50);			//using both wheels to turn
-	msleep(1000);
+	msleep(800);
 	bmd(MOT_LEFT);
 	bmd(MOT_RIGHT);
-	msleep(500);				//stop it running
-	mrp(MOT_LEFT, 1000, -800);		//left(220,ks/2); //let go of hangers onto the ledge
+	msleep(1000);				//stop it running
+	ao();							//to stop right motor before I start
+	mrp(MOT_LEFT, 1000, -1200);		//left(220,ks/2); //let go of hangers onto the ledge
 	msleep(2000);
 	
-	printf("Leaving Hangers\n");		// Going to do another form of wiggling
+	printf("Leaving Hangers\n");		// Going to do another form of depositing
 	
 	/*  (BACKUP CODE)  wiggle to drop off the hangers 
 	left(40,ks/2);				// left 30 degrees
@@ -123,6 +124,15 @@ int main()
 	right(20,ks/2);
 	msleep(500);
 	backward(50.00);
+	left(230,ks/2);				//turn left to square up on pipe next to starting box
+	motor(MOT_LEFT, 100);
+	motor(MOT_RIGHT, 100);
+	msleep(1000);				//square up
+	forward(20.00);				//parallel to rack
+	left(230,ks/2);
+	motor(MOT_LEFT, -100);
+	motor(MOT_RIGHT, -100);		//square up again on other pipe
+	forward(80.00);
 	*/
 	
 	
@@ -198,15 +208,20 @@ int main()
 }
 #endif
 
-//left motor test
+//left motor test, make sure it starts with the arm up next to top rack holding hangers
 #ifdef left_motor_test
 int main()
 {
-	//motor(MOT_LEFT,50);			//going to push it to the right and then turn arm away
-	//motor(MOT_RIGHT, -50);		//using both wheels to turn
-	//msleep(1000);
-	//bmd(MOT_LEFT);
-	//bmd(MOT_RIGHT);
+	set_servo_position(HANGER_HOLDER, LEFT_CLOSE);
+	set_servo_position(ARM, DROP);		//sets up the arm and the holder
+	msleep(1000);
+	motor(MOT_LEFT,50);			//going to push it to the right and then turn arm away
+	motor(MOT_RIGHT, -50);		//using both wheels to turn
+	msleep(1000);
+	bmd(MOT_LEFT);
+	bmd(MOT_RIGHT);
+	msleep(1000);
+	ao();
 	mrp(MOT_LEFT, 1000, -800);
 	msleep(2000);
 	printf("done\n");
