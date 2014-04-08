@@ -73,6 +73,11 @@ void getCubes()
 		create_backward(2,10); 
 		tdist+=2;
 		SHOW(printf("tdist is %d\n", tdist));
+		if(tdist>500){
+			tdist=0;
+			arm_close();
+			return;
+		}
 	}
 	
 	closeHandle();
@@ -144,9 +149,9 @@ int main()
 	
 	set_servo_position(GRABBER, 400);			//close claw
 	create_left(30, 0, 60);						//left 30 degrees
-	create_drive_direct_dist(-FULL, -FULL, 25)	//backward 10 inches
+	create_drive_direct_dist(-FULL, -FULL, 25);	//backward 10 inches
 	create_right(30, 0, 60);					//right 30 degrees
-	create_drive_direct_dist(-FULL, -FULL, 100)	//backward 40 inches
+	create_drive_direct_dist(-FULL, -FULL, 100);	//backward 40 inches
 	while(digital(LTOUCH)==0&&digital(RTOUCH)==0) create_drive_direct(280,280); //square up
 	
 	//drive to the other end of the board
