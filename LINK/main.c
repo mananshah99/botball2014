@@ -2,21 +2,22 @@
 /*
 * Main program for LINK driving
 * 
-* Need to fix 
+* Major TODOs:  
 * 	1. Backing out from release of first set of hangers
-*
+*	2. Picking up blue hangers
+*	3. Moving out of the way for the create
 */
 
 #include "./drive.h"			// driving library
 #include "./generic.h"			// generic functionality
-#include "./slowservo.h"		//
+#include "./slowservo.h"		// for slowservo
 
 
-#define ARM 0					// arm port
-#define LS 0					// light sensor port
+#define ARM 0				// arm port
+#define LS 0				// light sensor port
 #define HANGER_HOLDER 3			// mini-servo for holding hangers in's port
 
-// NOTE: RIGHT MOTOR TURN 90 DEGREES TO THE LEFT:
+// Right motor turn 90 degrees to the left (with mrp)
 // mrp(MOT_RIGHT, Power, -1544)
 
 /*******ARM SERVO IMPORTANT VALUES****
@@ -101,7 +102,7 @@ int main()
 	mrp(MOT_LEFT, 1000, -800);		//left(220,ks/2); //let go of hangers onto the ledge
 	msleep(2000);
 	
-	printf("Leaving Hangers\n");	// Going to do another form of wiggling
+	printf("Leaving Hangers\n");		// Going to do another form of wiggling
 	
 	/*  (BACKUP CODE)  wiggle to drop off the hangers 
 	left(40,ks/2);				// left 30 degrees
@@ -110,7 +111,7 @@ int main()
 	*/
 	
 	/*
-	backward(10.00);	//fully let go of hangers, then square up twice on pipes behind
+	backward(10.00);			//fully let go of hangers, then square up twice on pipes behind
 	msleep(500);
 	right(20,ks/2);
 	msleep(500);
@@ -130,9 +131,9 @@ int main()
 	int i;			
 	for(i=0; i<2; i++) {			// moves each blue hanger up 
 		set_servo_position(ARM, TOP);	// move to the top 
-		forward(5.00);				// get arm down to the blue hangers
-		set_servo_position(ARM,TOP+20);				// 
-		forward(5.00);				// check if breaks something
+		forward(5.00);			// get arm down to the blue hangers
+		set_servo_position(ARM,TOP+20);				
+		forward(5.00);			// check if breaks something
 		set_servo_position(ARM,DROP);
 		backward(10.00);	
 		set_servo_position(ARM,MID);
@@ -190,6 +191,7 @@ int main()
 }
 #endif
 
+//left motor test
 #ifdef left_motor_test
 int main()
 	{
