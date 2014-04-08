@@ -1,4 +1,3 @@
-//Created in Spring 2014
 /*
 * Main program for LINK driving
 * 
@@ -6,6 +5,14 @@
 * 	1. Backing out from release of first set of hangers
 *	2. Picking up blue hangers
 *	3. Moving out of the way for the create
+*
+*
+*
+*
+*
+*
+*
+*
 */
 
 #include "./drive.h"			// driving library
@@ -167,8 +174,8 @@ int main()
 	
 	//add clearing out exercise bench and botguy before hangers
 	right(90,ks/2);
-	servo_slow(ARM,1000,10);//move arm up
-	forward(20.00);//get over to the scoring area
+	servo_slow(ARM,1000,10);		//move arm up
+	forward(20.00);				//get over to the scoring area
 	return 0;
 }
 #endif
@@ -177,10 +184,10 @@ int main()
 #ifdef hanger_release_test
 int main()
 {
-	set_servo_position(ARM, DROP);	// move arm down to drop hangers on ledge
+	set_servo_position(ARM, DROP);		// move arm down to drop hangers on ledge
 	msleep(1000);
-	motor(MOT_LEFT,50);		//going to push it to the right and then turn arm away
-	motor(MOT_RIGHT, -50);	//using both wheels to turn
+	motor(MOT_LEFT,50);			//going to push it to the right and then turn arm away
+	motor(MOT_RIGHT, -50);			//using both wheels to turn
 	msleep(1000);
 	bmd(MOT_LEFT);
 	bmd(MOT_RIGHT);
@@ -194,14 +201,14 @@ int main()
 //left motor test
 #ifdef left_motor_test
 int main()
-	{
-		//motor(MOT_LEFT,50);		//going to push it to the right and then turn arm away
-		//motor(MOT_RIGHT, -50);	//using both wheels to turn
-		//msleep(1000);
-		//bmd(MOT_LEFT);
-		//bmd(MOT_RIGHT);
-		mrp(MOT_LEFT, 1000, -800);
-		msleep(2000);
-		printf("done\n");
-	}
+{
+	//motor(MOT_LEFT,50);			//going to push it to the right and then turn arm away
+	//motor(MOT_RIGHT, -50);		//using both wheels to turn
+	//msleep(1000);
+	//bmd(MOT_LEFT);
+	//bmd(MOT_RIGHT);
+	mrp(MOT_LEFT, 1000, -800);
+	msleep(2000);
+	printf("done\n");
+}
 #endif
