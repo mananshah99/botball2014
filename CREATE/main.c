@@ -53,24 +53,21 @@ int tdist = 0;
 
 void closeHandle() 
 {
-	printf("FOUND A CUBE: %d\n",analog(ET));
-	create_backward(50,100);
+	printf("FOUND A CUBE: %d\n",analog_et(ET));
+	create_backward(53,100);
 	tdist+=50;
 	create_block();
-	SHOW(printf("moved..."));
+	SHOW(printf("moved...")); 
 	msleep(1000);
 	set_servo_position(GRABBER, 400);
 }
 
 void getCubes()
 {
-	printf("analog pullup for the ET in runtime is %d\n", get_analog_pullup(ET));
-	set_analog_pullup(ET,0);
-	printf("analog pullup for the ET after fix is %d\n", get_analog_pullup(ET));
-	printf("-----RESTART RUN-----\n init: %d\n",analog(ET));
-	while(!(analog(ET)>300)) //haven't found a cube
+	printf("-----RESTART RUN-----\n init: %d\n",analog_et(ET));
+	while(!(analog_et(ET)>480)) //haven't found a cube
 	{ 
-		printf("value: %d\n",analog(ET));
+		printf("value: %d\n",analog_et(ET));
 		create_backward(2,10); 
 		tdist+=2;
 		SHOW(printf("tdist is %d\n", tdist));
@@ -79,10 +76,7 @@ void getCubes()
 	closeHandle();
 	msleep(1000);
 	set_servo_position(GRABBER, 2047);
-	
-	//arm_close();
-	//arm_half(); //should move and close the arm around the block
-	
+		
 	if(tdist<500) getCubes();
 	else {
 		tdist=0;
@@ -93,7 +87,7 @@ void getCubes()
 //bump functions
 void forward_bump()
 {
-	do{ create_drive_direct(300,300); }
+	do{ create_drive_direct(280,280); }
 	while(get_create_lbump()==0);
 }
 void backward_bump()
@@ -127,11 +121,11 @@ int main()
 	create_wait_time(20); 	//20 deciseconds for the link to pass	
 	forward_bump(); 		//forward to pvc pipe
 	create_block(); 		//finish the bump	
-	create_backward(76,100);
+	create_backward(55,100); //previously 65
 	create_block();
 	
 	//we're now in front of the first goal 
-	create_right(82,0,60); 
+	create_right(86,0,60); 
 	create_block();
 	
 	printf("In front of the cubes");
