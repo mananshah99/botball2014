@@ -13,6 +13,9 @@
 #include "./createSlow.h"
 #include "./generic.h"
 
+#define LTOUCH 15
+#define RTOUCH 14
+
 #define FULL 100
 #define MOTARM 0
 #define ET 2
@@ -32,7 +35,6 @@
 #define MAIN 
 //#define ARMTEST
 
-//1751 to -1740
 void arm_open(){
 	SHOW(printf("Here"));
 	do{
@@ -132,7 +134,7 @@ int main()
 	
 	//search moving backwards across the cubes
 	
-	/**COLOR SORTING AND ARM MOVEMENT**/
+	/**ARM MOVEMENT, 1**/
 	
 	arm_open();
 	bmd(MOTARM);
@@ -140,25 +142,23 @@ int main()
 	
 	/**SECOND BLOCK PICKUP POSITION**/
 	
-	//change this to drive around the LINK
-	create_drive_direct_dist(-FULL,-FULL,50);
-	
-	/*
-	 * Angle is 187 to make a full turn 
-	 * Radius is 0 
-	 * Speed is 60 (too fast?)
-	 */
-	create_right(175,0,60);
+	set_servo_position(GRABBER, 400);			//close claw
+	create_left(30, 0, 60);						//left 30 degrees
+	create_drive_direct_dist(-FULL, -FULL, 25)	//backward 10 inches
+	create_right(30, 0, 60);					//right 30 degrees
+	create_drive_direct_dist(-FULL, -FULL, 100)	//backward 40 inches
+	while(digital(LTOUCH)==0&&digital(RTOUCH)==0) create_drive_direct(280,280); //square up
 	
 	//drive to the other end of the board
 	forward_bump();
+	
 	
 	//TODO: Get the actual distance (replace 30)
 	create_drive_direct_dist(-FULL,FULL,30);
 	create_right(87,0,60);
 	forward_bump();
 	
-	/**COLOR SORTING AND ARM MOVEMENT, 2**/
+	/**ARM MOVEMENT, 2**/
 	
 	arm_open();
 	getCubes();
@@ -170,6 +170,8 @@ int main()
 	
 	//next box area after squaring up
 	printf("finished");
+	
+	
 	create_disconnect();
 	return 0;
 }
