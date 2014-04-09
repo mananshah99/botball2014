@@ -89,26 +89,25 @@ int main()
 	bmd(MOT_LEFT);
 	bmd(MOT_RIGHT);
 	set_servo_position(ARM, TOP);		// move arm up to top ledge
-	msleep(1500);
-	printf("Success!\n");
-	printf("At Hangers\n");
+	msleep(2500);
+	printf("At Hangers and Depositing!\n");
 	forward(20.00);				// get over to the scoring area
-	msleep(1000);				// stop to stop the arm shaking
-	set_servo_position(HANGER_HOLDER, LEFT_CLOSE);
-	msleep(2000);
+	msleep(2000);				// stop to stop the arm shaking
 	forward(16.00);
-	msleep(1000);
+	msleep(2000);
+	set_servo_position(HANGER_HOLDER, LEFT_CLOSE);
+	msleep(500);
 	set_servo_position(ARM, DROP);		// move arm down to drop hangers on ledge
-	msleep(1000);
+	msleep(500);
 	motor(MOT_LEFT,50);			//going to push it to the right and then turn arm away
 	motor(MOT_RIGHT, -50);			//using both wheels to turn
-	msleep(800);
+	msleep(700);
 	bmd(MOT_LEFT);
 	bmd(MOT_RIGHT);
-	msleep(1000);				//stop it running
+	msleep(500);				//stop it running
 	ao();							//to stop right motor before I start
 	mrp(MOT_LEFT, 1000, -1500);		//left(220,ks/2); //let go of hangers onto the ledge by turning 90 degrees
-	msleep(2000);
+	msleep(1500);
 	
 	printf("Leaving Hangers\n");		// Going to do another form of depositing
 	
@@ -120,10 +119,10 @@ int main()
 	
 	
 	backward(10.00);			//fully let go of hangers, then square up twice on pipes behind
-	left(20,ks/2);
+	left(75,ks/2);
 	msleep(1000);
 	set_servo_position(ARM, BOT); //arm will hit rack and mess up backing up
-	msleep(500);
+	msleep(1500);
 	forward(10.00);
 	msleep(500);
 	left(230, ks/2);
