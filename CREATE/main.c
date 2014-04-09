@@ -99,8 +99,8 @@ void getCubes()
 void closeHandle2() 
 {
 	printf("FOUND A CUBE: %d\n",analog_et(ET));
-	create_forward(63,100);
-	tdist+=50;
+	create_backward(15,100);
+	tdist-=20;
 	create_block();
 	SHOW(printf("moved...")); 
 	msleep(1000);
@@ -110,16 +110,17 @@ void closeHandle2()
 	msleep(500);
 	set_servo_position(GRABBER, 990);		//used to be 400
 }
+
 void getCubes2()
 {
 	printf("-----RESTART RUN-----\n init: %d\n",analog_et(ET));
 	while(!(analog_et(ET)>400)) //haven't found a cube
 	{ 
 		printf("value: %d\n",analog_et(ET));
-		create_forward(2,10); 
+		create_forward(2,30);
 		tdist+=2;
 		SHOW(printf("tdist is %d\n", tdist));
-		if(tdist>450){
+		if(tdist>340){
 			tdist=0;
 			set_servo_position(GRABBER, 990);	//used to be 2047
 			return;
@@ -128,9 +129,10 @@ void getCubes2()
 	
 	closeHandle2();
 	msleep(1000);
+	create_forward(20,20);
 	set_servo_position(GRABBER, 2047);
 		
-	if(tdist<450) getCubes();
+	if(tdist<340) getCubes2();
 	else {
 		tdist=0;
 		set_servo_position(GRABBER, 990);		//used to be 2047
@@ -182,7 +184,7 @@ int main()
 	create_block();
 	
 	//we're now in front of the first goal 
-	create_right(87,0,60); 
+	create_right(85,0,60); 
 	create_block();
 	
 	printf("In front of the cubes");
@@ -217,17 +219,18 @@ int main()
 	create_block();
 	msleep(1000);
 	forward_bump();
-	create_backward(5,500);
 	create_block();
-	create_right(90,0,60);	
+	create_backward(50,100);
+	create_right(86,0,60);	
 	create_block();
-	
+	tdist=0;
 	/**ARM MOVEMENT, 2**/
 	
 	set_servo_position(GRABBER, 2047);
 	arm_open();
 	bmd(MOTARM);
 	getCubes2();
+	set_servo_position(GRABBER, 990);
 
 	/**COMPLETED PICKUP**/
 	
