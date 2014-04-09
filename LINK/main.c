@@ -2,14 +2,9 @@
 * Main program for LINK driving
 * 
 * Major TODOs:  
-* 	1. Backing out from release of first set of hangers
+* 	1. Squaring up after backing out from the hangers
 *	2. Picking up blue hangers
 *	3. Moving out of the way for the create
-*
-*
-*
-*
-*
 *
 *
 *
@@ -31,7 +26,7 @@
 *
 *	Position		Value
 *	----------------------
-*	Top			350		
+*	Top				350		
 *	Middle			1000
 *	Bottom			1800
 *
@@ -46,12 +41,14 @@
 
 /**
  * Hanger holder miniservo position values
- * Position	Value	Description
+ * Position		Value	Description
  * LEFT_CLOSE	2000	holding hangers on the left side of the arm
+ * MIDDLE		1500
  * RIGHT_CLOSE	0 	holding hangers of the right side of the arm
 **/
 
 #define LEFT_CLOSE 2000
+#define MIDDLE 1500
 #define RIGHT_CLOSE 0
 
 //Define MAIN to run the primary program
@@ -70,16 +67,16 @@ int main()
 	enable_servos();
 	printf("here\n");
 	set_servo_position(HANGER_HOLDER, RIGHT_CLOSE);
-	msleep(1000);
+	msleep(500);
 	set_servo_position(ARM,BOT);
 	msleep(500);
-	forward(50.00);				// forward for 40 cm	
-	left(220,ks/2);				// left 90 degrees (more because the function undershoots)
-	forward(30.00);				// forward 33 cm
-	right(250,ks/2);			// right 90 degrees, but uses the arm to move cube,so adding more, not changed to using both wheels anymore
+	forward(55.00);
+	left(250,ks/2);				// left 90 degrees (more because the function undershoots)
+	forward(31.00);				// forward 33 cm
+	right(260,ks/2);			// right 90 degrees, but uses the arm to move cube,so adding more, not changed to using both wheels anymore
 	msleep(1000);
-	left(20,ks/2); 				//push exercise bench away from robot
-	backward(10.00);			//sometimes arm hits the bottom rack after
+	left(20,ks/2); 				//return from pushing exercise bench away from robot
+	backward(15.00);			//sometimes arm hits the bottom rack after
 	/*
 	mrp(MOT_LEFT,400,5);
 	mrp(MOT_RIGHT,-400,5); //turn 90 degrees
@@ -95,7 +92,7 @@ int main()
 	msleep(2000);				// stop to stop the arm shaking
 	forward(16.00);
 	msleep(2000);
-	set_servo_position(HANGER_HOLDER, LEFT_CLOSE);
+	set_servo_position(HANGER_HOLDER, MIDDLE);	// precaution due to holding on to the left pillar
 	msleep(500);
 	set_servo_position(ARM, DROP);		// move arm down to drop hangers on ledge
 	msleep(500);
@@ -104,7 +101,9 @@ int main()
 	msleep(700);
 	bmd(MOT_LEFT);
 	bmd(MOT_RIGHT);
-	msleep(500);				//stop it running
+	msleep(500);	//stop it running
+	set_servo_position(HANGER_HOLDER, LEFT_CLOSE);
+	msleep(300);
 	ao();							//to stop right motor before I start
 	mrp(MOT_LEFT, 1000, -1500);		//left(220,ks/2); //let go of hangers onto the ledge by turning 90 degrees
 	msleep(1500);
@@ -119,24 +118,30 @@ int main()
 	
 	
 	backward(10.00);			//fully let go of hangers, then square up twice on pipes behind
+	msleep(500);
 	left(75,ks/2);
 	msleep(1000);
 	set_servo_position(ARM, BOT); //arm will hit rack and mess up backing up
 	msleep(1500);
-	forward(10.00);
+	forward(5.00);
 	msleep(500);
-	left(230, ks/2);
+	left(260, ks/2);
 	msleep(500);
-	forward(50.00);
+	forward(70.00);
 	right(250,ks/2);				//turn right to square up on pipe next to starting box
 	msleep(500);
-	motor(MOT_LEFT, 100);
-	motor(MOT_RIGHT, 100);
-	msleep(1000);				//square up
+	motor(MOT_LEFT, -100);
+	motor(MOT_RIGHT, -100);
+	msleep(1000);	//square up
 	forward(20.00);				//parallel to rack
-	left(230,ks/2);
+	msleep(500);
+	right(245,ks/2);
+	msleep(500);
+	ao();			//for next square up
+	msleep(100);
 	motor(MOT_LEFT, -100);
 	motor(MOT_RIGHT, -100);		//square up again on other pipe
+	msleep(500);
 	forward(80.00);
 	
 	
