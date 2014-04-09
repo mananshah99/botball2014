@@ -107,7 +107,7 @@ int main()
 	bmd(MOT_RIGHT);
 	msleep(1000);				//stop it running
 	ao();							//to stop right motor before I start
-	mrp(MOT_LEFT, 1000, -1200);		//left(220,ks/2); //let go of hangers onto the ledge
+	mrp(MOT_LEFT, 1000, -1500);		//left(220,ks/2); //let go of hangers onto the ledge by turning 90 degrees
 	msleep(2000);
 	
 	printf("Leaving Hangers\n");		// Going to do another form of depositing
@@ -118,13 +118,19 @@ int main()
 	left(20,ks/2);				// deposit hangers and push them to the sides, left 20 degrees back
 	*/
 	
-	/*
+	
 	backward(10.00);			//fully let go of hangers, then square up twice on pipes behind
+	left(20,ks/2);
+	msleep(1000);
+	set_servo_position(ARM, BOT); //arm will hit rack and mess up backing up
 	msleep(500);
-	right(20,ks/2);
+	forward(10.00);
 	msleep(500);
-	backward(50.00);
-	left(230,ks/2);				//turn left to square up on pipe next to starting box
+	left(230, ks/2);
+	msleep(500);
+	forward(50.00);
+	right(250,ks/2);				//turn right to square up on pipe next to starting box
+	msleep(500);
 	motor(MOT_LEFT, 100);
 	motor(MOT_RIGHT, 100);
 	msleep(1000);				//square up
@@ -133,7 +139,6 @@ int main()
 	motor(MOT_LEFT, -100);
 	motor(MOT_RIGHT, -100);		//square up again on other pipe
 	forward(80.00);
-	*/
 	
 	
 	/* TESTING SO COMMENTING REST OF CODE
