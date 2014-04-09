@@ -56,26 +56,30 @@ int tdist = 0;
 void closeHandle() 
 {
 	printf("FOUND A CUBE: %d\n",analog_et(ET));
-	create_backward(53,100);
+	create_backward(63,100);
 	tdist+=50;
 	create_block();
 	SHOW(printf("moved...")); 
 	msleep(1000);
-	set_servo_position(GRABBER, 400);
+	set_servo_position(GRABBER, 990);		//used to be 400
+	msleep(500);
+	set_servo_position(GRABBER, 2047);
+	msleep(500);
+	set_servo_position(GRABBER, 990);		//used to be 400
 }
 
 void getCubes()
 {
 	printf("-----RESTART RUN-----\n init: %d\n",analog_et(ET));
-	while(!(analog_et(ET)>480)) //haven't found a cube
+	while(!(analog_et(ET)>400)) //haven't found a cube
 	{ 
 		printf("value: %d\n",analog_et(ET));
 		create_backward(2,10); 
 		tdist+=2;
 		SHOW(printf("tdist is %d\n", tdist));
-		if(tdist>500){
+		if(tdist>450){
 			tdist=0;
-			arm_close();
+			set_servo_position(GRABBER, 990);	//used to be 2047
 			return;
 		}
 	}
@@ -84,10 +88,52 @@ void getCubes()
 	msleep(1000);
 	set_servo_position(GRABBER, 2047);
 		
-	if(tdist<500) getCubes();
+	if(tdist<450) getCubes();
 	else {
 		tdist=0;
-		arm_close();
+		set_servo_position(GRABBER, 990);		//used to be 2047
+	}
+}
+
+//CLOSE HANDLE 2----------------------------------------------------------------
+void closeHandle2() 
+{
+	printf("FOUND A CUBE: %d\n",analog_et(ET));
+	create_forward(63,100);
+	tdist+=50;
+	create_block();
+	SHOW(printf("moved...")); 
+	msleep(1000);
+	set_servo_position(GRABBER, 990);		//used to be 400
+	msleep(500);
+	set_servo_position(GRABBER, 2047);
+	msleep(500);
+	set_servo_position(GRABBER, 990);		//used to be 400
+}
+void getCubes2()
+{
+	printf("-----RESTART RUN-----\n init: %d\n",analog_et(ET));
+	while(!(analog_et(ET)>400)) //haven't found a cube
+	{ 
+		printf("value: %d\n",analog_et(ET));
+		create_forward(2,10); 
+		tdist+=2;
+		SHOW(printf("tdist is %d\n", tdist));
+		if(tdist>450){
+			tdist=0;
+			set_servo_position(GRABBER, 990);	//used to be 2047
+			return;
+		}
+	}
+	
+	closeHandle2();
+	msleep(1000);
+	set_servo_position(GRABBER, 2047);
+		
+	if(tdist<450) getCubes();
+	else {
+		tdist=0;
+		set_servo_position(GRABBER, 990);		//used to be 2047
 	}
 }
 
@@ -99,8 +145,12 @@ void forward_bump()
 }
 void backward_bump()
 { 
-	do{ create_drive_direct(-300,-300); }
-	while(get_create_lbump()==0);
+	do{ 
+		create_drive_direct(-300,-300); 
+		SHOW(printf("ltouch: %d\n", digital(LTOUCH))); 
+		SHOW(printf("rtouch: %d\n", digital(RTOUCH))); 
+	}
+	while(digital(LTOUCH)==0&&digital(RTOUCH)==0);
 }
 
 /*************MAIN************/
@@ -128,11 +178,11 @@ int main()
 	create_wait_time(20); 	//20 deciseconds for the link to pass	
 	forward_bump(); 		//forward to pvc pipe
 	create_block(); 		//finish the bump	
-	create_backward(55,100); //previously 65
+	create_backward(62,100); //previously 65
 	create_block();
 	
 	//we're now in front of the first goal 
-	create_right(86,0,60); 
+	create_right(87,0,60); 
 	create_block();
 	
 	printf("In front of the cubes");
@@ -147,36 +197,44 @@ int main()
 	
 	/**SECOND BLOCK PICKUP POSITION**/
 	
-	set_servo_position(GRABBER, 400);			//close claw
-	create_left(30, 0, 60);						//left 30 degrees
-	create_drive_direct_dist(-FULL, -FULL, 25);	//backward 10 inches
-	create_right(30, 0, 60);					//right 30 degrees
-	create_drive_direct_dist(-FULL, -FULL, 100);	//backward 40 inches
-	while(digital(LTOUCH)==0&&digital(RTOUCH)==0) create_drive_direct(280,280); //square up
-	
-	//drive to the other end of the board
+	set_servo_position(GRABBER, 400);				//close claw
+	create_left(30, 0, 60);							//left 30 degrees
+	create_block();
+	printf("Left turn complete\n");
+	create_backward(250, 1000);						//backward 10 inches
+	printf("Drive 1 complete\n");
+	create_right(30, 0, 60);						//right 30 degrees
+	create_block();
+	create_backward(500, 800);						//backward 40 inches
+	create_block();
+	printf("Drive 2 complete\n");
+	backward_bump();
+	printf("Finished square up");
+	create_block();
+	create_forward(60,500);
+	create_block();
+	create_left(90,0,60);
+	create_block();
+	msleep(1000);
 	forward_bump();
-	
-	
-	//TODO: Get the actual distance (replace 30)
-	create_drive_direct_dist(-FULL,FULL,30);
-	create_right(87,0,60);
-	forward_bump();
+	create_backward(5,500);
+	create_block();
+	create_right(90,0,60);	
+	create_block();
 	
 	/**ARM MOVEMENT, 2**/
 	
+	set_servo_position(GRABBER, 2047);
 	arm_open();
-	getCubes();
-	arm_close();
-	
+	bmd(MOTARM);
+	getCubes2();
+
 	/**COMPLETED PICKUP**/
 	
 	//dump here
 	
 	//next box area after squaring up
 	printf("finished");
-	
-	
 	create_disconnect();
 	return 0;
 }
