@@ -6,13 +6,14 @@ Robot Code for the 2014 competition.
 - The CREATE folder is for the Create robot
 
 ## Starting Positions
-* Link robot starts at the left side of the starting box, with the back against the pipe, left wheel is 2 in. from left pipe. The arm is facing towards the rest of the table.
+* Link robot starts at the left side of the starting box, with the back against the pipe, left wheel is 3 in. from left pipe. The arm is facing towards the rest of the table.
 * Create starts at the right bottom corner, with bumper facing towards the cube rack.
 
 ## To Do
 
 **If something's wrong, check if your servos are enabled.**
 
+* **Remember to reset the ET sensor every run (because of the crash)**
 * Calibrate threshold values for the create based on light exposure.
 * PRIORITY 2: Release hangers smoothly. Then square up. Create will go past while Link squares up.
 * Test camera files

@@ -1,10 +1,10 @@
 /*
 * Main program for CREATE driving
 * 
-* Assumes that the arm to pick up the cubes is facing to the right
-* as the create moves alongside the PVC pipe
 *
-* 
+*
+*
+*
 *
 */
 
@@ -22,6 +22,15 @@
 #define GRABBER 1
 #define TBUTTON 8 
 #define MICRO 0
+
+/**
+ *  Micro
+ *	Closed: 1860
+ *	Open:	700
+ *
+**/
+
+
 //debug?
 #define DEBUG 
 
@@ -77,9 +86,11 @@ void getCubes()
 		create_backward(2,10); 
 		tdist+=2;
 		SHOW(printf("tdist is %d\n", tdist));
-		if(tdist>450){
+		if(tdist>400){
 			tdist=0;
 			set_servo_position(GRABBER, 990);	//used to be 2047
+			set_servo_position(MICRO, 1860);
+			arm_close();
 			return;
 		}
 	}
@@ -88,19 +99,22 @@ void getCubes()
 	msleep(1000);
 	set_servo_position(GRABBER, 2047);
 		
-	if(tdist<450) getCubes();
+	if(tdist<400) getCubes();
 	else {
 		tdist=0;
 		set_servo_position(GRABBER, 990);		//used to be 2047
+		set_servo_position(MICRO, 1860);
+		arm_close();
 	}
 }
 
+int ccount=0;
 //CLOSE HANDLE 2----------------------------------------------------------------
 void closeHandle2() 
 {
+	ccount++;
 	printf("FOUND A CUBE: %d\n",analog_et(ET));
 	create_backward(15,100);
-	tdist-=20;
 	create_block();
 	SHOW(printf("moved...")); 
 	msleep(1000);
@@ -118,10 +132,7 @@ void getCubes2()
 	{ 
 		printf("value: %d\n",analog_et(ET));
 		create_forward(2,30);
-		tdist+=2;
-		SHOW(printf("tdist is %d\n", tdist));
-		if(tdist>340){
-			tdist=0;
+		if(ccount>=2){
 			set_servo_position(GRABBER, 990);	//used to be 2047
 			return;
 		}
@@ -129,13 +140,15 @@ void getCubes2()
 	
 	closeHandle2();
 	msleep(1000);
-	create_forward(20,20);
+	create_forward(40,20);
+	create_block();
+	printf("Moved forward");
 	set_servo_position(GRABBER, 2047);
 		
-	if(tdist<340) getCubes2();
+	if(ccount<2) getCubes2();
 	else {
-		tdist=0;
-		set_servo_position(GRABBER, 990);		//used to be 2047
+		//set_servo_position(GRABBER, 990);		//used to be 2047
+		set_servo_position(MICRO, 1860);
 	}
 }
 
@@ -165,6 +178,7 @@ int main()
 	set_analog_pullup(ET,0);
 	SHOW(printf("analog pullup is %d\n", get_analog_pullup(ET)));
 	enable_servos();
+	set_servo_position(MICRO, 700);
 	set_servo_position(GRABBER, 2047);
 	
 	SHOW(printf("Connecting...\n"));
@@ -172,19 +186,19 @@ int main()
 	SHOW(printf("Complete!\n"));
 	shut_down_in(120.); 
 	mrp(MOTARM, 1000, 573);
-	
+	bmd(MOTARM);
 	/**FIRST BLOCK PICKUP POSITION**/
 	
 	printf("First block pickup position running...");
 	
-	create_wait_time(20); 	//20 deciseconds for the link to pass	
-	forward_bump(); 		//forward to pvc pipe
-	create_block(); 		//finish the bump	
-	create_backward(62,100); //previously 65
+	create_wait_time(20); 		//20 deciseconds for the link to pass	
+	forward_bump(); 			//forward to pvc pipe
+	create_block(); 			//finish the bump	
+	create_backward(52,100); 	//previously 65
 	create_block();
 	
 	//we're now in front of the first goal 
-	create_right(85,0,60); 
+	create_right(87,0,50); 
 	create_block();
 	
 	printf("In front of the cubes");
@@ -220,26 +234,35 @@ int main()
 	msleep(1000);
 	forward_bump();
 	create_block();
-	create_backward(50,100);
+	create_backward(43,100);
 	create_right(86,0,60);	
 	create_block();
 	tdist=0;
-	/**ARM MOVEMENT, 2**/
 	
-	set_servo_position(GRABBER, 2047);
+	/**ARM MOVEMENT, 2**/
+	set_servo_position(MICRO, 700);
+	msleep(2000);
 	arm_open();
 	bmd(MOTARM);
+	msleep(2000);
+	set_servo_position(GRABBER, 2047);
 	getCubes2();
 	set_servo_position(GRABBER, 990);
 
 	/**COMPLETED PICKUP**/
-	
-	//dump here
-	
-	//next box area after squaring up
+	backward_bump();
+	arm_close();
+	create_forward(40,100);
+	create_right(90,0,60);
+	create_block();
+	msleep(1000);
+	forward_bump();
+	create_left(100,0,60);
+	backward_bump();
+	set_servo_position(MICRO, 700);
+	msleep(1000);
+	create_block();
 	printf("finished");
-	create_disconnect();
-	return 0;
 }
 #endif
 
