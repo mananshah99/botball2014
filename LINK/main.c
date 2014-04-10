@@ -65,33 +65,42 @@ int main()
 	//light_start(LS);			// light start
 	shut_down_in(120);
 	enable_servos();
-	printf("here\n");
+	printf("Starting\n");
 	set_servo_position(HANGER_HOLDER, RIGHT_CLOSE);
-	msleep(500);
+	msleep(100);
 	set_servo_position(ARM,BOT);
+	msleep(100);
+	motor(MOT_LEFT, -50);
+	motor(MOT_RIGHT, -50);
+	msleep(500);
+	ao();
 	msleep(500);
 	forward(55.00);
-	left(250,ks/2);				// left 90 degrees (more because the function undershoots)
-	forward(31.00);				// forward 33 cm
-	right(260,ks/2);			// right 90 degrees, but uses the arm to move cube,so adding more, not changed to using both wheels anymore
-	msleep(1000);
+	msleep(500);
+	left(240,ks/2);				// left 90 degrees (more because the function undershoots)
+	msleep(500);
+	forward(31.00);
+	msleep(500);
+	right(270,ks/2);			// right 90 degrees, but uses the arm to move cube,so adding more, not changed to using both wheels anymore
+	msleep(500);
 	left(20,ks/2); 				//return from pushing exercise bench away from robot
-	backward(15.00);			//sometimes arm hits the bottom rack after
+	backward(15.00);	//sometimes arm hits the bottom rack after
+	msleep(500);
 	/*
 	mrp(MOT_LEFT,400,5);
 	mrp(MOT_RIGHT,-400,5); //turn 90 degrees
-	*/
-	printf("Lifting up arm....\n");
 	msleep(1000);
 	bmd(MOT_LEFT);
 	bmd(MOT_RIGHT);
+	*/
+	printf("Lifting up arm....\n");
 	set_servo_position(ARM, TOP);		// move arm up to top ledge
 	msleep(2500);
 	printf("At Hangers and Depositing!\n");
 	forward(20.00);				// get over to the scoring area
-	msleep(2000);				// stop to stop the arm shaking
-	forward(16.00);
-	msleep(2000);
+	msleep(1000);				// stop to stop the arm shaking
+	forward(17.00);
+	msleep(500);
 	set_servo_position(HANGER_HOLDER, MIDDLE);	// precaution due to holding on to the left pillar
 	msleep(500);
 	set_servo_position(ARM, DROP);		// move arm down to drop hangers on ledge
@@ -103,12 +112,16 @@ int main()
 	bmd(MOT_RIGHT);
 	msleep(500);	//stop it running
 	set_servo_position(HANGER_HOLDER, LEFT_CLOSE);
-	msleep(300);
-	ao();							//to stop right motor before I start
-	mrp(MOT_LEFT, 1000, -1500);		//left(220,ks/2); //let go of hangers onto the ledge by turning 90 degrees
+	msleep(200);
+	ao();	//to stop right motor before I start
+	msleep(500);
+	mrp(MOT_LEFT, 1000, -1400);		//left(220,ks/2); //let go of hangers onto the ledge by turning 90 degrees
+	msleep(500);
+	ao();
 	msleep(1500);
+	backward(30.00);
 	
-	printf("Leaving Hangers\n");		// Going to do another form of depositing
+	printf("Leaving Hangers\n");
 	
 	/*  (BACKUP CODE)  wiggle to drop off the hangers 
 	left(40,ks/2);				// left 30 degrees
@@ -116,24 +129,20 @@ int main()
 	left(20,ks/2);				// deposit hangers and push them to the sides, left 20 degrees back
 	*/
 	
-	
-	backward(10.00);			//fully let go of hangers, then square up twice on pipes behind
 	msleep(500);
-	left(75,ks/2);
-	msleep(1000);
+	left(250, ks/2);			//fully let go of hangers, then square up twice on pipes behind
+	msleep(500);
 	set_servo_position(ARM, BOT); //arm will hit rack and mess up backing up
 	msleep(1500);
-	forward(5.00);
-	msleep(500);
-	left(260, ks/2);
-	msleep(500);
-	forward(70.00);
+	left(280,ks/2);
+	msleep(1500);
+	forward(60.00);
 	right(250,ks/2);				//turn right to square up on pipe next to starting box
 	msleep(500);
 	motor(MOT_LEFT, -100);
 	motor(MOT_RIGHT, -100);
-	msleep(1000);	//square up
-	forward(20.00);				//parallel to rack
+	msleep(2000);	//square up
+	forward(7.00);				//parallel to rack
 	msleep(500);
 	right(245,ks/2);
 	msleep(500);
@@ -141,7 +150,7 @@ int main()
 	msleep(100);
 	motor(MOT_LEFT, -100);
 	motor(MOT_RIGHT, -100);		//square up again on other pipe
-	msleep(500);
+	msleep(2000);
 	forward(80.00);
 	
 	
