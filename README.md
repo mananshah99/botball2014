@@ -14,16 +14,16 @@ Robot Code for the 2014 competition.
 **If something's wrong, check if your servos are enabled.**
 
 * **Remember to reset the ET sensor every run (because of the crash)**
-* Calibrate threshold values for the create based on light exposure.
-* PRIORITY 2: Release hangers smoothly. Then square up. Create will go past while Link squares up.
-* Test camera files
-* ~~Write create orange blob pickup code~~
+* ~~Calibrate threshold values for the create based on light exposure.~~ **Using ET as of 4/7/2014**
+* ~~Release hangers smoothly. Then square up. Create will go past while Link squares up.~~
+* ~~Test camera sight files~~ **Using ET as of 4/7/2014**
+* ~~Write create orange block pickup code~~
 * Better byte writing functionality for Create
 * Write Create dumping function for the orange blobs 
-* Test the Create drivepath
-* Write LINK servo code to pick up hangers
+* ~~Test the Create drivepath~~
+* ~~Write LINK servo code to pick up hangers~~
 
-* Tune and add possible cube count check in getCubes() (in ```/CREATE/main.c```)
+* ~~Tune and add possible cube count check in getCubes() (in ```/CREATE/main.c```)~~
 
 ```c
 void getCubes()
@@ -49,7 +49,7 @@ void getCubes()
 }
 ```
 
-* Write LINK place blue hangers function (in ```/LINK/main.c```)
+* **PRIORITY 1: Write LINK place blue hangers function (in ```/LINK/main.c```)**
 * ~~Check threshold/does camera code work as intended? (in ```/CREATE/main.c```)~~ **using ET sensor as of 4/7/2014**
 
 * **low priority**: Test slowservo repeatedly (doesn't take 5 seconds to move up with this code)  
