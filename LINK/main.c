@@ -34,7 +34,7 @@
 * 
 *************************************/
 
-#define TOP 350
+#define TOP 390
 #define DROP 480
 #define MID 1160
 #define BOT 1655
@@ -60,7 +60,8 @@
 //#define left_motor_test
 //#define square_up_and_blue_hanger_test
 
-//start position is with back against PVC pipe and left side one inch from left pipe surrounding starting box
+
+//old start position is with back against PVC pipe and left side 3 inches from left pipe surrounding starting box
 #ifdef MAIN
 int main()	
 {
@@ -77,7 +78,9 @@ int main()
 	msleep(500);
 	ao();
 	msleep(500);
-	forward(55.00);
+	forward(20.00);
+	msleep(500);
+	forward(37.00);
 	msleep(500);
 	left(240,ks/2);				// left 90 degrees (more because the function undershoots)
 	msleep(500);
@@ -121,7 +124,8 @@ int main()
 	msleep(1000);
 	ao();
 	msleep(1500);
-	backward(30.00);
+	backward(15.00);
+	msleep(500);
 	
 	printf("Leaving Hangers\n");
 	
@@ -131,12 +135,15 @@ int main()
 	left(20,ks/2);				// deposit hangers and push them to the sides, left 20 degrees back
 	*/
 	
+	motor(MOT_LEFT, -100);
 	msleep(500);
-	left(250, ks/2);			//fully let go of hangers, then square up twice on pipes behind
+	ao();
+	msleep(300);
+	left(50, ks/2);			//fully let go of hangers, then square up twice on pipes behind
 	msleep(500);
 	set_servo_position(ARM, BOT); //arm will mess up backing up, might will hit rack 
 	msleep(1500);
-	left(230,ks/2);
+	left(355,ks/2);
 	msleep(1500);
 	forward(60.00);
 	right(250,ks/2);				//turn right to square up on pipe next to starting box
