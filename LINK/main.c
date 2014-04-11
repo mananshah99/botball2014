@@ -135,57 +135,79 @@ int main()
 	left(20,ks/2);				// deposit hangers and push them to the sides, left 20 degrees back
 	*/
 	
-	motor(MOT_LEFT, -100);
-	msleep(500);
+	motor(MOT_LEFT, -150);
+	msleep(1000);
 	ao();
-	msleep(300);
-	left(50, ks/2);			//fully let go of hangers, then square up twice on pipes behind
+	msleep(500);			//fully let go of hangers, then square up twice on pipes behind
+	forward(10.00);
 	msleep(500);
 	set_servo_position(ARM, BOT); //arm will mess up backing up, might will hit rack 
 	msleep(1500);
-	left(355,ks/2);
+	left(265,ks/2);
 	msleep(1500);
 	forward(60.00);
 	right(250,ks/2);				//turn right to square up on pipe next to starting box
 	msleep(500);
 	
-	//THIS PART IS BEING TESTED AND SOON WILL BE REPLACED
 	
-	/*set_servo_position(HANGER_HOLDER, RIGHT_CLOSE);
-	msleep(500);
+	
+	//THIS PART IS BEING TESTED (blue hanger #1) AND SOON WILL BE REPLACED
+	
+	set_servo_position(ARM, BOT);
+	msleep(100);
+	set_servo_position(HANGER_HOLDER, RIGHT_CLOSE);
+	msleep(300);
 	motor(MOT_LEFT, -100);
 	motor(MOT_RIGHT, -100);
 	msleep(2000);	//square up
-	forward(7.00);				//parallel to rack
+	ao();
 	msleep(500);
-	right(245,ks/2);
+	forward(6.50);				//parallel to rack
+	msleep(500);
+	right(237,ks/2);
 	msleep(500);
 	ao();			//for next square up
 	msleep(100);
 	motor(MOT_LEFT, -100);
 	motor(MOT_RIGHT, -100);		//square up again on other pipe
 	msleep(2000);
-	forward(80.00);
+	ao();
+	forward(21.00);
+	msleep(500);
+	forward(68.00);
+	msleep(500);
 	
 	printf("Now at blue hangers\n");
 	printf("Moving blue hangers to top rack one at a time\n");
 	
 	set_servo_position(ARM, MID);
-	msleep(300);
-	left(30, ks/2);
-	msleep(300);
+	msleep(2000);
+	left(40, ks/2);
+	msleep(500);
 	set_servo_position(HANGER_HOLDER, LEFT_CLOSE);
-	msleep(300);
+	msleep(500);
+	/*right(10, ks/2);
+	msleep(500);*/
+	set_servo_position(ARM, MID-40);
+	msleep(500);
 	backward(10.00);
-	msleep(300);
-	right(30, ks/2);
-	msleep(300);
-	backward(10.00);
-	msleep(300);
+	msleep(500);
+	backward(5.00);
+	msleep(500);
 	set_servo_position(ARM, TOP);
-	msleep(300);
+	msleep(500);
 	forward(15.00);
-	msleep(300);*/
+	msleep(500);
+	set_servo_position(HANGER_HOLDER, RIGHT_CLOSE);
+	msleep(500);
+	set_servo_position(ARM, DROP);
+	msleep(500);
+	left(10,ks/2);
+	msleep(500);
+	motor(MOT_RIGHT, -100);
+	msleep(500);
+	
+	//ENDING OF CODE THAT'S BEING TESTED ELSEWHERE
 	
 	
 	/* COMMENTING UNTESTED OLD VERSION OF CODE THAT PROBABLY DON'T WORK, THIS CODE HAS THE ROBOT NOT SQUARING UP
@@ -303,26 +325,25 @@ int main()
 	set_servo_position(ARM, BOT);
 	msleep(100);
 	set_servo_position(HANGER_HOLDER, RIGHT_CLOSE);
-	msleep(500);
+	msleep(300);
 	motor(MOT_LEFT, -100);
 	motor(MOT_RIGHT, -100);
-	msleep(500);	//square up
+	msleep(2000);	//square up
 	ao();
-	msleep(100);
-	forward(5.50);				//parallel to rack
 	msleep(500);
-	right(235,ks/2);
+	forward(6.50);				//parallel to rack
+	msleep(500);
+	right(237,ks/2);
 	msleep(500);
 	ao();			//for next square up
 	msleep(100);
 	motor(MOT_LEFT, -100);
 	motor(MOT_RIGHT, -100);		//square up again on other pipe
 	msleep(2000);
-	forward(10.00);
+	ao();
+	forward(21.00);
 	msleep(500);
-	right(5, ks/2);
-	msleep(100);
-	forward(78.00);
+	forward(68.00);
 	msleep(500);
 	
 	printf("Now at blue hangers\n");
@@ -336,11 +357,11 @@ int main()
 	msleep(500);
 	/*right(10, ks/2);
 	msleep(500);*/
-	set_servo_position(ARM, MID+20);
+	set_servo_position(ARM, MID-40);
 	msleep(500);
 	backward(10.00);
 	msleep(500);
-	backward(10.00);
+	backward(5.00);
 	msleep(500);
 	set_servo_position(ARM, TOP);
 	msleep(500);
