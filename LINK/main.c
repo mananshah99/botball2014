@@ -143,9 +143,9 @@ int main()
 	msleep(500);
 	set_servo_position(ARM, BOT); //arm will mess up backing up, might will hit rack 
 	msleep(1500);
-	left(265,ks/2);
+	left(270,ks/2);
 	msleep(1500);
-	forward(60.00);
+	forward(50.00);
 	right(250,ks/2);				//turn right to square up on pipe next to starting box
 	msleep(500);
 	
