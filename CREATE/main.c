@@ -81,10 +81,10 @@ void getCubes()
 	while(!(analog_et(ET)>400)) //haven't found a cube
 	{ 
 		printf("value: %d\n",analog_et(ET));
-		create_backward(2,10); 
+		create_backward(2,30); 
 		tdist+=2;
 		SHOW(printf("tdist is %d\n", tdist));
-		if(tdist>275){
+		if(tdist>300){
 			tdist=0;
 			set_servo_position(GRABBER, 990);	//used to be 2047
 			set_servo_position(MICRO, 1860);
@@ -96,7 +96,7 @@ void getCubes()
 	msleep(1000);
 	set_servo_position(GRABBER, 2047);
 		
-	if(tdist<275) getCubes();
+	if(tdist<300) getCubes();
 	else {
 		tdist=0;
 		set_servo_position(GRABBER, 990);		//used to be 2047
@@ -105,14 +105,16 @@ void getCubes()
 }
 
 int ccount=0;
+int tdist2=0;
 //CLOSE HANDLE 2----------------------------------------------------------------
 void closeHandle2() 
 {
 	ccount++;
 	printf("FOUND A CUBE: %d\n",analog_et(ET));
 	create_backward(15,100);
+	tdist2-=15;
 	create_block();
-	SHOW(printf("moved...")); 
+	SHOW(printf("moved... tdist is %d\n", tdist)); 
 	msleep(1000);
 	set_servo_position(GRABBER, 990);		//used to be 400
 	msleep(500);
@@ -128,7 +130,8 @@ void getCubes2()
 	{ 
 		printf("value: %d\n",analog_et(ET));
 		create_forward(2,30);
-		if(ccount>=2){
+		tdist2+=2;
+		if(ccount>=2 || tdist2>300){
 			set_servo_position(GRABBER, 990);	//used to be 2047
 			return;
 		}
@@ -136,12 +139,13 @@ void getCubes2()
 	
 	closeHandle2();
 	msleep(1000);
+	set_servo_position(GRABBER, 2047);
 	create_forward(40,20);
+	tdist2+=40;
 	create_block();
 	printf("Moved forward");
-	set_servo_position(GRABBER, 2047);
 		
-	if(ccount<2) getCubes2();
+	if(ccount<2 && tdist2<300) getCubes2();
 	else {
 		//set_servo_position(GRABBER, 990);		//used to be 2047
 		set_servo_position(MICRO, 1860);
@@ -204,7 +208,7 @@ int main()
 	create_block();
 	
 	//we're now in front of the first goal 
-	create_right(87,0,60); 
+	create_right(85,0,60); 
 	create_block();
 	printf("In front of the cubes");
 	enable_servo(GRABBER);
@@ -266,8 +270,10 @@ int main()
 	create_right(90,0,60);
 	create_block();
 	msleep(1000);
+	create_forward(320,600);
+	create_block();
 	forward_bump();
-	create_left(100,0,60);
+	create_left(90,0,60);
 	backward_bump();
 	set_servo_position(MICRO, 700);
 	msleep(1000);
