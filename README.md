@@ -19,7 +19,7 @@ Robot Code for the 2014 competition.
 * ~~Test camera sight files~~ **Using ET as of 4/7/2014**
 * ~~Write create orange block pickup code~~
 * Better byte writing functionality for Create
-* Write Create dumping function for the orange blobs 
+* ~~Write Create dumping function for the orange blobs~~
 * ~~Test the Create drivepath~~
 * ~~Write LINK servo code to pick up hangers~~
 
