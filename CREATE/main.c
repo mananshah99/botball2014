@@ -16,6 +16,7 @@
 #define LTOUCH 15
 #define RTOUCH 14
 
+#define LS 0
 #define FULL 100
 #define MOTARM 0
 #define ET 2
@@ -40,6 +41,7 @@
 #endif
 
 /**#defines for which method to run**/
+//#define DUMPTEST
 #define MAIN 
 //#define ARMTEST
 
@@ -48,10 +50,12 @@ void arm_open(){
 		bk(MOTARM);
 	}
 	while(digital(TBUTTON)==0);
+	bk(MOTARM);
+	msleep(200);
 }
 
 void arm_close(){
-	mrp(MOTARM, 1000, 2250);
+	mrp(MOTARM, 1000, 2500);
 }
 
 void micro_crash(){
@@ -68,11 +72,11 @@ void closeHandle()
 	create_block();
 	SHOW(printf("moved...")); 
 	msleep(1000);
-	set_servo_position(GRABBER, 990);		//used to be 400
+	set_servo_position(GRABBER, 135);		//used to be 400
 	msleep(500);
-	set_servo_position(GRABBER, 2047);
+	set_servo_position(GRABBER, 1500);
 	msleep(500);
-	set_servo_position(GRABBER, 990);		//used to be 400
+	set_servo_position(GRABBER, 135);		//used to be 400
 }
 
 void getCubes()
@@ -86,7 +90,7 @@ void getCubes()
 		SHOW(printf("tdist is %d\n", tdist));
 		if(tdist>300){
 			tdist=0;
-			set_servo_position(GRABBER, 990);	//used to be 2047
+			set_servo_position(GRABBER, 135);	//used to be 2047
 			set_servo_position(MICRO, 1860);
 			return;
 		}
@@ -94,12 +98,12 @@ void getCubes()
 	
 	closeHandle();
 	msleep(1000);
-	set_servo_position(GRABBER, 2047);
+	set_servo_position(GRABBER, 1500);
 		
 	if(tdist<300) getCubes();
 	else {
 		tdist=0;
-		set_servo_position(GRABBER, 990);		//used to be 2047
+		set_servo_position(GRABBER, 135);		//used to be 2047
 		set_servo_position(MICRO, 1860);
 	}
 }
@@ -116,11 +120,11 @@ void closeHandle2()
 	create_block();
 	SHOW(printf("moved... tdist is %d\n", tdist)); 
 	msleep(1000);
-	set_servo_position(GRABBER, 990);		//used to be 400
+	set_servo_position(GRABBER, 135);		//used to be 400
 	msleep(500);
-	set_servo_position(GRABBER, 2047);
+	set_servo_position(GRABBER, 1500);
 	msleep(500);
-	set_servo_position(GRABBER, 990);		//used to be 400
+	set_servo_position(GRABBER, 135);		//used to be 400
 }
 
 void getCubes2()
@@ -129,17 +133,18 @@ void getCubes2()
 	while(!(analog_et(ET)>400)) //haven't found a cube
 	{ 
 		printf("value: %d\n",analog_et(ET));
+		printf("tdist is %d\n", tdist2);
 		create_forward(2,30);
 		tdist2+=2;
 		if(ccount>=2 || tdist2>300){
-			set_servo_position(GRABBER, 990);	//used to be 2047
+			set_servo_position(GRABBER, 135);	//used to be 2047
 			return;
 		}
 	}
 	
 	closeHandle2();
 	msleep(1000);
-	set_servo_position(GRABBER, 2047);
+	set_servo_position(GRABBER, 1500);
 	create_forward(40,20);
 	tdist2+=40;
 	create_block();
@@ -147,7 +152,7 @@ void getCubes2()
 		
 	if(ccount<2 && tdist2<300) getCubes2();
 	else {
-		//set_servo_position(GRABBER, 990);		//used to be 2047
+		//set_servo_position(GRABBER, 135);		//used to be 2047
 		set_servo_position(MICRO, 1860);
 	}
 }
@@ -160,8 +165,8 @@ void forward_bump()
 }
 void backward_bump()
 { 
-	while(digital(LTOUCH)==0) create_drive_direct(-200,-200);
-	while(digital(RTOUCH)==0) create_drive_direct(0,-200);
+	while(digital(LTOUCH)==0) create_drive_direct(-100,-100);
+	while(digital(RTOUCH)==0) create_drive_direct(0,-100);
 }
 
 /*************MAIN************/
@@ -170,7 +175,7 @@ void backward_bump()
 int main()
 {
 	/**INITIALIZE CODE**/
-
+	//light_start(LS);
 	set_analog_pullup(ET,0);
 	SHOW(printf("analog pullup is %d\n", get_analog_pullup(ET)));
 	enable_servo(MICRO);
@@ -212,7 +217,7 @@ int main()
 	create_block();
 	printf("In front of the cubes");
 	enable_servo(GRABBER);
-	set_servo_position(GRABBER, 2047);
+	set_servo_position(GRABBER, 1500);
 	//search moving backwards across the cubes
 	
 	/**ARM MOVEMENT, 1**/
@@ -258,12 +263,37 @@ int main()
 	arm_open();
 	bmd(MOTARM);
 	msleep(2000);
-	set_servo_position(GRABBER, 2047);
+	set_servo_position(GRABBER, 1500);
 	getCubes2();
-	set_servo_position(GRABBER, 990);
+	set_servo_position(GRABBER, 135);
 
 	/**COMPLETED PICKUP**/
 	
+	set_servo_position(MICRO, 2047);
+	backward_bump();
+	arm_close();
+	create_forward(40,100);
+	create_right(90,0,60);
+	create_block();
+	msleep(1000);
+	create_forward(320,600);
+	create_block();
+	forward_bump();
+	create_left(90,0,60);
+	create_block();
+	backward_bump();
+	create_block();
+	set_servo_position(MICRO, 700);
+	/*
+	create_forward(10,100);
+	create_block();
+	create_backward(10,100);
+	create_block();
+	*/
+	printf("finished");
+	create_disconnect();
+	
+	/*
 	backward_bump();
 	arm_close();
 	create_forward(40,100);
@@ -278,9 +308,40 @@ int main()
 	set_servo_position(MICRO, 700);
 	msleep(1000);
 	create_block();
-	
+
+	printf("finished");
+	*/
+}
+#endif
+
+/**DUMP TEST**/
+
+#ifdef DUMPTEST
+int main() {
+	create_connect();
+	enable_servos();
+	set_servo_position(MICRO, 2047);
+	backward_bump();
+	arm_close();
+	create_forward(40,100);
+	create_right(90,0,60);
+	create_block();
+	msleep(1000);
+	create_forward(320,600);
+	create_block();
+	forward_bump();
+	create_left(90,0,60);
+	backward_bump();
+	create_block();
+	set_servo_position(MICRO, 700);
+	create_block();
+	create_forward(10,100);
+	create_block();
+	create_backward(10,100);
+	create_block();
 	printf("finished");
 }
+
 #endif
 
 /**ARM TEST - BASIC FUNCTIONALITY**/
