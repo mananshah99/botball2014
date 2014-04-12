@@ -282,7 +282,7 @@ int main()
 	create_forward(320,600);
 	create_block();
 	forward_bump();
-	create_left(90,0,60);
+	create_left(87,0,60);
 	create_block();
 	backward_bump();
 	create_block();
