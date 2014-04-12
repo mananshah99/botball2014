@@ -71,7 +71,8 @@ void closeHandle()
 	create_backward(63,100);
 	tdist+=63;
 	create_block();
-	SHOW(printf("moved...")); 
+	SHOW(printf("moved..."));
+	msleep(600);
 	set_servo_position(GRABBER, 135);		//used to be 400
 	msleep(500);
 	set_servo_position(GRABBER, 1500);
@@ -119,7 +120,7 @@ void closeHandle2()
 	tdist2-=15;
 	create_block();
 	SHOW(printf("moved... tdist is %d\n", tdist)); 
-	msleep(1000);
+	msleep(600);
 	set_servo_position(GRABBER, 135);		//used to be 400
 	msleep(500);
 	set_servo_position(GRABBER, 1500);
