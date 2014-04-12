@@ -42,8 +42,9 @@
 
 /**#defines for which method to run**/
 //#define DUMPTEST
-#define MAIN 
+#define SEEDING 
 //#define ARMTEST
+//#define DE
 
 void arm_open(){
 	do{
@@ -71,7 +72,6 @@ void closeHandle()
 	tdist+=63;
 	create_block();
 	SHOW(printf("moved...")); 
-	msleep(1000);
 	set_servo_position(GRABBER, 135);		//used to be 400
 	msleep(500);
 	set_servo_position(GRABBER, 1500);
@@ -145,7 +145,7 @@ void getCubes2()
 	closeHandle2();
 	msleep(1000);
 	set_servo_position(GRABBER, 1500);
-	create_forward(40,20);
+	if(ccount<2) create_forward(40,20);
 	tdist2+=40;
 	create_block();
 	printf("Moved forward");
@@ -171,7 +171,7 @@ void backward_bump()
 
 /*************MAIN************/
 
-#ifdef MAIN
+#ifdef SEEDING
 int main()
 {
 	/**INITIALIZE CODE**/
@@ -182,11 +182,12 @@ int main()
 	set_servo_position(MICRO, 0);
 	SHOW(printf("Connecting...\n"));
 	create_connect();
+	create_full();
 	SHOW(printf("Complete!\n"));
 	shut_down_in(120.); 
 	
 	arm_open();
-	bmd(MOTARM);
+	//bmd(MOTARM);
 	printf("Arm opened");
 	
 	create_forward(40,100);
@@ -204,7 +205,7 @@ int main()
 	
 	printf("First block pickup position running...");
 	
-	create_forward(520,600);	//rush forward
+	create_forward(580,800);	//rush forward
 	create_block();
 	create_block();
 	forward_bump(); 			//forward to pvc pipe
@@ -231,7 +232,7 @@ int main()
 	set_servo_position(GRABBER, 400);				//close claw
 	msleep(1000);
 	arm_close();
-	msleep(1000);
+	//msleep(1000);
 	create_left(35, 0, 60);							//left 35 degrees
 	create_block();
 	printf("Left turn complete\n");
@@ -249,7 +250,7 @@ int main()
 	create_block();
 	create_left(90,0,60);
 	create_block();
-	msleep(1000);
+	//msleep(1000);
 	forward_bump();
 	create_block();
 	create_backward(40,100);
@@ -285,11 +286,14 @@ int main()
 	backward_bump();
 	create_block();
 	set_servo_position(MICRO, 700);
-	//msleep(2000);
-	create_forward(20,100);
-	create_block();
-	create_backward(20,100);
-	create_block();
+	msleep(1000);
+	int t;
+	for(t=0; t<2; t++) {
+		create_forward(20,100);
+		create_block();
+		create_backward(20,100);
+		create_block();
+	}
 	
 	/*
 	create_forward(10,100);
