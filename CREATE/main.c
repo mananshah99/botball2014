@@ -56,7 +56,7 @@ void arm_open(){
 }
 
 void arm_close(){
-	mrp(MOTARM, 1000, 3000);
+	mrp(MOTARM, 1000, 2549);
 }
 
 void micro_crash(){
@@ -164,10 +164,15 @@ void forward_bump()
 	do{ create_drive_direct(100,100); }
 	while(get_create_lbump()==0);
 }
+
+
 void backward_bump()
 { 
-	while(digital(LTOUCH)==0) create_drive_direct(-100,-100);
-	while(digital(RTOUCH)==0) create_drive_direct(0,-100);
+	while(digital(LTOUCH)==0 || digital(RTOUCH)==0) create_drive_direct(-100,-100);
+	while(digital(RTOUCH)==0 && digital(LTOUCH)==0) {
+		if(digital(RTOUCH)==0) create_drive_direct(-50,0);
+		else create_drive_direct(0,-50);
+	}
 }
 
 /*************MAIN************/
@@ -177,6 +182,7 @@ int main()
 {
 	/**INITIALIZE CODE**/
 	light_start(LS);
+	shut_down_in(120.); 
 	set_analog_pullup(ET,0);
 	SHOW(printf("analog pullup is %d\n", get_analog_pullup(ET)));
 	enable_servo(MICRO);
@@ -185,7 +191,6 @@ int main()
 	create_connect();
 	create_full();
 	SHOW(printf("Complete!\n"));
-	shut_down_in(120.); 
 	
 	arm_open();
 	//bmd(MOTARM);
@@ -211,11 +216,11 @@ int main()
 	create_block();
 	forward_bump(); 			//forward to pvc pipe
 	create_block(); 			//finish the bump	
-	create_backward(43,100); 	//previously 65
+	create_backward(45,100); 	//previously 65
 	create_block();
 	
 	//we're now in front of the first goal 
-	create_right(84,0,60); 
+	create_right(85,0,60); 
 	create_block();
 	printf("In front of the cubes");
 	enable_servo(GRABBER);
@@ -233,6 +238,8 @@ int main()
 	set_servo_position(GRABBER, 400);				//close claw
 	msleep(1000);
 	arm_close();
+	printf("finished the arm close");
+	msleep(1000);
 	//msleep(1000);
 	create_left(35, 0, 60);							//left 35 degrees
 	create_block();
@@ -241,7 +248,7 @@ int main()
 	printf("Drive 1 complete\n");
 	create_right(35, 0, 60);						//right 35 degrees
 	create_block();
-	create_backward(600, 800);						//backward 40 inches
+	create_backward(700, 800);						//backward 40 inches 
 	create_block();
 	printf("Drive 2 complete\n");
 	backward_bump();
@@ -254,8 +261,8 @@ int main()
 	//msleep(1000);
 	forward_bump();
 	create_block();
-	create_backward(40,100);
-	create_right(86,0,60);	
+	create_backward(32,100);
+	create_right(90,0,60);	
 	create_block();
 	tdist=0;
 	
@@ -354,6 +361,96 @@ int main() {
 	create_block();
 	printf("finished");
 }
+#endif
+
+
+#ifdef DE
+/*
+ * Double Elimination code
+ * Not tested as of 8:27 AM 4/27/14
+ *
+ *
+ */
+int main()
+{
+	light_start(LS);
+	set_analog_pullup(ET,0);
+	SHOW(printf("analog pullup is %d\n", get_analog_pullup(ET)));
+	enable_servo(MICRO);
+	set_servo_position(MICRO, 0);
+	SHOW(printf("Connecting...\n"));
+	create_connect();
+	create_full();
+	SHOW(printf("Complete!\n"));
+	shut_down_in(120.); 
+	create_forward(580,800);	//rush forward
+	create_right(90,0,60);
+	
+	set_servo_position(GRABBER, 400);				//close claw
+	msleep(1000);
+	create_left(35, 0, 60);							//left 35 degrees
+	create_block();
+	printf("Left turn complete\n");
+	create_backward(250, 1000);						//backward 10 inches
+	printf("Drive 1 complete\n");
+	create_right(35, 0, 60);						//right 35 degrees
+	create_block();
+	create_backward(600, 800);						//backward 40 inches
+	create_block();
+	printf("Drive 2 complete\n");
+	backward_bump();
+	printf("Finished square up");
+	create_block();
+	create_forward(60,500);
+	create_block();
+	create_left(90,0,60);
+	create_block();
+	forward_bump();
+	create_block();
+	create_backward(40,100);
+	create_right(86,0,60);	
+	create_block();
+	tdist=0;
+	
+	/**ARM MOVEMENT, 2**/
+	
+	set_servo_position(MICRO, 700);
+	//msleep(2000);
+	arm_open();
+	bmd(MOTARM);
+	msleep(2000);
+	set_servo_position(GRABBER, 1500);
+	getCubes2();
+	set_servo_position(GRABBER, 135);
+
+	/**COMPLETED PICKUP**/
+	
+	set_servo_position(MICRO, 2047);
+	backward_bump();
+	arm_close();
+	create_forward(40,100);
+	create_right(90,0,60);
+	create_block();
+	create_forward(320,600);
+	create_block();
+	forward_bump();
+	create_left(87,0,60);
+	create_block();
+	backward_bump();
+	create_block();
+	set_servo_position(MICRO, 700);
+	msleep(1000);
+	int t;
+	for(t=0; t<2; t++) {
+		create_forward(20,100);
+		create_block();
+		create_backward(20,100);
+		create_block();
+	}
+	printf("finished");
+	create_disconnect();
+	
+}
 
 #endif
 
@@ -366,10 +463,9 @@ int main()
 {
 	//successful
 	SHOW(printf("Arm Opening.."));
-	arm_open();
-	bmd(MOTARM);
-	enable_servo(MICRO);
-	micro_crash();
+	//arm_open();
+	//bmd(MOTARM);
+	//enable_servo(MICRO);
 	arm_close();
 	bmd(MOTARM);
 }
