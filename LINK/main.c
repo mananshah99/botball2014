@@ -151,7 +151,7 @@ int main()
 	msleep(500);
 	set_servo_position(ARM, BOT); //arm will mess up backing up, might will hit rack 
 	msleep(1500);
-	left(220,ks/2);
+	left(188,ks/2);
 	msleep(1500);
 	forward(50.00);
 	right(250,ks/2);				//turn right to square up on pipe next to starting box
@@ -307,7 +307,7 @@ int main()
 	printf("At Hangers and Depositing! Chad=Chris!\n");
 	forward(20.00);				// get over to the scoring area
 	msleep(1000);				// stop to stop the arm shaking
-	forward(17.00);
+	forward(18.00);
 	msleep(500);
 	set_servo_position(HANGER_HOLDER, MIDDLE);	// precaution due to holding on to the left pillar
 	msleep(500);
@@ -349,7 +349,7 @@ int main()
 	msleep(500);
 	set_servo_position(ARM, BOT); //arm will mess up backing up, might will hit rack 
 	msleep(1500);
-	left(240,ks/2);
+	left(175,ks/2);
 	msleep(1500);
 	forward(50.00);
 	right(250,ks/2);				//turn right to square up on pipe next to starting box
