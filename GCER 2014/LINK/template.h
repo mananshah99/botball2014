@@ -1,28 +1,28 @@
-/************************************************************************
- * Botball LACT Template												*
+/********************************************************************************
+ * Botball LACT Template							*
  * Include this in each of your programs as a default library. 			*
- * 																		*
- * Sample Usage: 														*
- *																		*
- *	Place the following files inside the Link folder					*
- *		: menu.h														*
- *		: drive.h														*
- *																		*
- *	Place the following files inside the Create folder					*
- *		: createDrive.h													*
- *		: finalscripting.c												*
- *		: X menu.h (TODO: fix 4/12/14)									*
- *		: finalscripting.c												*
- *																		*
+ * 										*
+ * Sample Usage: 								*
+ *										*
+ *	Place the following files inside the Link folder			*
+ *		: menu.h							*
+ *		: drive.h							*
+ *										*
+ *	Place the following files inside the Create folder			*
+ *		: createDrive.h							*
+ *		: finalscripting.c						*
+ *		: X menu.h (TODO: fix 4/12/14)					*
+ *		: finalscripting.c						*
+ *										*
  *	Place the version of this file (either with the create or link mode	*
  *	defined) in the same directory as your create or link folder.		*
- * 																		*
+ * 										*
  *	Then, include the following line at the beginning of your program:	*
- *		#include "./template.h"											*
- *																		*
- * @author Manan														*
- * Version 421014														*
- ************************************************************************/
+ *		#include "./template.h"						*
+ *										*
+ * @author Manan								*
+ * Version 421014								*
+ ********************************************************************************/
 
 /*
  * Comment out LINK if you are running the Create code, and comment out CREATE if
@@ -57,7 +57,7 @@
  *
  * Usage: SHOW(printf("Hello World")); 
  *	--> Debug: Hello World		if debug is defined
- *	--> 						if debug is not defined (nothing printed)
+ *	--> 				if debug is not defined (nothing printed)
  *
  */
 #ifdef DEBUG 
@@ -163,7 +163,7 @@ void wait_till(float t)
 }
 
 //Servo functions
-void servo_set(int port,int end,float time)//,float increment)
+void servo_set(int port, int end, float time)
 {
 	//position is from 0-2047
 	float increment = .01;
