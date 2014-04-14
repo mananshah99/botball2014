@@ -51,11 +51,11 @@ void closeHandle()
 	create_block();
 	SHOW(printf("moved..."));
 	msleep(600);
-	set_servo_position(GRABBER, 135);		//used to be 400
+	set_servo_position(GRABBER, 135);		
 	msleep(500);
 	set_servo_position(GRABBER, 1500);
 	msleep(500);
-	set_servo_position(GRABBER, 135);		//used to be 400
+	set_servo_position(GRABBER, 135);	
 }
 
 void getCubes()
@@ -69,7 +69,7 @@ void getCubes()
 		SHOW(printf("tdist is %d\n", tdist));
 		if(tdist>300){
 			tdist=0;
-			set_servo_position(GRABBER, 135);	//used to be 2047
+			set_servo_position(GRABBER, 135);
 			set_servo_position(MICRO, 1860);
 			return;
 		}
@@ -82,14 +82,14 @@ void getCubes()
 	if(tdist<300) getCubes();
 	else {
 		tdist=0;
-		set_servo_position(GRABBER, 135);		//used to be 2047
+		set_servo_position(GRABBER, 135);		
 		set_servo_position(MICRO, 1860);
 	}
 }
 
 int ccount=0;
 int tdist2=0;
-//CLOSE HANDLE 2----------------------------------------------------------------
+
 void closeHandle2() 
 {
 	ccount++;
@@ -116,7 +116,7 @@ void getCubes2()
 		create_forward(2,30);
 		tdist2+=2;
 		if(ccount>=2 || tdist2>250){
-			set_servo_position(GRABBER, 135);	//used to be 2047
+			set_servo_position(GRABBER, 135);	
 			return;
 		}
 	}
@@ -131,7 +131,6 @@ void getCubes2()
 		
 	if(ccount<2 && tdist2<250) getCubes2();
 	else {
-		//set_servo_position(GRABBER, 135);		//used to be 2047
 		set_servo_position(MICRO, 1860);
 	}
 }
@@ -188,12 +187,12 @@ int main()
 	
 	printf("First block pickup position running...");
 	
-	create_forward(580,800);	//rush forward
+	create_forward(580,800);		//rush forward
 	create_block();
 	create_block();
 	forward_bump(); 			//forward to pvc pipe
 	create_block(); 			//finish the bump	
-	create_backward(45,100); 	//previously 65
+	create_backward(45,100); 		//previously 65
 	create_block();
 	
 	//we're now in front of the first goal 
@@ -202,6 +201,7 @@ int main()
 	printf("In front of the cubes");
 	enable_servo(GRABBER);
 	set_servo_position(GRABBER, 1500);
+	
 	//search moving backwards across the cubes
 	
 	/**ARM MOVEMENT, 1**/
@@ -218,14 +218,14 @@ int main()
 	printf("finished the arm close");
 	msleep(1000);
 	//msleep(1000);
-	create_left(35, 0, 60);							//left 35 degrees
+	create_left(35, 0, 60);						//left 35 degrees
 	create_block();
 	printf("Left turn complete\n");
-	create_backward(250, 1000);						//backward 10 inches
+	create_backward(250, 1000);					//backward 10 inches
 	printf("Drive 1 complete\n");
-	create_right(35, 0, 60);						//right 35 degrees
+	create_right(35, 0, 60);					//right 35 degrees
 	create_block();
-	create_backward(700, 800);						//backward 40 inches 
+	create_backward(700, 800);					//backward 40 inches 
 	create_block();
 	printf("Drive 2 complete\n");
 	backward_bump();
@@ -323,9 +323,9 @@ int main()
 {
 	//successful
 	SHOW(printf("Arm Opening.."));
-	//arm_open();
-	//bmd(MOTARM);
-	//enable_servo(MICRO);
+	arm_open();
+	bmd(MOTARM);
+	enable_servo(MICRO);
 	arm_close();
 	bmd(MOTARM);
 }

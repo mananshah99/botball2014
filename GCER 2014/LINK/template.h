@@ -22,14 +22,14 @@
  *										*
  * @author Manan								*
  * Version 421014								*
- ********************************************************************************/
+********************************************************************************/
 
 /*
  * Comment out LINK if you are running the Create code, and comment out CREATE if
  * you are running the link code. 
  *
  * Default: #define CREATE
- */
+*/
 
 //#define CREATE
 #define LINK
@@ -37,7 +37,7 @@
 #include <stdio.h>
 
 #ifdef CREATE
-	#include "./createDrive.h"
+#include "./createDrive.h"
 #endif
 
 #ifdef LINK
@@ -59,37 +59,119 @@
  *	--> Debug: Hello World		if debug is defined
  *	--> 				if debug is not defined (nothing printed)
  *
- */
+*/
 #ifdef DEBUG 
-	#define SHOW(x) printf("DEBUG: "); x 
+#define SHOW(x) printf("DEBUG: "); x 
 #else 
 	#define SHOW(x) 
 #endif
 
 #ifdef CREATE
-	#define WHEEL_DROP 1
-	#define CLIFF 10
-	#define BUMP 5
-	#define LEFT_BUMP 6
-	#define RIGHT_BUMP 7
-	#define BUTTON_ADVANCED 16
-	#define BUTTON_PLAY 17			//TODO: finish all events.  p16 of create docs
-	#define SEN_0 18
+#define WHEEL_DROP 1
+#define CLIFF 10
+#define BUMP 5
+#define LEFT_BUMP 6
+#define RIGHT_BUMP 7
+#define BUTTON_ADVANCED 16
+#define BUTTON_PLAY 17			//TODO: finish all events.  p16 of create docs
+#define SEN_0 18
 		
-	#define get_high_byte2(a) ((a)>>8)
-	#define get_low_byte2(a) ((a)&255)
+#define get_high_byte2(a) ((a)>>8)
+#define get_low_byte2(a) ((a)&255)
 #endif
 
 #define WAIT(x); while(!(x)){msleep(10);}
+#define LIMIT(thing,time); {double _tmptime = seconds()+time; while(!(thing) && (_tmptime > seconds())){msleep(1);}}
+
 #define gmpc(port) get_motor_position_counter(port)
 
 #define DEGTORAD 0.017453292519943295769236907684886
 #define RADTODEG 57.295779513082320876798154814105
 #define pi 3.1415926535897932384626433832795
 
+//states
 #define state(State) if (currstate == State)
-#define next(State) currstate = State
+#ifndef MENU
+	#define next(State) currstate = State
+#endif
 int currstate;
+
+#ifdef MENU
+
+//Menu
+struct menuitem{
+	int snum;
+char* name;
+};
+extern struct menuitem menu[];
+
+int selectionlist(int length){
+	int current = DEFAULT_OPTION;
+	int counter = 1;
+	int oldcurrent = DEFAULT_OPTION;
+	while(1){
+		if(a_button()){
+			while(a_button())msleep(1);
+			return(current);
+		}
+		if(c_button()){
+			while(c_button())msleep(1);
+			oldcurrent = current;
+			current --;
+			counter = 1;
+			if(current < 0) current=length-1;
+		}
+		if(b_button()){
+			while(b_button())msleep(1);
+			oldcurrent = current;
+			current ++;
+			counter = 1;
+			if (current >= length) current=0;
+		}
+		if(counter == 1){
+			display_printf(0,oldcurrent+1," ");
+			display_printf(0,current+1,"*");
+			counter = 0;
+		}
+}
+}
+int options(){
+	display_clear();
+	msleep(10);
+	int charlength;
+	int result;
+	display_printf(0,0,"A Accept|B down|C up\n");
+	WAIT(!a_button());
+	result = selectionlist(draw_screen());
+	display_clear();
+return(result);
+}
+
+int draw_screen(){
+	int i;
+	for(i=0;i<MENUSIZE;i++){
+		display_printf(0,i+1,"  %s",menu[i].name);
+	}
+return(MENUSIZE);
+}
+
+void next(int State) {
+	int i;
+	currstate = State;
+	i = -1;
+	while (!strcmp(menu[++i].name,"FIN")){
+		if (menu[i].snum==State){
+			nowstr(menu[i].name);
+			return;
+		}
+	}
+now();
+}
+
+#define DEFAULT_OPTION 0
+#define Get_Mode() currstate = menu[options()].snum
+
+#endif
 
 //Generic Utility
 float bound(float num, float max)
@@ -107,7 +189,7 @@ int in_range(int input, int wanted, int fudge)
 
 //actual distance away from object with ET sensor
 float ET_distance(int port){
-    return ((sqrt(100.0/analog10(port)))-2.2);
+	return ((sqrt(100.0/analog10(port)))-2.2);
 }
 
 //Light Start
@@ -149,17 +231,22 @@ void start()
 }
 float curr_time()
 {
-    return (systime()-_start_time)/1000.0;
+	return (systime()-_start_time)/1000.0;
 }
 void now()
 {
-    printf("now %f\n",curr_time());
+	printf("now %f\n",curr_time());
+}
+
+void nowstr(char *s)
+{
+	printf("%s %f\n",s,curr_time());
 }
 
 void wait_till(float t)
 {
-    now();
-    msleep(((long)(t*1000))-curr_time());
+	now();
+	msleep(((long)(t*1000))-curr_time());
 }
 
 //Servo functions
@@ -204,3 +291,27 @@ void update_wait(){
 
 //deprecated, use update_wait()
 void cam_block() { update_wait(); }
+
+//button utilities
+int abbutton(){
+	//returns 0,1 on a,b
+	WAIT(!(a_button() || b_button()));
+	WAIT(a_button() || b_button());
+	if (a_button()) return 0;
+	if (b_button()) return 1;
+	printf("ERROR!");beep();
+	msleep(2000);beep();
+	return 0;//if something broke
+}
+
+int abcbutton(){
+	//returns 0,1,2 on a,b,c
+	WAIT(!(a_button() || b_button() || c_button()));
+	WAIT(a_button() || b_button() || c_button());
+	if (a_button()) return 0;
+	if (b_button()) return 1;
+	if (c_button()) return 2;
+	printf("ERROR!");beep();
+	msleep(2000);beep();
+	return 0;//if something broke
+}
