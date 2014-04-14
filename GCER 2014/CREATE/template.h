@@ -11,8 +11,6 @@
  *	Place the following files inside the Create folder			*
  *		: createDrive.h							*
  *		: finalscripting.c						*
- *		: X menu.h (TODO: fix 4/12/14)					*
- *		: finalscripting.c						*
  *										*
  *	Place the version of this file (either with the create or link mode	*
  *	defined) in the same directory as your create or link folder.		*
@@ -89,7 +87,7 @@
 #define RADTODEG 57.295779513082320876798154814105
 #define pi 3.1415926535897932384626433832795
 
-//states
+//States
 #define state(State) if (currstate == State)
 #ifndef MENU
 	#define next(State) currstate = State
@@ -169,7 +167,7 @@ void next(int State) {
 }
 
 #define DEFAULT_OPTION 0
-#define Get_Mode() currstate = menu[options()].snum
+#define get_mode() currstate = menu[options()].snum
 
 #endif
 
@@ -249,7 +247,7 @@ void wait_till(float t)
     msleep(((long)(t*1000))-curr_time());
 }
 
-//Servo functions
+//Servo Utility
 void servo_set(int port, int end, float time)
 {
 	//position is from 0-2047
@@ -278,7 +276,7 @@ void servo_set(int port, int end, float time)
 	set_servo_position(port,end);
 }
 
-//camera utility
+//Camera Utility
 int cam_area(int channel){
 	//returns largest blob in channel, or 0 if none
 	if (get_object_count(channel) > 0) return get_object_area(channel,0);
@@ -292,26 +290,61 @@ void update_wait(){
 //deprecated, use update_wait()
 void cam_block() { update_wait(); }
 
-//button utilities
-int abbutton(){
-	//returns 0,1 on a,b
-	WAIT(!(a_button() || b_button()));
-	WAIT(a_button() || b_button());
-	if (a_button()) return 0;
-	if (b_button()) return 1;
-	printf("ERROR!");beep();
-	msleep(2000);beep();
-	return 0;//if something broke
-}
+//ASUS Xtion Depth Sensor Utility
 
-int abcbutton(){
-	//returns 0,1,2 on a,b,c
-	WAIT(!(a_button() || b_button() || c_button()));
-	WAIT(a_button() || b_button() || c_button());
-	if (a_button()) return 0;
-	if (b_button()) return 1;
-	if (c_button()) return 2;
-	printf("ERROR!");beep();
-	msleep(2000);beep();
-	return 0;//if something broke
+//0 if not interactive, 1 if interactive
+//only need meaningful x and y values if not interactive
+int depth_distance(int interactive, int x, int y) 
+{
+	depth_open();
+	if(interactive==1)
+	{
+		int r,g,b,row,c,val;
+		graphics_open(320,240); // open up graphics window (full screen on Link)
+		while(!get_mouse_left_button()) 
+		{ 
+			depth_update(); 
+			for(row=0; row<240; row++) 
+			{ 
+				for(c=0; c<320; c++) 
+				{ 
+					val = get_depth_value(row,c) ; // get distance for pixel in mm
+					// if its not a legal value or its too far (1.5m for this program), color it black
+					if(val > 1536 || val==0) graphics_pixel(c,row,0,0,0);
+					else 
+					{ 
+					       val=val - 512; 
+					       r=val > 512 ? 0 : 255-val/2;  		// red if close
+					       g=val > 512 ? 255-(val-512)/2 : val/2; 	// green if mid value
+					       b=val > 512 ? val/2-255 : 0;  		// blue if far (~1.5m)
+					       graphics_pixel(c,row, r,g,b); 		// draw the pixel
+					}
+				}
+			}
+			graphics_update(); // paint the screen with all of the pixels
+		}
+		get_mouse_position(&c,&row); 		
+		depth_close(); graphics_close();  
+		printf("Distance to pixel %i,%i is %imm\n\n\n",c,row,get_depth_value(row,c))
+	}
+	else return get_depth_value(x,y);
+}
+  
+//points a servo centered on the camera's fov towards an object that fits the color defined at camchannel
+void set_servo_color(int servo, int camchannel) 
+{
+	int offset, x, y;
+	enable_servo(servo);	// enable servo
+	camera_open();	
+	camera_update();    
+	while (get_object_count < 0) { camera_update(); msleep(1); }
+	
+	//largest blob - we now have an object in sight
+	point2 p = get_object_center(camchannel,0);
+	x = p.x;
+	y = p.y;
+	
+	display_printf(0,1,"Center of largest blob: (%d,%d)   ",x,y);
+	offset=5*(x-80); // amount to deviate servo from center
+	set_servo_position(0,1024+offset);
 }
