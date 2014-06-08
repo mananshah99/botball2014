@@ -7,7 +7,7 @@
 // Right motor turn 90 degrees to the left (with mrp)
 // mrp(MOT_RIGHT, Power, -1544)
 
-/**************ARM SERVO IMPORTANT VALUES******8*
+/**************ARM SERVO IMPORTANT VALUES*******
 *
 *	Position		Value
 *	-----------------------------
