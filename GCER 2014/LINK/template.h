@@ -188,6 +188,20 @@ int in_range(int input, int wanted, int fudge)
 //actual distance away from object with ET sensor
 float ET_distance(int port){
     return ((sqrt(100.0/analog10(port)))-2.2);
+	//	return sqrt(3674186.332167/(X-9.384503)+26294.871673)-176.997129;
+}
+
+int et_avg(int port)
+{
+	int totalcount = 100;
+	int run = 0;
+	int i;
+	for(i=0;i<totalcount;i++)
+	{
+		run += analog_et(port);
+		msleep(2);
+	}
+	return run/totalcount;
 }
 
 //Light Start
@@ -325,7 +339,7 @@ int depth_distance(int interactive, int x, int y)
 		}
 		get_mouse_position(&c,&row); 		
 		depth_close(); graphics_close();  
-		printf("Distance to pixel %i,%i is %imm\n\n\n",c,row,get_depth_value(row,c))
+		printf("Distance to pixel %i,%i is %imm\n\n\n",c,row,get_depth_value(row,c));
 	}
 	else return get_depth_value(x,y);
 }
