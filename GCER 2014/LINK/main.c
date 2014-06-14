@@ -1,5 +1,6 @@
-#include "./template.h"
+#ifdef X
 
+#include "./template.h"
 int main() {
 	enable_servo(1);
 	camera_open();
@@ -16,4 +17,6 @@ int main() {
 		camera_update();   // get new image data before repeating
 	}
 	set_servo_color(1,0);
+	//118, 9[0-9]
 }
+#endif

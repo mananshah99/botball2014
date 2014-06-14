@@ -6,8 +6,8 @@
 
 
 //primary driving code
-#define MOT_LEFT 0//Polyp edition!
-#define MOT_RIGHT 3 
+#define MOT_LEFT 1//Polyp edition!
+#define MOT_RIGHT 2
 #define PI 3.14159265358979
 
 #define SPD 100//turning
