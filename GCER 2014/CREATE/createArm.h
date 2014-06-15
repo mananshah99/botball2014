@@ -5,11 +5,11 @@
 #include singing.h
 #include drive.h
 
-#define front_arm 0
-#define hanger_holder 1
-#define elevator_left_motor 0
-#define elevator_right_motor 1
-#define elevator_sensor 0
+#define front_arm 0				//correct
+#define hanger_holder 1			//
+#define elevator_left_motor 0	//correct
+#define elevator_right_motor 2	//correct
+#define elevator_sensor 0		//
 
 #define front_arm_top_position ?
 #define front_arm_bot_position ?
