@@ -1,3 +1,4 @@
+#ifdef TEST1
 #include "./template.h"
 int main() {
 	enable_servo(1);
@@ -27,3 +28,4 @@ int main() {
 	set_servo_color(1,0);
 	//118, 9[0-9]
 }
+#endif

@@ -1,11 +1,10 @@
 // Created on Fri March 28 2014
 #include "./template.h"
 
-#define CATCHERARM 2
-#define CATCHER_DOWN 50
-#define CATCHER_MIDWAY 700
-#define CATCHER_UP 1700
-#define HALFWAY 800
+#define GRABBER 1
+#define GRABBER_DOWN 500
+#define GRABBER_MID 1032
+#define GRABBER_UP 1543
 
 #define COL_GREEN 0 
 #define COL_PINK 1
@@ -23,8 +22,8 @@ int main()
 	/*****************/
 	
 	/**ENTER THESE NUMBERS MANUALLY**/
-	int centerx=115; 
-	int centery=91;
+	int centerx=106; 
+	int centery=88;
 	/********************************/
 	
 	int margin=8;
@@ -35,7 +34,7 @@ int main()
 	
 	camera_open();
 	s_time = curr_time();
-	
+	enable_servos();
 	while((curr_time()-s_time) < 14) {
 		while (isGreenCentered == 0) {
 			camera_update(); // process the most recent image
@@ -50,8 +49,8 @@ int main()
 				deltax = abs(xvalue-centerx);
 				deltay = abs(yvalue-centery);
 				
-				stepsizex = (deltax>10) ? 50: 20;
-				stepsizey = (deltay>10) ? 50: 20;
+				stepsizex = (deltax>10) ? 20: 10;
+				stepsizey = (deltay>10) ? 20: 10;
 				
 				printf("x is %d, y is %d\n", xvalue, yvalue);
 				
@@ -61,15 +60,13 @@ int main()
 				if(isGreenCentered == 1) //get x, y for the biggest blob the channel sees		
 				{	
 					printf("Biggest blob at (%d,%d)\n",xvalue,yvalue);
-					msleep(300);
-					set_servo_position(CATCHERARM, CATCHER_MIDWAY);
-					msleep(300);
-					set_servo_position(CATCHERARM, CATCHER_DOWN);
-					msleep(300);
-					currpos=get_servo_position(CATCHERARM);
-					printf("%d\n",currpos);
-					set_servo_position(CATCHERARM,CATCHER_UP);
-					msleep(500);
+					msleep(600);
+					//set_servo_position(GRABBER, GRABBER_MID);
+					//msleep(600);
+					set_servo_position(GRABBER, GRABBER_DOWN);
+					msleep(600);
+					set_servo_position(GRABBER,GRABBER_UP);
+					msleep(600);
 				}
 				else
 				{
