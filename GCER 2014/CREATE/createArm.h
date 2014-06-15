@@ -45,11 +45,12 @@ void full_arm_drop()
 
 void elevator_drop()
 {
-	while(digital(elevator_sensor)==1);
+	while(digital(elevator_sensor)==0);
 	{
-		motor(elevator_left_motor,-100);
-		motor(elevator_right_motor,-100);
+		motor(elevator_left_motor,-50);
+		motor(elevator_right_motor,-50);
 		msleep(500);
+		ao();
 	}
 	ao();
 }
