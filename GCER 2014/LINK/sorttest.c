@@ -1,8 +1,10 @@
 // Created on Fri March 28 2014
+//#define X
+#ifdef X
 #include "./template.h"
 
 #define GRABBER 1
-#define GRABBER_DOWN 500
+#define GRABBER_DOWN 300
 #define GRABBER_MID 1032
 #define GRABBER_UP 1543
 
@@ -11,6 +13,12 @@
 
 #define S_GATE 3 
 #define S_CATCHER 2
+/*
+	int xDif = abs(115-x);
+	int yDif = abs(91-y);
+	right(atan(xDif/yDif)+90);
+	forward(sqrt(xDif*xDif+yDif*yDif));
+*/
 
 int main()
 {
@@ -22,8 +30,8 @@ int main()
 	/*****************/
 	
 	/**ENTER THESE NUMBERS MANUALLY**/
-	int centerx=106; 
-	int centery=88;
+	int centerx=88; 
+	int centery=63;
 	/********************************/
 	
 	int margin=8;
@@ -43,8 +51,8 @@ int main()
 
 			if (get_object_count(COL_GREEN) > 0) 
 			{
-				xvalue = get_object_center(COL_GREEN,0).x;
-				yvalue = get_object_center(COL_GREEN,0).y;
+				xvalue = get_object_center(COL_GREEN, 0).x;
+				yvalue = get_object_center(COL_GREEN, 0).y;
 				
 				deltax = abs(xvalue-centerx);
 				deltay = abs(yvalue-centery);
@@ -65,6 +73,10 @@ int main()
 					//msleep(600);
 					set_servo_position(GRABBER, GRABBER_DOWN);
 					msleep(600);
+					right(2,0);
+					msleep(1000);
+					left(2,0);
+					msleep(1000);
 					set_servo_position(GRABBER,GRABBER_UP);
 					msleep(600);
 				}
@@ -122,3 +134,4 @@ int main()
 	disable_servos();
 	printf("done!");
 }
+#endif
