@@ -1,4 +1,4 @@
-#define TEST1
+//#define TEST1
 #ifdef TEST1
 #include "./template.h"
 int main() {
