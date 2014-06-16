@@ -16,7 +16,7 @@
 
 void full_arm_lift()
 {
-	front_arm_lift()
+	front_arm_lift();
 	elevator_lift();
 }
 

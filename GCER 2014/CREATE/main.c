@@ -3,7 +3,7 @@
 #include "./createArm.h"
 //a lot of #defined variables are in "createArm.h"
 
-#define
+//#defines go here
 
 /** Create is facing backwards, so forward commands move the create backwards **/
 
@@ -62,10 +62,14 @@ int main()
 	msleep(300);
 	ao();
 	msleep(100);
-	create_forward(100,50);
+	create_forward(50,50);
+	msleep(50);
+	create_forward(50,100);
+	full_arm_lift();
 	msleep(100);
 	
 	
+	printf("done");
 	ao();
 	create_disconnect();
 }
