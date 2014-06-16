@@ -12,8 +12,8 @@ double dfx(double (*f)(double), double x0) {
 }
 
 double dpt(double errprev, double errnow) {
-	const double delta = 1.0e-6
-
+	const double delta = 1.0e-6;
+}
 /*
 #include <math.h>
 
