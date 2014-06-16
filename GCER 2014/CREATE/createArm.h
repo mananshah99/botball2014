@@ -1,5 +1,5 @@
 // Created on Fri June 13 2014 by Howard Wang
-//Arm libraries: to lift the arm for the Create
+//:ibrary: to lift the arm for the Create, and also other stuff for create
 
 #include "template.h"
 
@@ -18,7 +18,6 @@ void full_arm_lift()
 {
 	front_arm_lift()
 	elevator_lift();
-	msleep(100);
 }
 
 
@@ -38,7 +37,6 @@ void full_arm_drop()
 {
 	elevator_drop();
 	front_arm_drop();
-	msleep(300);
 }
 
 void elevator_drop()

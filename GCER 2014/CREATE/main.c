@@ -44,7 +44,9 @@ int main()
 	hanger_release();
 	msleep(200);
 	
+	/** BLUE HANGER TIME !!!!!!!!!!!!!!!!!! **/
 	
+	create_disconnect();
 }
 #endif
 
