@@ -11,7 +11,7 @@
 
 #define front_arm_top_position 600
 #define front_arm_bot_position 1900
-#define hanger_holder_close 0
+#define hanger_holder_closed 0
 #define hanger_holder_open 1365
 
 void full_arm_lift()
@@ -60,6 +60,8 @@ void front_arm_drop()
 
 void hanger_release()
 {
+	create_backward(50, 50);
+	msleep(100);
 	set_servo_position(hanger_holder, hanger_holder_open);
 	msleep(200);
 	motor(elevator_left_motor,-20);

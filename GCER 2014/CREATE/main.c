@@ -19,7 +19,7 @@ int main()
 	shut_down_in(119.);
 	create_connect();
 	enable_servos();
-	set_servo_position(hanger_holder, hanger_holder_close);
+	set_servo_position(hanger_holder, hanger_holder_closed);
 	msleep(100);
 	create_drive_left(50,50,90);
 	msleep(200);
@@ -39,13 +39,34 @@ int main()
 	msleep(200);
 	elevator_lift();
 	msleep(200);
-	create_backward(100,50);
+	create_backward(50,50);
 	msleep(200);
 	hanger_release();
 	msleep(200);
 	
 	/** BLUE HANGER TIME !!!!!!!!!!!!!!!!!! **/
 	
+	printf("Blue hanger time!");
+	create_drive_right(50, 50, 270);
+	msleep(100);
+	create_backward(20,50);
+	msleep(100);
+	create_drive_right(50, 50, 90);
+	msleep(100);
+	create_backward(100,50);
+	msleep(500);
+	set_servo_position(hanger_holder, hanger_holder_closed);
+	msleep(100);
+	motor(elevator_left_motor,-20);
+	motor(elevator_right_motor,-20);
+	msleep(300);
+	ao();
+	msleep(100);
+	create_forward(100,50);
+	msleep(100);
+	
+	
+	ao();
 	create_disconnect();
 }
 #endif
