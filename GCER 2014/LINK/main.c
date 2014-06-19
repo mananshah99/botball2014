@@ -47,7 +47,7 @@ int main() {
 			y_blob = get_object_center(0,0).y;  
 		}
 		else {
-			printf("!!!!!!!!!!!!!!!!!!!!!!! NO BLOB IN SIGHT !!!!!!!!!!!!!!!!!!!!!!!"); 
+			SHOW(printf("!!!!!!!!!!!!!!!!!!!!!!! NO BLOB IN SIGHT !!!!!!!!!!!!!!!!!!!!!!!")); 
 			msleep(2000);
 			x_blob = get_object_center(0,0).x;  
 			y_blob = get_object_center(0,0).y;  
@@ -68,7 +68,7 @@ int main() {
 		motor(MOT_RIGHT, (K_p*E)+(integral*K_i)+(derivative*K_d));
 		
 		msleep(1);
-		printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative);
+		SHOW(printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative));
 		prev_error = E;
 	}
 }
