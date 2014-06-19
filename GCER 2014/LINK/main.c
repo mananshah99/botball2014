@@ -2,7 +2,7 @@
 #ifdef MAIN
 #include "./template.h"
 int main() {
-	#define DEBUG // comment this out when in actual competition 
+	//#define DEBUG // comment this out when in actual competition 
 	
 	/**	
 	 * while the error is not within a certain EPSILON
@@ -37,9 +37,11 @@ int main() {
 	double prev_error = 0.0; 
 	
 	//threshold value
-	double EPSILON = 0.05;
+	double EPSILON = 0.1;
+	double E = 100;
 		
-	while(abs(E)>EPSILON) {
+	while(E > EPSILON || E < -EPSILON) {
+		ghj: 
 		camera_update();
 		SHOW(printf("area of nearest blob -->  %d\n", cam_area(0)));
 		if(cam_area(0)!=0) {
@@ -47,8 +49,8 @@ int main() {
 			y_blob = get_object_center(0,0).y;  
 		}
 		else {
-			SHOW(printf("!!!!!!!!!!!!!!!!!!!!!!! NO BLOB IN SIGHT !!!!!!!!!!!!!!!!!!!!!!!")); 
-			msleep(2000);
+			SHOW(printf("!!!!!!!!!!!!!!!!!!!!!!! NO BLOB IN SIGHT !!!!!!!!!!!!!!!!!!!!!!!!")); 
+			goto ghj;
 			x_blob = get_object_center(0,0).x;  
 			y_blob = get_object_center(0,0).y;  
 		}
@@ -71,5 +73,6 @@ int main() {
 		SHOW(printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative));
 		prev_error = E;
 	}
+	printf("done");
 }
 #endif
