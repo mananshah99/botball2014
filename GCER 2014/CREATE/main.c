@@ -121,7 +121,6 @@ int main()
 #ifdef full_arm_drop_test
 int main
 {
-	enable_servos();
 	full_arm_drop();
 }
 #endif
