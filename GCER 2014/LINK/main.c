@@ -92,6 +92,18 @@ int main() {
 	beep();
 	msleep(1000);
 	
+	///////////driving/////////////
+	
+	camera_update();
+	do{
+		x_blob = get_object_center(0,0).x;  
+		y_blob = get_object_center(0,0).y;  
+	}while(cam_area(0)==0);
+	
+	E = -y_blob + y_target;
+	//11 used to be 10.4 here
+	backward(-(((double)E)*12)/1000.);
+	/*
 	K_p = 1.0;
 	K_i = 0.1;
 	K_d = 0.001;	
@@ -100,7 +112,7 @@ int main() {
 	derivative = 0.0;
 	prev_error = 0.0; 
 
-	while(1 /*perhaps an in_range here?*/) {
+	while(1) {
 		camera_update();
 		printf("area of nearest blob -->  %d\n", cam_area(0));
 		if(cam_area(0)!=0) {
@@ -135,15 +147,23 @@ int main() {
 			ao();
 			break;
 		}
-	}
+	}*/
 	printf("[log] done overall");
 	msleep(1000);
 	
 	//dropping 
-	set_servo_position(1, 250);
-	msleep(5000);
-	
-	set_servo_position(1, 1584);
+	set_servo_position(1, 200);
+	msleep(1500);
+	//shaking
+	forward(.1);
+	msleep(100);
+	backward(.2);
+	msleep(100);
+	forward(.1);
+	msleep(100);
+	set_servo_position(1, 1800);
+	msleep(2000);
+	printf("[log] finished tribble pickup");
 	disable_servos();
 }
 #endif

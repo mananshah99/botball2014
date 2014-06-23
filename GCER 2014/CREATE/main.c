@@ -1,5 +1,4 @@
 // Created on Sat June 14 2014 by Howard Wang
-// Brandon was here
 
 #include "./createArm.h"
 //a lot of #defined variables are in "createArm.h"
