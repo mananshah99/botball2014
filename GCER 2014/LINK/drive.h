@@ -10,9 +10,12 @@
 #define MOT_RIGHT 2
 #define PI 3.14159265358979
 
+/**THESE ARE IMPORTANT**/
 #define SPD 100//turning
-#define SPDl 100.//left forward
-#define SPDr 94.//right forward
+#define SPDl 80.//left forward
+#define SPDr 80.//right forward
+
+
 #define rdistmult 1.0
 #define SPDlb 100.//left backward
 #define SPDrb 100.//right backward

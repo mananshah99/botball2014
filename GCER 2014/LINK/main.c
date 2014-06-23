@@ -102,7 +102,7 @@ int main() {
 	
 	E = -y_blob + y_target;
 	//11 used to be 10.4 here
-	backward(-(((double)E)*11)/1000.);
+	backward(-(((double)E)*12)/1000.);
 	/*
 	K_p = 1.0;
 	K_i = 0.1;
@@ -152,8 +152,15 @@ int main() {
 	msleep(1000);
 	
 	//dropping 
-	set_servo_position(1, 250);
-	msleep(1000);
+	set_servo_position(1, 200);
+	msleep(1500);
+	//shaking
+	forward(.1);
+	msleep(100);
+	backward(.2);
+	msleep(100);
+	forward(.1);
+	msleep(100);
 	set_servo_position(1, 1800);
 	msleep(2000);
 	printf("[log] finished tribble pickup");
