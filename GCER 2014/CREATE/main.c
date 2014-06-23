@@ -3,16 +3,14 @@
 #include "./createArm.h"
 //a lot of #defined variables are in "createArm.h"
 
-//#defines go here
+//#defines for go here
 
 /** Create is facing backwards, so forward commands move the create backwards **/
 
+//These are the 
 //#define MAIN
-#define full_arm_lift_test
-//#define elevator_lift_test
-//#define full_arm_drop_test
-//#define elevator_drop_test
-//#define front_arm_lift_test
+
+
 
 /**=============================================================================**/
 

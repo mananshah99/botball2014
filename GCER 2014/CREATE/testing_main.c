@@ -1,5 +1,12 @@
 // Created on Sun June 22 2014
 
+#define drive_path_test
+//#define full_arm_lift_test
+//#define elevator_lift_test
+//#define full_arm_drop_test
+//#define elevator_drop_test
+//#define front_arm_lift_test
+
 /** TESTING PARTS OF MAIN.C!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! **/
 
 /**============================================================================**/
