@@ -15,7 +15,13 @@ int main(int distance){
 	//difference between the distances
 	int diff = abs(leftDistance-rightDistance);
 	
+	//squares robet
 	while (diff > aDiff) {
-		
+		//turn robot untill square
+	}
+	
+	//moves robot to correct distance
+	while ((leftDistance+rightDistance)/2 != distance){
+		//mover robot forward or back
 	}
 }
