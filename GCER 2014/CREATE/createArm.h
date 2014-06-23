@@ -1,5 +1,5 @@
 // Created on Fri June 13 2014 by Howard Wang
-//:ibrary: to lift the arm for the Create, and also other stuff for create
+//library: to lift the arm for the Create, and also other stuff for create
 
 #include "template.h"
 

@@ -9,6 +9,7 @@
 /** Create is facing backwards, so forward commands move the create backwards **/
 
 //#define MAIN
+//#define drive_path_test
 #define full_arm_lift_test
 //#define elevator_lift_test
 //#define full_arm_drop_test
@@ -38,6 +39,9 @@ int main()
 	create_drive_direct_right(50,50,90);
 	msleep(200);
 	create_backward(100, 100);
+	
+	/** Around here is the end of the drive path, which will be changed **/
+	
 	msleep(200);
 	create_drive_direct_left(50,50,180);
 	msleep(200);
@@ -98,51 +102,7 @@ int main()
 }
 #endif
 
+// Program done
 
 /**============================================================================**/
-
-
-#ifdef full_arm_lift_test
-int main()
-{
-	enable_servos();
-	full_arm_lift();
-	ao();
-}
-#endif
-
-#ifdef elevator_lift_test
-int main()
-{
-	elevator_lift();
-}
-#endif
-
-#ifdef full_arm_drop_test
-int main
-{
-	enable_servos();
-	full_arm_drop();
-}
-#endif
-
-#ifdef elevator_drop_test
-int main
-{
-	elevator_drop();
-}
-#endif
-
-#ifdef front_arm_lift_test
-int main()
-{
-	enable_servos();
-	front_arm_lift();
-	int x = get_servo_position(front_arm);
-	printf("%d\n", x);
-	ao();
-}
-#endif
-
-
 
