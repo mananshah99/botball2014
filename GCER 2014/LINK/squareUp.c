@@ -1,5 +1,5 @@
-#include "template.h";
-int main(int distance){
+#include "template.h"
+void square_up(int distance){
 
 	//replace p with the correct values later
 	int leftDistance = analog(int p);
