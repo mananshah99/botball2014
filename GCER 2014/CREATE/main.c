@@ -8,8 +8,8 @@
 
 /** Create is facing backwards, so forward commands move the create backwards **/
 
-#define main
-//#define full_arm_lift_test
+//#define MAIN
+#define full_arm_lift_test
 //#define elevator_lift_test
 //#define full_arm_drop_test
 //#define elevator_drop_test
@@ -17,7 +17,7 @@
 
 /**=============================================================================**/
 
-#ifdef main
+#ifdef MAIN
 int main()
 {
 	shut_down_in(119.);
@@ -25,21 +25,21 @@ int main()
 	enable_servos();
 	set_servo_position(hanger_holder, hanger_holder_closed);
 	msleep(100);
-	create_drive_left(50,50,90);
+	create_drive_direct_left(50,50,90);
 	msleep(200);
 	create_backward(635, 100);
 	msleep(200);
 	full_arm_lift();
 	msleep(300);
-	create_drive_right(50,50,90);
+	create_drive_direct_right(50,50,90);
 	msleep(100);
 	create_backward(635, 100);
 	msleep(200);
-	create_drive_right(50,50,90);
+	create_drive_direct_right(50,50,90);
 	msleep(200);
 	create_backward(100, 100);
 	msleep(200);
-	create_drive_left(50,50,180);
+	create_drive_direct_left(50,50,180);
 	msleep(200);
 	create_backward(50,50);
 	msleep(200);
@@ -56,11 +56,11 @@ int main()
 	/** BLUE HANGER TIME !!!!!!!!!!!!!!!!!! **/
 	
 	printf("Blue hanger time!\n");
-	create_drive_right(50, 50, 270);
+	create_drive_direct_right(50, 50, 270);
 	msleep(100);
 	create_backward(20,50);
 	msleep(100);
-	create_drive_right(50, 50, 90);
+	create_drive_direct_right(50, 50, 90);
 	msleep(100);
 	create_backward(100,50);
 	msleep(500);
@@ -82,9 +82,9 @@ int main()
 	ao();
 	full_arm_drop();
 	msleep(200);
-	create_drive_right(50, 50, 90);
+	create_drive_direct_right(50, 50, 90);
 	msleep(100);
-	create_backwards(50, 50);
+	create_backward(50, 50);
 	msleep(100);
 	
 	
@@ -106,7 +106,6 @@ int main()
 int main()
 {
 	enable_servos();
-	create_connect();
 	full_arm_lift();
 	ao();
 }

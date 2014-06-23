@@ -8,7 +8,7 @@
 #define elevator_motor 0
 #define elevator_sensor 15
 
-#define front_arm_top_position 00
+#define front_arm_top_position 150
 #define front_arm_bot_position 1900
 #define hanger_holder_closed 0
 #define hanger_holder_open 1365
@@ -16,6 +16,9 @@
 void full_arm_lift()
 {
 	front_arm_lift();
+	beep();
+	beep();
+	beep();
 	elevator_lift();
 }
 
@@ -25,7 +28,7 @@ void elevator_lift()
 	printf("%d\n", digital(elevator_sensor));
 	while(digital(elevator_sensor)==0)
 	{
-		motor(elevator_motor, 100);
+		motor(elevator_motor, 80);
 		msleep(500);
 	}
 	ao();
@@ -49,6 +52,7 @@ void elevator_drop()
 void front_arm_lift()
 {
 	set_servo_position(front_arm, front_arm_top_position);
+	msleep(200);
 }
 
 void front_arm_drop()
