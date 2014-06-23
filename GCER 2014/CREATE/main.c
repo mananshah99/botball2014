@@ -87,60 +87,8 @@ int main()
 	msleep(100);
 	
 	
-	
-	
-	
-	
 	printf("DONE\n");
 	ao();
 	create_disconnect();
 }
 #endif
-
-
-/**============================================================================**/
-
-
-#ifdef full_arm_lift_test
-int main()
-{
-	enable_servos();
-	full_arm_lift();
-	ao();
-}
-#endif
-
-#ifdef elevator_lift_test
-int main()
-{
-	elevator_lift();
-}
-#endif
-
-#ifdef full_arm_drop_test
-int main
-{
-	full_arm_drop();
-}
-#endif
-
-#ifdef elevator_drop_test
-int main
-{
-	elevator_drop();
-}
-#endif
-
-#ifdef front_arm_lift_test
-int main()
-{
-	enable_servos();
-	front_arm_lift();
-	int x = get_servo_position(front_arm);
-	printf("%d\n", x);
-	ao();
-}
-#endif
-
-
-
