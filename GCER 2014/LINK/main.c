@@ -2,7 +2,7 @@
 #ifdef MAIN
 #include "./template.h"
 int main() {
-	//#define DEBUG // comment this out when in actual competition 
+	#define DEBUG // comment this out when in actual competition 
 	
 	/**	
 	 * while the error is not within a certain EPSILON
@@ -16,20 +16,26 @@ int main() {
 	 * end
 	**/
 	
+	//1534, 100
+	
 	//constants
 	double K_p = 25.0;
-	double K_i = 0.01;
+	double K_i = 0.03;
 	double K_d = 0.01;
 	
 	//enabling things
+	
 	enable_servos();
 	camera_open();
 	camera_update();
 	
 	//values (rob is robot) 
 	int x_blob, y_blob;
-	int x_rob = 91;
-	int y_rob = -156;
+	int x_rob = 100;  
+	int y_rob = -113; //old: 156
+	
+	int x_target = x_rob; //new: 100
+	int y_target = 69; //new: 68 (old = 25)
 	
 	//for PID
 	double integral = 0.0;
@@ -37,10 +43,12 @@ int main() {
 	double prev_error = 0.0; 
 	
 	//threshold value
-	double EPSILON = 0.1;
+	double EPSILON = 0.02;
 	double E = 100;
 		
-	while(E > EPSILON || E < -EPSILON) {
+	//init
+	set_servo_position(1, 1584);
+	while(1/*!in_range(E, 0, EPSILON) || !in_range(E, 0, -EPSILON)*/) {
 		ghj: 
 		camera_update();
 		SHOW(printf("area of nearest blob -->  %d\n", cam_area(0)));
@@ -49,7 +57,7 @@ int main() {
 			y_blob = get_object_center(0,0).y;  
 		}
 		else {
-			SHOW(printf("!!!!!!!!!!!!!!!!!!!!!!! NO BLOB IN SIGHT !!!!!!!!!!!!!!!!!!!!!!!!")); 
+			SHOW(printf("!!!!!!!!!! NO BLOB IN SIGHT !!!!!!!!!!!!\n")); 
 			goto ghj;
 			x_blob = get_object_center(0,0).x;  
 			y_blob = get_object_center(0,0).y;  
@@ -70,9 +78,72 @@ int main() {
 		motor(MOT_RIGHT, (K_p*E)+(integral*K_i)+(derivative*K_d));
 		
 		msleep(1);
-		SHOW(printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative));
+		printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative);
 		prev_error = E;
+		
+		if(E<=EPSILON && E>=-EPSILON) 
+		{
+			ao();
+			break;
+		}
+		
 	}
-	printf("done");
+	printf("done with angle correction");
+	beep();
+	msleep(1000);
+	
+	K_p = 1.0;
+	K_i = 0.1;
+	K_d = 0.001;	
+
+	integral = 0.0;
+	derivative = 0.0;
+	prev_error = 0.0; 
+
+	while(1 /*perhaps an in_range here?*/) {
+		camera_update();
+		printf("area of nearest blob -->  %d\n", cam_area(0));
+		if(cam_area(0)!=0) {
+			x_blob = get_object_center(0,0).x;  
+			y_blob = get_object_center(0,0).y;  
+		}
+		else {
+			printf("!!!!!!!!!! NO BLOB IN SIGHT !!!!!!!!!!!!\n"); 
+			msleep(2000);
+			x_blob = get_object_center(0,0).x;  
+			y_blob = get_object_center(0,0).y;  
+		}
+			
+		double E = -y_blob+y_target;
+		
+		//this is a bit sketchy but it should work
+		if(prev_error==0) prev_error = E;
+			
+		integral += (E*0.001); //update time
+		derivative = (E - prev_error)/0.001;
+		
+		int spd = (K_p*E)+(integral*K_i)+(derivative*K_d);
+		spd = (spd > 60 ? 60 : spd);
+		motor(MOT_LEFT, spd);
+		motor(MOT_RIGHT, spd);
+		
+		msleep(1);
+		printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative);
+		prev_error = E;
+		
+		if(E<=EPSILON && E>=-EPSILON) {
+			ao();
+			break;
+		}
+	}
+	printf("[log] done overall");
+	msleep(1000);
+	
+	//dropping 
+	set_servo_position(1, 250);
+	msleep(5000);
+	
+	set_servo_position(1, 1584);
+	disable_servos();
 }
 #endif
