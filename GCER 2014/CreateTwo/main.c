@@ -47,8 +47,6 @@ int main()
 	create_connect();
 	enable_servos();
 	servo_set(HANGER,HANGER_CLOSE,0.3);
-	msleep(300);
-	arm_lift();
 	sleep(1);
 	
 	create_right(82,0,100); //(angle,radius,speed)
@@ -57,6 +55,7 @@ int main()
 	create_backward(850, 100);
 	create_right(90,0,100);
 	create_backward(300,100);
+	arm_lift();//armlift while robot moves
 	create_block();//At the Pipes
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
