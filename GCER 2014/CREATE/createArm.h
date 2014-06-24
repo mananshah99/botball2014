@@ -16,9 +16,6 @@
 void full_arm_lift()
 {
 	front_arm_lift();
-	beep();
-	beep();
-	beep();
 	elevator_lift();
 }
 
