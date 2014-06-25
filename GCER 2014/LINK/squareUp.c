@@ -1,6 +1,12 @@
 #include "template.h"
 void square_up(int distance){
 
+	//P constant
+	double Con = 20.0;
+	
+	// distance between IR sensors
+	double dia = 0;
+	
 	//replace p with the correct values later
 	int leftDistance = analog(int p);
 	int rightDistance = analog(int p);
@@ -15,13 +21,17 @@ void square_up(int distance){
 	//difference between the distances
 	int diff = abs(leftDistance-rightDistance);
 	
-	//squares robet
+	//squares robot
 	while (diff > aDiff) {
+		diff = abs(leftDistance-rightDistance);
+		double AE = atan(diff/dia));
 		//turn robot untill square
+		motor(MOT_LEFT,con*AE));
+		motor(MOT_RIGHT,-1*con*AE);
 	}
 	
 	//moves robot to correct distance
 	while ((leftDistance+rightDistance)/2 != distance){
-		//mover robot forward or back
+		//move robot forward or back
 	}
 }
