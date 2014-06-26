@@ -23,7 +23,7 @@ void arm_lift(){
 	while(digital(SENSOR_UP)==0)
 	{
 		motor(ELEVATOR, 80);
-		msleep(500);
+		msleep(50);
 	}
 	motor(ELEVATOR,0);
 }
@@ -32,7 +32,7 @@ void arm_lower(){
 	while(digital(SENSOR_DOWN)==0)
 	{
 		motor(ELEVATOR, -10);
-		msleep(500);
+		msleep(50);
 	}
 	motor(ELEVATOR,0);
 	msleep(400);
@@ -47,42 +47,59 @@ int main()
 	//wait_for_light(LIGHTSTART);
 	shut_down_in(119.);
 	create_connect();
+	create_forward(10,10);
 	enable_servos();
 	servo_set(HANGER,HANGER_CLOSE,0.3);
-	sleep(1);
+	create_block();
 	
-	create_right(82,0,100); //(angle,radius,speed); 82 = 90deg
-	create_backward(400, 100);// (distance in mm,speed)
-	create_left(82,0,100);
-	create_backward(885, 100);
-	create_right(90,0,100);
+	create_left(82,0,100); //(angle,radius,speed); 82 = 90deg
+	create_backward(390, 100);// (distance in mm,speed)
+	create_right(82,0,100);
+	create_forward(350, 100);
+	create_left(90,0,100);//face the rack
 	create_backward(250,100);
 	arm_lift();//armlift while robot moves
 	create_block();//At the Pipes
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
-	create_forward(300,100);
+	create_forward(310,100);//Score 3 hangers
 	create_block();//Backed-up from Pipes
-	
+		printf("Get 1st blue\n");
 	arm_lower();
-	create_backward(215,25);
+	create_backward(190,25);//approach blue hanger (facing away)
+	create_left(5,0,100);//turn
+	create_backward(25,25);
 	create_block();
 	
 	servo_set(HANGER,HANGER_CLOSE,0.5);
-	msleep(500);
-	servo_set(ARM,ARM_DMID,0.5);
-	servo_set(ARM,ARM_DOWN,0.5);
-	create_forward(300,100);
+	create_backward(10,100);
 	create_block();
 	
+	servo_set(ARM,ARM_DMID,0.5);
+	msleep(1000);
+	servo_set(ARM,ARM_DOWN,0.5);//get blue
+	create_forward(10,100);
+	create_right(5,0,100);//reset angle
+	create_forward(215,100);//away
+	create_left(20,0,100);//turn for lift
+	create_block();
+		printf("Drop 1st blue\n");
 	arm_lift();
 	servo_set(ARM,ARM_UMID,0.5);
-	create_backward(215,25);
+	create_right(10,0,100);//partial reset angle
+	create_backward(240,25);//approach
 	create_block();
 	
 	servo_set(ARM,ARM_UP,0.5);
+	servo_set(HANGER,HANGER_OPEN,0.3);
+	create_right(10,0,100);//reset angle
+	create_forward(40,25);//score blue hanger
+	//
+	create_forward(200,25);//score blue hanger
+	printf("Get 2nd Blue\n");
+	/*
 	
+	*/
 	//Temp End Code
-	sleep(1);
-	disable_servos();
+	sleep(10); disable_servos(); printf("Done\n");
 }
