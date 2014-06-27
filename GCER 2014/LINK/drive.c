@@ -40,6 +40,7 @@ void drive(int mL,int mR){
  * \param radius radius at which to turn around
  */
 void right(float degrees, float radius){
+		degrees = -degrees;
 		int turnrspeed;
 		long turnl=((2*radius+ks)*CMtoBEMF*PI)*(degrees/360.);
 		long turnr=((2*radius-ks)*CMtoBEMF*PI)*(degrees/360.);
@@ -92,6 +93,7 @@ void right(float degrees, float radius){
  */
 void left(float degrees, float radius){
 int turnlspeed;
+	degrees = -degrees;
 	long turnl=((2*radius-ks)*CMtoBEMF*PI)*(degrees/360.);
 	long turnr=((2*radius+ks)*CMtoBEMF*PI)*(degrees/360.);
     if(turnr == 0l) return;
@@ -139,7 +141,7 @@ int turnlspeed;
 
 void multforward(float distance, float speedmult){//go forward a number of CM    NOT    backEMF counts
 	if(distance < 0l){
-		distance = -distance;
+		distance = distance;
 	}
 	long newdist;
 	newdist = distance*CMtoBEMF;//conversion ratio
@@ -157,7 +159,7 @@ void multforward(float distance, float speedmult){//go forward a number of CM   
 }
 void forward(float distance){//go forward a number of CM    NOT    backEMF counts
 	if(distance < 0l){
-		distance = -distance;
+		distance = distance;
 	}
 	long newdist;
 	newdist = distance*CMtoBEMF;//conversion ratio
@@ -180,7 +182,7 @@ void forward(float distance){//go forward a number of CM    NOT    backEMF count
 }
 void backward(float distance){//go backward a number of CM    NOT    backEMF counts
 	if(distance < 0l){
-		distance = -distance;
+		distance = distance;
 	}
 	long newdist;
 	newdist = distance*CMtoBEMF;

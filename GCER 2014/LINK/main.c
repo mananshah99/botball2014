@@ -14,6 +14,10 @@ int main() {
 	camera_open();
 	camera_update();
 	
+	forward(35);
+	left(90,0);
+	forward(10);
+	
 	correct_angle();
 	correct_distance();
 	
