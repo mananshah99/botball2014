@@ -1,3 +1,4 @@
+#ifdef aldsks
 #include "template.h"
 void square_up(int distance){
 	//distance is not in inches do testing to find out for each case distance of 300 is about 3 inches
@@ -57,3 +58,4 @@ void square_up(int distance){
 		}
 	}
 }
+#endif
