@@ -52,23 +52,26 @@ int main()
 	servo_set(HANGER,HANGER_CLOSE,0.3);
 	create_block();
 	
-	create_left(82,0,100); //(angle,radius,speed); 82 = 90deg
+	create_left(82,0,100); //(angle,radius,speed); 82 ~ 90deg
 	create_backward(390, 100);// (distance in mm,speed)
 	create_right(82,0,100);
 	create_forward(350, 100);
 	create_left(90,0,100);//face the rack
-	create_backward(250,100);
+	create_backward(200,100);
 	arm_lift();//armlift while robot moves
 	create_block();//At the Pipes
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
-	create_forward(310,100);//Score 3 hangers
+	while(get_create_lbump() == 0){
+		create_drive_direct(100,100);//(r_speed,l_speed)
+	}
+	//create_forward(300,100);//Score 3 hangers, away
 	create_block();//Backed-up from Pipes
-		printf("Get 1st blue\n");
+	
 	arm_lower();
-	create_backward(190,25);//approach blue hanger (facing away)
+	create_backward(190,50);//approach blue hanger (facing away)
 	create_left(5,0,100);//turn
-	create_backward(25,25);
+	create_backward(45,50);
 	create_block();
 	
 	servo_set(HANGER,HANGER_CLOSE,0.5);
@@ -76,30 +79,31 @@ int main()
 	create_block();
 	
 	servo_set(ARM,ARM_DMID,0.5);
-	msleep(1000);
+	msleep(500);
 	servo_set(ARM,ARM_DOWN,0.5);//get blue
 	create_forward(10,100);
 	create_right(5,0,100);//reset angle
-	create_forward(215,100);//away
-	create_left(20,0,100);//turn for lift
+	create_forward(210,200);//away
+	create_left(25,0,100);//turn for lift
 	create_block();
-		printf("Drop 1st blue\n");
+	
 	arm_lift();
 	servo_set(ARM,ARM_UMID,0.5);
-	create_right(10,0,100);//partial reset angle
-	create_backward(240,25);//approach
+	create_right(5,0,100);//partial reset angle
+	create_backward(290,100);//approach for score
 	create_block();
 	
 	servo_set(ARM,ARM_UP,0.5);
-	servo_set(HANGER,HANGER_OPEN,0.3);
-	create_right(10,0,100);//reset angle
-	create_forward(40,25);//score blue hanger
-	//
-	create_forward(200,25);//score blue hanger
-	printf("Get 2nd Blue\n");
-	/*
+	create_right(20,0,100);//reset angle
+	create_left(5,0,50);//turn
+	create_forward(100,100);//score blue hanger
+	create_right(5,0,100);//reset angle
+	create_block();
 	
-	*/
+	servo_set(HANGER,HANGER_OPEN,0.3);
+	msleep(500);
+	create_right(5,0,100);//reset angle
+	create_block();
 	//Temp End Code
 	sleep(10); disable_servos(); printf("Done\n");
 }
