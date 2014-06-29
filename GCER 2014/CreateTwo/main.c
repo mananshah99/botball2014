@@ -59,15 +59,15 @@ int main()
 	
 	enable_servos();
 	servo_set(HANGER,HANGER_CLOSE,0.3);
-	create_right(82,0,100); //(angle,radius,speed); 82 ~ 90deg
+	create_right(85,0,100); //(angle,radius,speed); 82 ~ 90deg
 	create_forward(500, 100);// (distance in mm,speed)
+	arm_lift();//armlift while robot moves
 	create_lineup();
-	create_backward(150,100);
+	create_backward(130,100);
 	create_left(82,0,100);
 	create_forward(300, 100);
-	create_left(90,0,100);//face the rack
-	create_backward(200,100);
-	arm_lift();//armlift while robot moves
+	create_left(85,0,100);//face the rack
+	create_backward(250,100);
 	create_block();//At the Pipes
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
@@ -124,8 +124,8 @@ int main()
 	create_right(5,0,100);//reset angle
 	create_block();
 	
-	create_drive_direct_dist(100,80,25);
-	create_drive_direct_dist(80,100,25);
+	create_drive_direct_dist(100,80,10);
+	create_drive_direct_dist(80,100,10);
 	//Temp End Code
 	sleep(10); disable_servos(); printf("Done\n");
 }

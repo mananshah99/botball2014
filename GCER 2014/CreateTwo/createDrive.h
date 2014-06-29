@@ -203,10 +203,11 @@ void create_lineup(){//lines up the create on a black line
 		if (rcliff < 500) rspd = -20;
 		
 		if (seconds()-tstart > 4){lspd/=2;rspd/=2;}
-		/*if (seconds()-tstart > 6){
+		if (seconds()-tstart > 10){
 			create_stop();
+			printf("TIME OUT");
 			return;//failure, timeout
-		}*/
+		}
 		//printf("\n%6d%6d",lcliff,rcliff);
 		create_drive_direct(lspd,rspd);
 		if (lspd == rspd && lspd == 0)
