@@ -13,12 +13,16 @@
 #define HANGER_CLOSE 0
 #define HANGER_OPEN 1365
 //#define LIGHTSTART
+//for create cliff sensors
+#define lcliff get_create_lcliff_amt(.002)
+#define rcliff get_create_rcliff_amt(.002)
 /*..............................................Functions Begin..............................................*/
 void create_setup(){
 	create_backward(10,50);
 	create_forward(10,50);
 	create_left(88,0,50);
 	create_forward(50,50);
+	create_block(); sleep(3);
 }
 void arm_lift(){
 	//arm
@@ -54,16 +58,20 @@ int main()
 	shut_down_in(119.);
 	create_connect();
 	create_setup();
-	//create_forward(10,10);
-	create_block();
 	
 	enable_servos();
 	servo_set(HANGER,HANGER_CLOSE,0.3);
 	create_right(85,0,100); //(angle,radius,speed); 82 ~ 90deg
-	create_forward(500, 100);// (distance in mm,speed)
+	create_backward(50,50);//square up
+	create_forward(390, 100);// (distance in mm,speed)
 	arm_lift();//armlift while robot moves
-	create_lineup();
-	create_backward(130,100);
+	//while(rcliff>800 && lcliff>800){
+	//	create_drive_direct(100,100);
+	//	create_wait_time(50);
+	//}
+	create_block();
+
+	//create_backward(110,100);
 	create_left(82,0,100);
 	create_forward(300, 100);
 	create_left(85,0,100);//face the rack
@@ -107,25 +115,26 @@ int main()
 	create_block();
 	
 	arm_lift();
-	servo_set(ARM,ARM_UMID,0.5);
 	create_right(7,0,100);//partial reset angle
+	servo_set(ARM,ARM_UMID,0.5);
 	create_backward(310,100);//approach for score
-	create_block();
+	create_block(); create_wait_time(50); msleep(500);
 	
 	servo_set(ARM,ARM_UP,0.5);
 	create_right(18,0,100);//reset angle
 	create_left(5,0,50);//turn
 	create_forward(100,100);//score blue hanger
 	create_right(5,0,100);//reset angle
-	create_block();
+	create_block(); create_wait_time(50); msleep(500);
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
 	msleep(500);
 	create_right(5,0,100);//reset angle
-	create_block();
+	create_block(); create_wait_time(50); msleep(500);
 	
 	create_drive_direct_dist(100,80,10);
 	create_drive_direct_dist(80,100,10);
+	create_block(); create_wait_time(50); msleep(500);
 	//Temp End Code
 	sleep(10); disable_servos(); printf("Done\n");
 }
