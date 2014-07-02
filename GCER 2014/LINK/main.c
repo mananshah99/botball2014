@@ -1,11 +1,12 @@
-#define MAIN
-#include "./template.h"
+//#define MAIN
 
 double turned_angle;
 double E = 100;
 int x_rob = 100;  
 int y_rob = -113; //old: 156
 int y_target = 69; //new: 68 (old = 25)
+#ifdef MAIN
+#include "./template.h"
 
 int main() {
 	#define DEBUG // comment this out when in actual competition 
@@ -133,3 +134,4 @@ void correct_distance() {
 	right(angle, 0);
 	msleep(1000);
 }
+#endif
