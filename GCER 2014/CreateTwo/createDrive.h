@@ -61,7 +61,7 @@ void create_wait_event(int event)//see #defines for possible answers.  Use 255-e
 	create_write_byte(event);
 }
 
-void create_drive_direct_dist(int r_speed, int l_speed, int dist)
+void create_drive_direct_dist(int r_speed, int l_speed, int dist)//dist is in mm
 {
 	create_write_byte(145);
 	create_write_int(r_speed);
@@ -202,9 +202,10 @@ void create_lineup(){//lines up the create on a black line
 		if (rcliff > 800) rspd = 20;
 		if (rcliff < 500) rspd = -20;
 		
-		if (seconds()-tstart > 4){lspd/=2;rspd/=2;}
-		if (seconds()-tstart > 6){
+		if (seconds()-tstart > 2){lspd/=2;rspd/=2;}
+		if (seconds()-tstart > 5){
 			create_stop();
+			printf("TIME OUT");
 			return;//failure, timeout
 		}
 		//printf("\n%6d%6d",lcliff,rcliff);

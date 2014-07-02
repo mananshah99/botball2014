@@ -21,7 +21,7 @@
 #define SPDrb 100.//right backward
 #define rdistmultb (SPDrb/SPDlb)
 #define wheeldiameter 4.3
-#define ks 13.4
+#define ks 6
 #define CMtoBEMF (850/(PI*wheeldiameter))
 
 void drive_off();
