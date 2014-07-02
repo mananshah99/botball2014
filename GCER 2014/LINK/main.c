@@ -1,28 +1,47 @@
 //#define MAIN
 
 double turned_angle;
-double E = 100;
 int x_rob = 100;  
 int y_rob = -113; //old: 156
 int y_target = 69; //new: 68 (old = 25)
 #ifdef MAIN
 #include "./template.h"
 
+/*
+ * 100 closed
+ * 1300 open
+ * port 3
+ */
 int main() {
 	#define DEBUG // comment this out when in actual competition 
-		
+	set_servo_position(3, 100);	
+	
 	//enabling everything
 	enable_servos();
 	camera_open();
 	camera_update();
 	
-	forward(35);
-	left(90,0);
-	forward(10);
+	//
+	backward(33);
+	msleep(1000);
 	
-	correct_angle();
-	correct_distance();
+	//
+	set_servo_position(3, 1300);
+	msleep(100);
+	left(175,0);
+	msleep(1000);
 	
+	//
+	backward(6);
+	msleep(1000);
+	
+	int i;
+	for(i=0; i<3; i++) {
+		correct_angle();
+		correct_distance();
+		msleep(1000);
+	}
+	forward(40);
 	//done with backing up 
 	disable_servos();
 }
@@ -31,7 +50,7 @@ void correct_angle() {
 
 //constants
 	double K_p = 25.0;
-	double K_i = 0.03;
+	double K_i = 0.07;
 	double K_d = 0.01;	
 	
 	//values (rob is robot) 
@@ -110,28 +129,38 @@ void correct_distance() {
 	double E = -y_blob + y_target;
 	
 	//11 used to be 10.4 here
-	backward(-(((double)E)*13)/1000.);
-		
+	if(E < 0) {
+		backward((((double)E)*16)/1000.);
+	}
+	else {	
+		forward((((double)E)*16)/1000.);
+	}
 	msleep(1000);
 	
 	//dropping 
 	set_servo_position(1, 200);
 	msleep(1500);
 	//shaking
-	forward(.1);
+	backward(.1);
 	msleep(100);
-	backward(.2);
+	forward(.2);
 	msleep(100);
-	forward(.1);
+	backward(.1);
 	msleep(500);
-	set_servo_position(1, 1800);
+	set_servo_position(1, 1600);
 	msleep(2000);
 	printf("[log] finished tribble pickup");
 	
 	//move back the same amount
-	forward(-(((double)E)*13)/1000.);
+	forward(-(((double)E)*16)/1000.);
+		
 	double angle = turned_angle*RADTODEG;
-	right(angle, 0);
+	if(angle < 0) {
+		left(angle, 0);
+	}
+	else {
+		right(angle, 0);
+	}
 	msleep(1000);
 }
 #endif
