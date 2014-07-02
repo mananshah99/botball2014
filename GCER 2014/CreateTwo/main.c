@@ -25,7 +25,7 @@ void create_setup(){
 	create_forward(50,50);
 	create_block();
 	msleep(1000);
-	printf("Now in starting position, proceed to activate light start...");
+	printf("Now in starting position, proceed to activate light start...\n");
 }
 void arm_lift(){
 	//arm
@@ -59,6 +59,11 @@ void create_forward_until_lbump(){
 		create_drive_direct(100,100);//(r_speed,l_speed)
 	}
 }
+void create_forward_until_rbump(){
+		while(get_create_rbump() == 0){
+		create_drive_direct(100,100);//(r_speed,l_speed)
+	}
+}
 /*..............................................Functions End..............................................*/
 int main()
 {
@@ -84,7 +89,7 @@ int main()
 	create_left(82,0,100);//face the rack
 	create_backward(230,100);
 	create_block();//At the Pipes
-	printf("Now at the pipes and will drop off green/pink hangers");
+	printf("Now at the pipes and will drop off green/pink hangers\n");
 	msleep(100);
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
@@ -116,29 +121,44 @@ int main()
 	create_block();
 	
 	create_left(80,0,100);//turn for lift
-	create_backward(100,100);
+	create_backward(75,100);
 	create_block();
 	
 	arm_lift();
 	create_right(80,0,100);//reset angle
 	create_forward(50,100);
+	create_block();
+	
 	servo_set(ARM,ARM_UMID,0.5);
-	create_backward(360,100);//approach for score
+	create_left(2,0,100);//turn
+	create_backward(340,100);//approach for score
+
 	create_block();
 	
 	servo_set(ARM,ARM_UP,0.5);
-	create_right(10,0,50);//turn; push hangers out of way
-	create_left(10,0,50);//reset
-	create_forward(100,100);//score blue hanger
+	create_backward(5,200);//jerk to lift arm
+	create_stop();
+	create_wait_time(10);
+	create_right(18,0,50);//turn; push hangers out of way
+	create_left(14,0,50);//reset
+	create_forward(200,100);//score blue hanger
 	create_block();
 	
+	msleep(100);
 	servo_set(HANGER,HANGER_OPEN,0.3);
 	msleep(500);
-	create_right(5,0,100);//reset angle
+	create_forward_until_rbump();
 	create_block();
 	
-	create_drive_direct_dist(100,80,10);
-	create_drive_direct_dist(80,100,10);
+	create_right(82,0,100);
+	create_backward(100,50);//square up one
+	create_forward(230,100);//line up for 2nd 
+	create_right(82,0,100);
+	create_backward(50,50);//square up two
+	create_stop(); create_wait_time(10);
+	create_forward(100,100);
+	create_right(172,0,100);
+	create_backward(340,100);//approach 2nd blue
 	create_block();
 	//Temp End Code
 	sleep(10); disable_servos(); printf("Done\n");
