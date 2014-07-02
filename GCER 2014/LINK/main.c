@@ -1,3 +1,4 @@
+#define MAIN
 #include "./template.h"
 
 double turned_angle;
