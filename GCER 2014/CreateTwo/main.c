@@ -19,10 +19,13 @@
 /*..............................................Functions Begin..............................................*/
 void create_setup(){
 	create_backward(10,50);
+	create_wait_time(1);
 	create_forward(15,50);
 	create_left(85,0,50);
 	create_forward(50,50);
-	create_block(); sleep(3);
+	create_block();
+	msleep(1000);
+	printf("Now in starting position, proceed to activate light start...");
 }
 void arm_lift(){
 	//arm
@@ -63,6 +66,7 @@ int main()
 	shut_down_in(119.);
 	create_connect();
 	create_setup();
+	//light_start(LIGHTSTART);
 	
 	enable_servos();
 	servo_set(HANGER,HANGER_CLOSE,0.3);
@@ -73,12 +77,15 @@ int main()
 	create_wait_time(10);
 	create_forward(390, 100);// (distance in mm,speed)
 	create_block();
+	ao();
 
 	create_left(82,0,100);
 	create_forward(310, 100);//scrape against pipe is deliberate
 	create_left(82,0,100);//face the rack
 	create_backward(230,100);
 	create_block();//At the Pipes
+	printf("Now at the pipes and will drop off green/pink hangers");
+	msleep(100);
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
 	create_forward_until_lbump();
