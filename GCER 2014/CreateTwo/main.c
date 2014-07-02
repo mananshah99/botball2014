@@ -160,6 +160,8 @@ int main()
 	create_right(172,0,100);
 	create_backward(340,100);//approach 2nd blue
 	create_block();
+	//at this point the time might be up, this is a problem
+	
 	//Temp End Code
 	sleep(10); disable_servos(); printf("Done\n");
 }
