@@ -12,18 +12,19 @@ int y_target = 69; //new: 68 (old = 25)
  */
 int main() {
 	#define DEBUG // comment this out when in actual competition 
-	set_servo_position(3, 100);	
+	set_servo_position(3, 1300);	
 	
 	//enabling everything
 	enable_servos();
 	camera_open();
 	camera_update();
 	int i;
-	for(i=0; i<3; i++) {
-		correct_angle();
-		correct_distance();
-		msleep(1000);
-	}
+	correct_angle();
+	correct_distance();
+	camera_update();
+	correct_distance();
+	correct_angle();
+	correct_distance();
 	//done with backing up 
 	disable_servos();
 }
@@ -50,19 +51,11 @@ void correct_angle() {
 	//init
 	set_servo_position(1, 1584);
 	while(1/*!in_range(E, 0, EPSILON) || !in_range(E, 0, -EPSILON)*/) {
-		ghj: 
-		camera_update();
-		SHOW(printf("[log] area of nearest blob -->  %d\n", cam_area(0)));
-		if(cam_area(0)!=0) {
+		do{
+			camera_update();
 			x_blob = get_object_center(0,0).x;  
 			y_blob = get_object_center(0,0).y;  
-		}
-		else {
-			SHOW(printf("[log] !!!!!!!!!! NO BLOB IN SIGHT !!!!!!!!!!!!\n")); 
-			goto ghj;
-			x_blob = get_object_center(0,0).x;  
-			y_blob = get_object_center(0,0).y;  
-		}
+		}while(cam_area(0)==0);
 			
 		double E = atan(
 			((double)(-1*(x_blob-x_rob)))
@@ -98,12 +91,64 @@ void correct_angle() {
 }
 
 void correct_distance() {
+	double x_blob, y_blob, E;
+	camera_update();
+	do{
+		x_blob = get_object_center(0,0).x;  
+		y_blob = get_object_center(0,0).y;  
+	}while(cam_area(0)==0);
+	
+	E = -y_blob + y_target;
+	//11 used to be 10.4 here
+	double v = ((((double)E)*ks*2)/1000.);
+	if(v < 0) 
+		backward(v);
+	else forward(v);
+		
+	printf("[log] done overall");
+	msleep(1000);
+	
+	//dropping 
+	set_servo_position(1, 200);
+	msleep(1500);
+	//shaking
+	forward(.1);
+	msleep(100);
+	backward(.2);
+	msleep(100);
+	forward(.1);
+	msleep(500);
+	set_servo_position(1, 1800);
+	msleep(2000);
+	printf("[log] finished tribble pickup");
+	
+	//move back the same amount
+	if(v < 0) 
+		forward(v);
+	else backward(v);
+		
+	double angle = turned_angle*RADTODEG;
+	if(angle < 0) {
+		right(angle, 0);
+	}
+	else {
+		left(angle, 0);
+	}
+	msleep(1000);
+	
+	
+	
+	
+	
+	
+	/*
 	camera_update();
 	
 	double x_blob, y_blob;
 	
 	//fix this!
 	do{
+		camera_update();
 		x_blob = get_object_center(0,0).x;  
 		y_blob = get_object_center(0,0).y;  
 	}while(cam_area(0)==0);
@@ -112,10 +157,10 @@ void correct_distance() {
 	
 	//11 used to be 10.4 here
 	if(E < 0) {
-		backward((((double)E)*16)/1000.);
+		backward((((double)E)*ks)/1000.);
 	}
 	else {	
-		forward((((double)E)*16)/1000.);
+		forward((((double)E)*ks)/1000.);
 	}
 	msleep(1000);
 	
@@ -134,7 +179,7 @@ void correct_distance() {
 	printf("[log] finished tribble pickup");
 	
 	//move back the same amount
-	forward(-(((double)E)*16)/1000.);
+	forward(-(((double)E)*(ks/2))/1000.);
 		
 	double angle = turned_angle*RADTODEG;
 	if(angle < 0) {
@@ -143,5 +188,5 @@ void correct_distance() {
 	else {
 		right(angle, 0);
 	}
-	msleep(1000);
+	msleep(1000);*/
 }
