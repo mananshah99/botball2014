@@ -18,13 +18,12 @@ int main() {
 	enable_servos();
 	camera_open();
 	camera_update();
-	int i;
+	
 	correct_angle();
 	correct_distance();
-	camera_update();
+	printf("cd1");
 	correct_distance();
-	correct_angle();
-	correct_distance();
+	printf("cd2");
 	//done with backing up 
 	disable_servos();
 }
