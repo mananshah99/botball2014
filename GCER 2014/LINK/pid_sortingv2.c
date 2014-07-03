@@ -1,11 +1,9 @@
 //#define MAIN
-
+#include "./template.h"
 double turned_angle;
 int x_rob = 100;  
 int y_rob = -113; //old: 156
 int y_target = 69; //new: 68 (old = 25)
-#ifdef MAIN
-#include "./template.h"
 
 /*
  * 100 closed
@@ -20,28 +18,12 @@ int main() {
 	enable_servos();
 	camera_open();
 	camera_update();
-	
-	//
-	backward(33);
-	msleep(1000);
-	
-	//
-	set_servo_position(3, 1300);
-	msleep(100);
-	left(175,0);
-	msleep(1000);
-	
-	//
-	backward(6);
-	msleep(1000);
-	
 	int i;
 	for(i=0; i<3; i++) {
 		correct_angle();
 		correct_distance();
 		msleep(1000);
 	}
-	forward(40);
 	//done with backing up 
 	disable_servos();
 }
@@ -163,4 +145,3 @@ void correct_distance() {
 	}
 	msleep(1000);
 }
-#endif
