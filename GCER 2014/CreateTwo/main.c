@@ -67,27 +67,26 @@ void create_forward_until_rbump(){
 /*..............................................Functions End..............................................*/
 int main()
 {
-	//wait_for_light(LIGHTSTART);
-	shut_down_in(119.);
-	create_connect();
+	create_connect(); start();
 	create_setup();
 	//light_start(LIGHTSTART);
+	shut_down_in(119.);
 	
 	enable_servos();
 	servo_set(HANGER,HANGER_CLOSE,0.3);
 	arm_lift();//DO NOT lift as robot moves, it will break the Create
-	create_right(85,0,100);
+	create_right(85,0,150);
 	create_backward(50,50);//square up
 	create_stop();
 	create_wait_time(10);
-	create_forward(390, 100);// (distance in mm,speed)
+	create_forward(390, 150);// (distance in mm,speed)
 	create_block();
 	ao();
 
-	create_left(82,0,100);
-	create_forward(310, 100);//scrape against pipe is deliberate
-	create_left(82,0,100);//face the rack
-	create_backward(230,100);
+	create_left(82,0,150);
+	create_forward(310, 150);//scrape against pipe is deliberate
+	create_left(82,0,150);//face the rack
+	create_backward(230,150);
 	create_block();//At the Pipes
 	printf("Now at the pipes and will drop off green/pink hangers\n");
 	msleep(100);
@@ -97,12 +96,12 @@ int main()
 	create_block();//Backed-up from Pipes
 	
 	arm_lower();
-	create_backward(190,50);//approach blue hanger (facing away)
+	create_backward(190,150);//approach blue hanger (facing away)
 	create_left(5,0,100);//turn
 	create_block();
 	
 	msleep(500);
-	create_backward(45,50);
+	create_backward(45,70);
 	create_block();
 	
 	servo_set(HANGER,HANGER_CLOSE,0.5);
@@ -120,17 +119,17 @@ int main()
 	create_forward_until_lbump();
 	create_block();
 	
-	create_left(80,0,100);//turn for lift
-	create_backward(75,100);
+	create_left(80,0,150);//turn for lift
+	create_backward(75,150);
 	create_block();
 	
 	arm_lift();
-	create_right(80,0,100);//reset angle
-	create_forward(50,100);
+	create_right(80,0,150);//reset angle
+	create_forward(50,150);
 	create_block();
 	
 	servo_set(ARM,ARM_UMID,0.5);
-	create_left(2,0,100);//turn
+	//create_left(2,0,100);//turn
 	create_backward(340,100);//approach for score
 
 	create_block();
@@ -139,9 +138,9 @@ int main()
 	create_backward(5,200);//jerk to lift arm
 	create_stop();
 	create_wait_time(10);
-	create_right(18,0,50);//turn; push hangers out of way
-	create_left(14,0,50);//reset
-	create_forward(200,100);//score blue hanger
+	create_right(18,0,70);//turn; push hangers out of way
+	create_left(14,0,70);//reset
+	create_forward(200,150);//score blue hanger
 	create_block();
 	
 	msleep(100);
@@ -150,18 +149,19 @@ int main()
 	create_forward_until_rbump();
 	create_block();
 	
-	create_right(82,0,100);
-	create_backward(100,50);//square up one
-	create_forward(230,100);//line up for 2nd 
-	create_right(82,0,100);
+	create_right(82,0,150);
+	create_backward(100,70);//square up one
+	create_forward(230,150);//line up for 2nd 
+	create_right(82,0,150);
 	create_backward(50,50);//square up two
 	create_stop(); create_wait_time(10);
-	create_forward(100,100);
-	create_right(172,0,100);
-	create_backward(340,100);//approach 2nd blue
+	create_forward(100,150);
+	create_left(176,0,150);
+	create_backward(340,200);//approach 2nd blue
 	create_block();
-	//at this point the time might be up, this is a problem
 	
+	arm_lower();
+	printf("\n%d\n",curr_time());
 	//Temp End Code
 	sleep(10); disable_servos(); printf("Done\n");
 }
