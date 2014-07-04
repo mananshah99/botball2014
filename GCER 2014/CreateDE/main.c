@@ -38,11 +38,11 @@ void arm_lift(){
 }
 /*..............................................Functions End..............................................*/
 int main(){
-	create_connect(); start();
+	create_connect();
 	create_setup();
 	//light_start(LIGHTSTART);
-	shut_down_in(119.);
-	enable_servos();
+	shut_down_in(119.);  start();
+	enable_servos(); 
 	servo_set(ARM,ARM_DOWN,0.3);
 	servo_set(HANGER,HANGER_CLOSE,0.3);
 	
@@ -58,11 +58,13 @@ int main(){
 	arm_lift();
 	create_left(82,0,250);//face the rack
 	create_forward(100,200);
-	create_backward(230,200);
+	create_backward(290,200);
 	create_forward(50,200);
 	create_block();//At the Pipes
 	
+	wait_till(110); now();
 	servo_set(HANGER,HANGER_OPEN,0.3);
+	create_forward(75,100);
 	//Temp End Code
-	sleep(10); disable_servos(); printf("Done\n");
+	disable_servos(); printf("Done\n");
 }
