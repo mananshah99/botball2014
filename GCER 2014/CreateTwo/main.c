@@ -81,7 +81,6 @@ int main()
 	create_wait_time(10);
 	create_forward(390, 150);// (distance in mm,speed)
 	create_block();
-	ao();
 
 	create_left(82,0,150);
 	create_forward(310, 150);//scrape against pipe is deliberate
