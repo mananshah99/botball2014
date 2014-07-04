@@ -1,55 +1,59 @@
 //#define MAIN
-#ifdef MAIN
+#include "./template.h"
+
+#ifndef max
+	#define max( a, b ) ( ((a) > (b)) ? (a) : (b) )
+#endif
+
+#ifndef min
+	#define min( a, b ) ( ((a) < (b)) ? (a) : (b) )
+#endif
+
 double turned_angle;
 int x_rob = 100;  
 int y_rob = -113; //old: 156
 int y_target = 69; //new: 68 (old = 25)
-#include "./template.h"
 
 /*
  * 100 closed
  * 1300 open
  * port 3
  */
+void correct_angle();
+void correct_distance();
+
 int main() {
 	#define DEBUG // comment this out when in actual competition 
-	set_servo_position(3, 100);	
+	set_servo_position(1, 1300);	
 	
 	//enabling everything
 	enable_servos();
 	camera_open();
 	camera_update();
 	
-	//
-	backward(33);
-	msleep(1000);
-	
-	//
-	set_servo_position(3, 1300);
-	msleep(100);
-	left(175,0);
-	msleep(1000);
-	
-	//
-	backward(6);
-	msleep(1000);
-	
-	int i;
-	for(i=0; i<3; i++) {
-		correct_angle();
-		correct_distance();
-		msleep(1000);
-	}
-	forward(40);
+	correct_angle();
+	correct_distance();
+	ao();
+	printf("----------------------");
+	msleep(2000);
+	correct_angle();
+	correct_distance();
+	ao();
+	printf("----------------------");
+	msleep(2000);
+	correct_angle();
+	correct_distance();
+
 	//done with backing up 
 	disable_servos();
 }
 
 void correct_angle() {
+	camera_update();
 
 //constants
-	double K_p = 25.0;
-	double K_i = 0.07;
+	double K_p = 26.0;
+	double K_i = 0.03;
 	double K_d = 0.01;	
 	
 	//values (rob is robot) 
@@ -67,19 +71,13 @@ void correct_angle() {
 	//init
 	set_servo_position(1, 1584);
 	while(1/*!in_range(E, 0, EPSILON) || !in_range(E, 0, -EPSILON)*/) {
-		ghj: 
-		camera_update();
-		SHOW(printf("[log] area of nearest blob -->  %d\n", cam_area(0)));
-		if(cam_area(0)!=0) {
+		//x_blob = get_object_center(0,0).x;  
+		//y_blob = get_object_center(0,0).y;  
+		do{
+			camera_update();
 			x_blob = get_object_center(0,0).x;  
 			y_blob = get_object_center(0,0).y;  
-		}
-		else {
-			SHOW(printf("[log] !!!!!!!!!! NO BLOB IN SIGHT !!!!!!!!!!!!\n")); 
-			goto ghj;
-			x_blob = get_object_center(0,0).x;  
-			y_blob = get_object_center(0,0).y;  
-		}
+		}while(cam_area(0)==0);
 			
 		double E = atan(
 			((double)(-1*(x_blob-x_rob)))
@@ -115,12 +113,67 @@ void correct_angle() {
 }
 
 void correct_distance() {
+	float x_blob, y_blob, E = 0;
+	camera_update();
+	do{
+		x_blob = get_object_center(0,0).x;  
+		y_blob = get_object_center(0,0).y;  
+	}while(cam_area(0)==0);
+	
+	//E = max(-y_blob + y_target, y_blob + y_target);
+	E = y_blob - y_target;
+	
+	//11 used to be 10.4 here
+	float v = ( ( ( (float) E) * ks * 3)/1000.);
+		printf("=============>  %f\n", v);
+	if(v < 0l) 
+		forward(v);
+	else {
+		backward(v);
+		printf("forward`~~!!!!!!!");
+	}
+		
+	printf("[log] done overall");
+	msleep(1000);
+	
+	//dropping 
+	servo_slow(1, 200, 5); //port, position, time
+	//set_servo_position(1, 200);
+	//msleep(1500);
+	//shaking
+	forward(.1);
+	msleep(100);
+	backward(.2);
+	msleep(100);
+	forward(.1);
+	msleep(500);
+	set_servo_position(1, 1800);
+	msleep(2000);
+	printf("[log] finished tribble pickup");
+	
+	//move back the same amount
+	if(v < 0l) 
+		backward(v);
+	else forward(v);
+		
+	float angle = ((float)turned_angle)*RADTODEG;
+	if(angle < 0) {
+		left(angle, 0);
+	}
+	else {
+		right(angle, 0);
+	}
+	msleep(1000);
+}
+
+	/*
 	camera_update();
 	
 	double x_blob, y_blob;
 	
 	//fix this!
 	do{
+		camera_update();
 		x_blob = get_object_center(0,0).x;  
 		y_blob = get_object_center(0,0).y;  
 	}while(cam_area(0)==0);
@@ -129,10 +182,10 @@ void correct_distance() {
 	
 	//11 used to be 10.4 here
 	if(E < 0) {
-		backward((((double)E)*16)/1000.);
+		backward((((double)E)*ks)/1000.);
 	}
 	else {	
-		forward((((double)E)*16)/1000.);
+		forward((((double)E)*ks)/1000.);
 	}
 	msleep(1000);
 	
@@ -151,7 +204,7 @@ void correct_distance() {
 	printf("[log] finished tribble pickup");
 	
 	//move back the same amount
-	forward(-(((double)E)*16)/1000.);
+	forward(-(((double)E)*(ks/2))/1000.);
 		
 	double angle = turned_angle*RADTODEG;
 	if(angle < 0) {
@@ -160,6 +213,4 @@ void correct_distance() {
 	else {
 		right(angle, 0);
 	}
-	msleep(1000);
-}
-#endif
+	msleep(1000);*/

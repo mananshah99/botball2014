@@ -1,6 +1,3 @@
-#ifdef PIDSORTV2
-//#define MAIN
-#include "./template.h"
 
 #ifndef max
 	#define max( a, b ) ( ((a) > (b)) ? (a) : (b) )
@@ -9,6 +6,9 @@
 #ifndef min
 	#define min( a, b ) ( ((a) < (b)) ? (a) : (b) )
 #endif
+
+#ifdef SORTTEST2
+#include "./template.h"
 
 double turned_angle;
 int x_rob = 100;  
