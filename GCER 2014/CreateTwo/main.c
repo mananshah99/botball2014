@@ -7,7 +7,7 @@
 #define SENSOR_UP 15
 #define SENSOR_DOWN 14
 #define ARM_UP 150
-#define ARM_UMID 400
+#define ARM_UMID 700
 #define ARM_DMID 1200
 #define ARM_DOWN 2000
 #define HANGER_CLOSE 0
@@ -120,18 +120,18 @@ int main()
 	create_block();
 	
 	create_left(80,0,150);//turn for lift
-	create_backward(75,150);
+	//create_backward(75,150);
 	create_block();
 	
 	arm_lift();
-	create_right(80,0,150);//reset angle
-	create_forward(50,150);
+	create_left(270,0,150);
+	//create_right(80,0,150);//reset angle
+	//create_forward(50,150);
 	create_block();
 	
 	servo_set(ARM,ARM_UMID,0.5);
 	//create_left(2,0,100);//turn
 	create_backward(340,100);//approach for score
-
 	create_block();
 	
 	servo_set(ARM,ARM_UP,0.5);
@@ -151,17 +151,16 @@ int main()
 	
 	create_right(82,0,150);
 	create_backward(100,70);//square up one
-	create_forward(230,150);//line up for 2nd 
+	create_forward(130,150);//line up for 2nd 
 	create_right(82,0,150);
 	create_backward(50,50);//square up two
 	create_stop(); create_wait_time(10);
 	create_forward(100,150);
 	create_left(176,0,150);
-	create_backward(340,200);//approach 2nd blue
+	create_backward(320,200);//approach 2nd blue
 	create_block();
 	
 	arm_lower();
-	printf("\n%d\n",curr_time());
 	//Temp End Code
 	sleep(10); disable_servos(); printf("Done\n");
 }
