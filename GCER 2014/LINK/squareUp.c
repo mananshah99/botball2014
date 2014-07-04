@@ -1,4 +1,4 @@
-#define aldsks
+//#define aldsks
 #ifdef aldsks
 #include "template.h"
 //>>>>>>> 469fb0234cd4a8bda8084755da5cd752f78be533

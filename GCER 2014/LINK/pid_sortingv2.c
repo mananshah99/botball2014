@@ -1,4 +1,5 @@
 //#define MAIN
+#ifdef PIDSORTINGV2
 #include "./template.h"
 double turned_angle;
 int x_rob = 100;  
@@ -189,3 +190,4 @@ void correct_distance() {
 	}
 	msleep(1000);*/
 }
+#endif

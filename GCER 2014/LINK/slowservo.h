@@ -4,7 +4,7 @@ void servo_slow(int port, int end, float time)
 	float increment = 1;
 	float curr = get_servo_position(port);
 	float start = get_servo_position(port);
-	float i = ((end-start)/time)*increment;
+	float i = ((end-start)/time)*(increment/100);
 	
 	if (start > end)
 	{
