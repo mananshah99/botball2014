@@ -6,22 +6,22 @@
 
 
 //primary driving code
-#define MOT_LEFT 1//Polyp edition!
+#define MOT_LEFT 1
 #define MOT_RIGHT 2
 #define PI 3.14159265358979
 
 /**THESE ARE IMPORTANT**/
-#define SPD 10//turning
-#define SPDl 60.//left forward
-#define SPDr 60.//right forward
+#define SPD 20//turning
+#define SPDl 30.//left forward
+#define SPDr 30.//right forward
 
 
 #define rdistmult 1.0
-#define SPDlb 100.//left backward
-#define SPDrb 100.//right backward
+#define SPDlb 50.//left backward
+#define SPDrb 50.//right backward
 #define rdistmultb (SPDrb/SPDlb)
-#define wheeldiameter 4.3
-#define ks 16.6
+#define wheeldiameter 4.2
+#define ks 17.5
 #define CMtoBEMF (850/(PI*wheeldiameter))
 
 void drive_off();

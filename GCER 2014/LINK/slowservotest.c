@@ -1,3 +1,4 @@
+#ifdef SLOWSERVOTEST
 #include "slowservo.h"
 int main() { 
 	enable_servos();
@@ -7,4 +8,4 @@ int main() {
 	sleep(5);
 	disable_servos();
 }
-
+#endif

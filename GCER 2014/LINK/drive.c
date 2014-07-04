@@ -158,9 +158,10 @@ void multforward(float distance, float speedmult){//go forward a number of CM   
 	drive_off();
 }
 void forward(float distance){//go forward a number of CM    NOT    backEMF counts
-	if(distance < 0l){
+	/*if(distance < 0l){
 		distance = distance;
-	}
+	}*/
+	if(distance < 0l) distance = -distance;
 	long newdist;
 	newdist = distance*CMtoBEMF;//conversion ratio
 	long l = gmpc(MOT_LEFT)+newdist;
@@ -181,9 +182,10 @@ void forward(float distance){//go forward a number of CM    NOT    backEMF count
 	bmd(MOT_LEFT);*/
 }
 void backward(float distance){//go backward a number of CM    NOT    backEMF counts
-	if(distance < 0l){
-		distance = distance;
-	}
+	/*if(distance < 0l){
+		distance = -distance;
+	}*/
+	if(distance < 0l) distance = -distance;
 	long newdist;
 	newdist = distance*CMtoBEMF;
 	long l = gmpc(MOT_LEFT)-newdist;

@@ -40,6 +40,7 @@
 
 #ifdef LINK
 	#include "./drive.h"
+	#include "./slowservo.h"
 #endif
 
 //for now, menu.h doesn't work. TODO: Fix this

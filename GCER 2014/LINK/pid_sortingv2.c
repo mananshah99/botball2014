@@ -1,6 +1,14 @@
 //#define MAIN
-#ifdef PIDSORTINGV2
 #include "./template.h"
+
+#ifndef max
+	#define max( a, b ) ( ((a) > (b)) ? (a) : (b) )
+#endif
+
+#ifndef min
+	#define min( a, b ) ( ((a) < (b)) ? (a) : (b) )
+#endif
+
 double turned_angle;
 int x_rob = 100;  
 int y_rob = -113; //old: 156
@@ -11,15 +19,21 @@ int y_target = 69; //new: 68 (old = 25)
  * 1300 open
  * port 3
  */
+
 int main() {
 	#define DEBUG // comment this out when in actual competition 
-	set_servo_position(3, 1300);	
+	set_servo_position(1, 1300);	
 	
 	//enabling everything
 	enable_servos();
 	camera_open();
 	camera_update();
 	
+	correct_angle();
+	correct_distance();
+	ao();
+	printf("----------------------");
+	msleep(2000);
 	correct_angle();
 	correct_distance();
 	ao();
@@ -36,8 +50,8 @@ void correct_angle() {
 	camera_update();
 
 //constants
-	double K_p = 25.0;
-	double K_i = 0.09;
+	double K_p = 26.0;
+	double K_i = 0.03;
 	double K_d = 0.01;	
 	
 	//values (rob is robot) 
@@ -55,8 +69,8 @@ void correct_angle() {
 	//init
 	set_servo_position(1, 1584);
 	while(1/*!in_range(E, 0, EPSILON) || !in_range(E, 0, -EPSILON)*/) {
-		x_blob = get_object_center(0,0).x;  
-		y_blob = get_object_center(0,0).y;  
+		//x_blob = get_object_center(0,0).x;  
+		//y_blob = get_object_center(0,0).y;  
 		do{
 			camera_update();
 			x_blob = get_object_center(0,0).x;  
@@ -97,26 +111,33 @@ void correct_angle() {
 }
 
 void correct_distance() {
-	double x_blob, y_blob, E;
+	float x_blob, y_blob, E = 0;
 	camera_update();
 	do{
 		x_blob = get_object_center(0,0).x;  
 		y_blob = get_object_center(0,0).y;  
 	}while(cam_area(0)==0);
 	
-	E = -y_blob + y_target;
+	//E = max(-y_blob + y_target, y_blob + y_target);
+	E = y_blob - y_target;
+	
 	//11 used to be 10.4 here
-	double v = ((((double)E)*ks*2.5)/1000.);
-	if(v < 0) 
+	float v = ( ( ( (float) E) * ks * 3)/1000.);
+		printf("=============>  %f\n", v);
+	if(v < 0l) 
+		forward(v);
+	else {
 		backward(v);
-	else forward(v);
+		printf("forward`~~!!!!!!!");
+	}
 		
 	printf("[log] done overall");
 	msleep(1000);
 	
 	//dropping 
-	set_servo_position(1, 200);
-	msleep(1500);
+	servo_slow(1, 200, 5); //port, position, time
+	//set_servo_position(1, 200);
+	//msleep(1500);
 	//shaking
 	forward(.1);
 	msleep(100);
@@ -129,11 +150,11 @@ void correct_distance() {
 	printf("[log] finished tribble pickup");
 	
 	//move back the same amount
-	if(v < 0) 
-		forward(v);
-	else backward(v);
+	if(v < 0l) 
+		backward(v);
+	else forward(v);
 		
-	double angle = turned_angle*RADTODEG;
+	float angle = ((float)turned_angle)*RADTODEG;
 	if(angle < 0) {
 		left(angle, 0);
 	}
@@ -141,12 +162,8 @@ void correct_distance() {
 		right(angle, 0);
 	}
 	msleep(1000);
-	
-	
-	
-	
-	
-	
+}
+
 	/*
 	camera_update();
 	
@@ -195,5 +212,3 @@ void correct_distance() {
 		right(angle, 0);
 	}
 	msleep(1000);*/
-}
-#endif
