@@ -12,8 +12,8 @@
 
 /**THESE ARE IMPORTANT**/
 #define SPD 10//turning
-#define SPDl 80.//left forward
-#define SPDr 80.//right forward
+#define SPDl 60.//left forward
+#define SPDr 60.//right forward
 
 
 #define rdistmult 1.0
@@ -21,7 +21,7 @@
 #define SPDrb 100.//right backward
 #define rdistmultb (SPDrb/SPDlb)
 #define wheeldiameter 4.3
-#define ks 11.5
+#define ks 16.6
 #define CMtoBEMF (850/(PI*wheeldiameter))
 
 void drive_off();

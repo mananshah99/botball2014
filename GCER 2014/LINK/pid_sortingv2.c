@@ -21,18 +21,22 @@ int main() {
 	
 	correct_angle();
 	correct_distance();
-	printf("cd1");
+	ao();
+	printf("----------------------");
+	msleep(2000);
+	correct_angle();
 	correct_distance();
-	printf("cd2");
+
 	//done with backing up 
 	disable_servos();
 }
 
 void correct_angle() {
+	camera_update();
 
 //constants
 	double K_p = 25.0;
-	double K_i = 0.07;
+	double K_i = 0.09;
 	double K_d = 0.01;	
 	
 	//values (rob is robot) 
@@ -50,6 +54,8 @@ void correct_angle() {
 	//init
 	set_servo_position(1, 1584);
 	while(1/*!in_range(E, 0, EPSILON) || !in_range(E, 0, -EPSILON)*/) {
+		x_blob = get_object_center(0,0).x;  
+		y_blob = get_object_center(0,0).y;  
 		do{
 			camera_update();
 			x_blob = get_object_center(0,0).x;  
@@ -99,7 +105,7 @@ void correct_distance() {
 	
 	E = -y_blob + y_target;
 	//11 used to be 10.4 here
-	double v = ((((double)E)*ks*2)/1000.);
+	double v = ((((double)E)*ks*2.5)/1000.);
 	if(v < 0) 
 		backward(v);
 	else forward(v);
@@ -128,10 +134,10 @@ void correct_distance() {
 		
 	double angle = turned_angle*RADTODEG;
 	if(angle < 0) {
-		right(angle, 0);
+		left(angle, 0);
 	}
 	else {
-		left(angle, 0);
+		right(angle, 0);
 	}
 	msleep(1000);
 	
