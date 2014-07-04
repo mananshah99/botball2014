@@ -4,15 +4,15 @@ void servo_slow(int port, int end, float time)
 	float increment = 1;
 	float curr = get_servo_position(port);
 	float start = get_servo_position(port);
-	float i = ((end-start)/time)*increment;
+	float i = ((end-start)/time)*(increment/100);
 	
 	if (start > end)
 	{
-		printf("if1");
+		printf("if1\n");
 		while(curr > end)
 		{
 			printf("%f\n",curr);
-			printf("test, 1");
+			printf("test1 \n");
 			set_servo_position(port,curr);
 			curr+=i;
 			msleep(increment);
@@ -20,15 +20,15 @@ void servo_slow(int port, int end, float time)
 	}
 	else if (start < end)
 	{
-		printf("if2");
+		printf("if2\n");
 		while(curr < end)
 		{
 			printf("%f\n",curr);
-			printf("test, 2");
+			printf("test2\n");
 			set_servo_position(port,curr);
 			curr+=i;
-			msleep(increment);
+			sleep(increment);
 		}
 	}
-	
+	set_servo_position(port,end);
 }

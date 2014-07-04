@@ -1,6 +1,4 @@
 //#define MAIN
-
-
 #ifdef MAIN
 double turned_angle;
 int x_rob = 100;  
