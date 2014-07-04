@@ -31,18 +31,14 @@ int main() {
 	camera_open();
 	camera_update();
 	
+	/**PICK UP 1**/
 	correct_angle();
 	correct_distance();
 	ao();
-	printf("----------------------");
-	msleep(2000);
+	msleep(1500);
 	correct_angle();
 	correct_distance();
 	ao();
-	printf("----------------------");
-	msleep(2000);
-	correct_angle();
-	correct_distance();
 
 	//done with backing up 
 	disable_servos();
