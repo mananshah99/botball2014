@@ -1,29 +1,20 @@
-//#define aldsks
+#define aldsks
 #ifdef aldsks
 #include "template.h"
-int main() {
+//>>>>>>> 469fb0234cd4a8bda8084755da5cd752f78be533
+int mainsqr() {
 	
-	square_up(300);
+	square_up_angle();
+	square_up_distance(300);
+	square_up_angle();
+	square_up_distance(300);
+	square_up_angle();
 	
 }
 
-void square_up(int distance){
-	//distance is not in inches do testing to find out for each case distance of 300 is about 3 inches
-	
-	//note don't know if sensor outputs a small number for a big distance or opposite code might have to be
-	//changed because of this
-	//for our purposes it is a small number for a big distance but it is not a linear value so we can't just convert it into inches
-
+void square_up_angle(){
 	//P constant
-	double Con = 20.0;
-	
-	//motor power for straight part of the squareup
-	int sqpow = 30;
-	
-	// distance between IR sensors
-	double dia = 430;//200units = about 3.5 in they are 7.5 in apart
-	
-	
+	double Con = 40.0;
 	int leftDistance = analog_et(2);
 	int rightDistance = analog_et(3);
 	
@@ -32,17 +23,18 @@ void square_up(int distance){
 	set_analog_pullup(3, 0);
 	
 	//acceptable difference between the distances
-	int aDiff = 0.1;
+	int aDiff = .1;
+	
+	// distance between IR sensors
+	double dia = 430;//200units = about 3.5 in they are 7.5 in apart
 
 	//difference between the distances
 	int diff = leftDistance-rightDistance;
 	double AE = 0;
-	/*int i = 0;
-	//allows it to loop so that it can recorect angle and distance 
-	//shouldn't add time if it gets to the right position
-	for (i<2;i++;)
-	{
-	*/
+	
+		leftDistance = analog_et(2);
+		rightDistance = analog_et(3);
+		diff = leftDistance-rightDistance;
 		//squares robot
 		while (abs(diff) > aDiff) {
 			leftDistance = analog_et(2);
@@ -54,8 +46,29 @@ void square_up(int distance){
 			printf("right: %d\n",rightDistance);
 			motor(MOT_LEFT,-1*Con*AE);
 			motor(MOT_RIGHT,Con*AE);
-			msleep(1);
+			//msleep(1);
 		}
+	
+	
+}
+
+void square_up_distance(int distance){
+	//distance is not in inches do testing to find out for each case distance of 300 is about 3 inches
+	//for our purposes it is a small number for a big distance but it is not a linear value so we can't just convert it into inches
+	
+	//motor power for straight part of the squareup
+	int sqpow = 23;
+	
+	int leftDistance = analog_et(2);
+	int rightDistance = analog_et(3);
+	
+	//make returned values usable
+	set_analog_pullup(2, 0);
+	set_analog_pullup(3, 0);
+	
+	//acceptable difference between the distances
+	int aDiff = .1;
+
 	
 		//moves robot to correct distance
 		while (abs((leftDistance+rightDistance)/2-distance) > aDiff){
@@ -74,6 +87,5 @@ void square_up(int distance){
 			}
 			msleep(1);
 		}
-	//}
 }
 	#endif

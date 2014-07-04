@@ -1,11 +1,10 @@
 //#define MAIN
 
-
-#ifdef MAIN
 double turned_angle;
 int x_rob = 100;  
 int y_rob = -113; //old: 156
 int y_target = 69; //new: 68 (old = 25)
+#ifdef MAIN
 #include "./template.h"
 
 /*
