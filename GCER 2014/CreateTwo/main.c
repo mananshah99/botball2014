@@ -4,6 +4,7 @@
 #define ARM 0
 #define HANGER 3
 #define ELEVATOR 0
+#define ELEVATORTWO 2
 #define SENSOR_UP 15
 #define SENSOR_DOWN 14
 #define ARM_UP 150
@@ -36,6 +37,7 @@ void arm_lift(){
 	while(digital(SENSOR_UP)==0)
 	{
 		motor(ELEVATOR, 80);
+		motor(ELEVATORTWO,80);
 		msleep(50);
 	}
 	motor(ELEVATOR,0);
@@ -45,6 +47,7 @@ void arm_lower(){
 	while(digital(SENSOR_DOWN)==0)
 	{
 		motor(ELEVATOR, -10);
+		motor(ELEVATORTWO,-10);
 		msleep(50);
 	}
 	motor(ELEVATOR,0);
