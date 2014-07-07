@@ -12,8 +12,8 @@
 
 /**THESE ARE IMPORTANT**/
 #define SPD 20//turning
-#define SPDl 30.//left forward
-#define SPDr 30.//right forward
+#define SPDl 50.//left forward
+#define SPDr 50.//right forward
 
 
 #define rdistmult 1.0
