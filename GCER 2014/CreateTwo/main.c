@@ -37,10 +37,9 @@ void arm_lift(){
 	while(digital(SENSOR_UP)==0)
 	{
 		motor(ELEVATOR, 80);
-		motor(ELEVATORTWO,80);
-		msleep(50);
+		motor(ELEVATORTWO,60);
 	}
-	motor(ELEVATOR,0);
+	ao();
 }
 void arm_lower(){
 	//le elevator
@@ -48,9 +47,8 @@ void arm_lower(){
 	{
 		motor(ELEVATOR, -10);
 		motor(ELEVATORTWO,-10);
-		msleep(50);
 	}
-	motor(ELEVATOR,0);
+	ao();
 	msleep(400);
 	//arm
 	enable_servo(ARM);
@@ -70,12 +68,12 @@ void create_forward_until_rbump(){
 /*..............................................Functions End..............................................*/
 int main()
 {
-	create_connect(); start();
+	create_connect();
 	create_setup();
 	//light_start(LIGHTSTART);
 	shut_down_in(119.);
 	
-	enable_servos();
+	enable_servos(); double time = seconds();
 	servo_set(HANGER,HANGER_CLOSE,0.3);
 	arm_lift();//DO NOT lift as robot moves, it will break the Create
 	create_right(85,0,150);
@@ -90,7 +88,6 @@ int main()
 	create_left(82,0,150);//face the rack
 	create_backward(230,150);
 	create_block();//At the Pipes
-	printf("Now at the pipes and will drop off green/pink hangers\n");
 	msleep(100);
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
@@ -121,14 +118,15 @@ int main()
 	create_forward_until_lbump();
 	create_block();
 	
-	create_left(80,0,150);//turn for lift
-	//create_backward(75,150);
+	//create_left(80,0,150);//turn for lift
+	create_right(270,0,150);
+	create_backward(75,150);
 	create_block();
 	
 	arm_lift();
-	create_left(270,0,150);
-	//create_right(80,0,150);//reset angle
-	//create_forward(50,150);
+	//create_left(270,0,150);//SPIN
+	create_right(80,0,150);//reset angle
+	create_forward(50,150);
 	create_block();
 	
 	servo_set(ARM,ARM_UMID,0.5);
@@ -159,10 +157,26 @@ int main()
 	create_stop(); create_wait_time(10);
 	create_forward(100,150);
 	create_left(176,0,150);
-	create_backward(320,200);//approach 2nd blue
+	create_backward(260,200);//approach 2nd blue
 	create_block();
 	
 	arm_lower();
-	//Temp End Code
-	sleep(10); disable_servos(); printf("Done\n");
+	create_backward(275,150);//collect 2nd blue
+	create_block();
+	
+	servo_set(HANGER,HANGER_CLOSE,0.3);
+	servo_set(ARM,ARM_DMID,0.5);
+	create_forward(350,200);
+	create_block();
+	
+	arm_lift();
+	create_backward(375,100);//score 2nd blue
+	create_block();
+	
+	servo_set(HANGER,HANGER_OPEN,0.3);
+	create_forward(700,300);
+	create_block();
+	printf("%d", seconds()-time);
+	
+	disable_servos(); ao(); printf("Done\n");
 }

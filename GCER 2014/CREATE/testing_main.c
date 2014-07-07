@@ -1,26 +1,54 @@
 // Created on Sun June 22 2014
 
-#define drive_path_test
+#define arm_low
 
-#define front_arm 0
-#define hanger_holder 3
-#define elevator_motor 0
-#define elevator_sensor 15
+//#define front_arm 0
+//#define hanger_holder 3
+//#define elevator_motor 0
+//#define elevator_sensor 15
 
-#define front_arm_top_position 150
-#define front_arm_bot_position 1900
-#define hanger_holder_closed 0
-#define hanger_holder_open 1365 //#include bricks some stuff, perhaps look at later this is copied from createDrive.h
+//#define front_arm_top_position 150
+//#define front_arm_bot_position 1900
+//#define hanger_holder_closed 0
+//#define hanger_holder_open 1365 //#include bricks some stuff, perhaps look at later this is copied from createDrive.h
 
 //#define full_arm_lift_test
 //#define elevator_lift_test
 //#define full_arm_drop_test
 //#define elevator_drop_test
 //#define front_arm_lift_test
-
+#define ARM 0
+#define HANGER 3
+#define ELEVATOR 0
+#define ELEVATORTWO 2
+#define SENSOR_UP 15
+#define SENSOR_DOWN 14
+#define ARM_UP 150
+#define ARM_UMID 700
+#define ARM_DMID 1200
+#define ARM_DOWN 2000
+#define HANGER_CLOSE 0
+#define HANGER_OPEN 1365
+void arm_lower(){
+	//le elevator
+	while(digital(SENSOR_DOWN)==0)
+	{
+		motor(ELEVATOR, -10);
+		motor(ELEVATORTWO,-10);
+	}
+	ao();
+	msleep(400);
+	//arm
+	enable_servo(ARM);
+	set_servo_position(ARM,ARM_DOWN);
+	msleep(400);
+}
 /** TESTING PARTS OF MAIN.C!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! **/
 
 /**============================================================================**/
+#ifdef arm_low
+int main(){enable_servos(); arm_lower(); disable_servos();}
+#endif
 
 #ifdef drive_path_test
 int main()
