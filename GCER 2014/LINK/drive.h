@@ -15,7 +15,6 @@
 #define SPDl 50.//left forward
 #define SPDr 50.//right forward
 
-
 #define rdistmult 1.0
 #define SPDlb 50.//left backward
 #define SPDrb 50.//right backward

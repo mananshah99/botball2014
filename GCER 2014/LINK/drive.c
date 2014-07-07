@@ -92,6 +92,7 @@ void right(float degrees, float radius){
  * \param radius radius at which to turn around
  */
 void left(float degrees, float radius){
+	printf("%d\n", SPD);
 int turnlspeed;
 	degrees = -degrees;
 	long turnl=((2*radius-ks)*CMtoBEMF*PI)*(degrees/360.);

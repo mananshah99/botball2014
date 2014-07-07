@@ -24,11 +24,13 @@ void correct_distance();
 
 int main() {
 	#define DEBUG // comment this out when in actual competition 
+	
 	#define SPDl	100
 	#define SPDr	100
 	#define SPDlb	100
 	#define SPDrb	100
 	#define SPD 	100
+	
 	set_servo_position(1, 1300);	
 	set_servo_position(3, 171);
 	
@@ -39,13 +41,13 @@ int main() {
 	
 	///---Drive 1---///
 	
-	backward(33);
+	multforward(33, 2);
 	msleep(1000);
 	
 	set_servo_position(3, 1300);
 	
 	msleep(100);
-	left(90,0);
+	left(90, 0);
 	
 	backward(6);
 	msleep(1000);
@@ -55,10 +57,13 @@ int main() {
 	#define SPD	20
 	
 	/**PICK UP 1**/
+	
 	correct_angle();
 	correct_distance();
 	ao();
+	
 	msleep(1500);
+	
 	correct_angle();
 	correct_distance();
 	ao();
