@@ -37,17 +37,12 @@ void arm_lower(){
 		motor(ELEVATORTWO,-10);
 	}
 	ao();
-	msleep(400);
-	//arm
-	enable_servo(ARM);
-	set_servo_position(ARM,ARM_DOWN);
-	msleep(400);
 }
 /** TESTING PARTS OF MAIN.C!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! **/
 
 /**============================================================================**/
 #ifdef arm_low
-int main(){enable_servos(); arm_lower(); disable_servos();}
+int main(){enable_servos();set_servo_position(HANGER,HANGER_CLOSE); msleep(300); arm_lower(); disable_servos();}
 #endif
 
 #ifdef drive_path_test

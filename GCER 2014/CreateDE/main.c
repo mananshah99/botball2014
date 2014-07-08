@@ -4,6 +4,7 @@
 #define ARM 0
 #define HANGER 3
 #define ELEVATOR 0
+#define ELEVATORTWO 2
 #define SENSOR_UP 15
 #define SENSOR_DOWN 14
 #define ARM_UP 150
@@ -31,10 +32,24 @@ void arm_lift(){
 	//le elevator
 	while(digital(SENSOR_UP)==0)
 	{
-		motor(ELEVATOR, 80);
-		msleep(50);
+		motor(ELEVATOR, 100);
+		motor(ELEVATORTWO,75);
 	}
-	motor(ELEVATOR,0);
+	ao();
+}
+void arm_lower(){
+	//le elevator
+	while(digital(SENSOR_DOWN)==0)
+	{
+		motor(ELEVATOR, -25);
+		motor(ELEVATORTWO,-25);
+	}
+	ao();
+	msleep(400);
+	//arm
+	enable_servo(ARM);
+	set_servo_position(ARM,ARM_DOWN);
+	msleep(400);
 }
 /*..............................................Functions End..............................................*/
 int main(){
@@ -58,6 +73,7 @@ int main(){
 	arm_lift();
 	create_left(82,0,250);//face the rack
 	create_forward(100,200);
+	create_left(5,0,200);
 	create_backward(290,200);
 	create_forward(50,200);
 	create_block();//At the Pipes

@@ -1,6 +1,8 @@
 #include "createDrive.h"
 #include "generic.h"
 //Start: Monday 23 June 2014
+//Create 2.1 working version backed-up
+//Create 2.2 started on Monday 7 July 2014
 #define ARM 0
 #define HANGER 3
 #define ELEVATOR 0
@@ -15,8 +17,6 @@
 #define HANGER_OPEN 1365
 //#define LIGHTSTART
 //for create cliff sensors
-#define lcliff get_create_lcliff_amt(.002)
-#define rcliff get_create_rcliff_amt(.002)
 /*..............................................Functions Begin..............................................*/
 void create_setup(){
 	create_backward(10,50);
@@ -26,7 +26,6 @@ void create_setup(){
 	create_forward(50,50);
 	create_block();
 	msleep(1000);
-	printf("Now in starting position, proceed to activate light start...\n");
 }
 void arm_lift(){
 	//arm
@@ -36,8 +35,8 @@ void arm_lift(){
 	//le elevator
 	while(digital(SENSOR_UP)==0)
 	{
-		motor(ELEVATOR, 80);
-		motor(ELEVATORTWO,60);
+		motor(ELEVATOR, 100);
+		motor(ELEVATORTWO,75);
 	}
 	ao();
 }
@@ -45,8 +44,8 @@ void arm_lower(){
 	//le elevator
 	while(digital(SENSOR_DOWN)==0)
 	{
-		motor(ELEVATOR, -10);
-		motor(ELEVATORTWO,-10);
+		motor(ELEVATOR, -25);
+		motor(ELEVATORTWO,-25);
 	}
 	ao();
 	msleep(400);
@@ -85,7 +84,7 @@ int main()
 
 	create_left(82,0,150);
 	create_forward(310, 150);//scrape against pipe is deliberate
-	create_left(82,0,150);//face the rack
+	create_left(84,0,150);//face the rack
 	create_backward(230,150);
 	create_block();//At the Pipes
 	msleep(100);
@@ -170,6 +169,7 @@ int main()
 	create_block();
 	
 	arm_lift();
+	create_right(2,0,100);
 	create_backward(375,100);//score 2nd blue
 	create_block();
 	
