@@ -19,7 +19,7 @@
 #define SPDlb 50.//left backward
 #define SPDrb 50.//right backward
 #define rdistmultb (SPDrb/SPDlb)
-#define wheeldiameter 4.2
+#define wheeldiameter 5.5
 #define ks 17.5
 #define CMtoBEMF (850/(PI*wheeldiameter))
 
