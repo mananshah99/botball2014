@@ -61,26 +61,22 @@ int main(){
 	servo_set(ARM,ARM_DOWN,0.3);
 	servo_set(HANGER,HANGER_CLOSE,0.3);
 	
-	create_right(85,0,250);
-	create_backward(30,50);//square up
-	create_stop();
-	create_wait_time(1);
+	create_right(80,0,250);
 	create_forward(390, 400);// (distance in mm,speed)
-	create_left(82,0,250);
-	create_forward(310, 300);//scrape against pipe is deliberate
+	create_left(90,0,250);
+	create_forward(600, 300);//scpe against pipe is deliberate
 	create_block();
 	
 	arm_lift();
 	create_left(82,0,250);//face the rack
 	create_forward(100,200);
-	create_left(5,0,200);
 	create_backward(290,200);
-	create_forward(50,200);
+	create_forward(75,200);
 	create_block();//At the Pipes
 	
-	wait_till(110); now();
 	servo_set(HANGER,HANGER_OPEN,0.3);
-	create_forward(75,100);
+	wait_till(110); now();
+	create_forward(150,100);
 	//Temp End Code
 	disable_servos(); printf("Done\n");
 }
