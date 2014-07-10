@@ -81,17 +81,25 @@ int main()
 	create_wait_time(10);
 	create_forward(390, 150);// (distance in mm,speed)
 	create_block();
+	//now out of base
 
 	create_left(82,0,150);
 	create_forward(310, 150);//scrape against pipe is deliberate
 	create_left(84,0,150);//face the rack
+	
+	/** Because arm hits the side of the rack **/
+	create_forward(30,150); //back up a little and let the arm's flexibility swing it over
+	create_wait_time(5);//wait half a second for the arm to swing over
+	create_backward(30,150);//reset position back to 
+	
 	create_backward(230,150);
 	create_block();//At the Pipes
 	msleep(100);
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
 	create_forward_until_lbump();
-	create_block();//Backed-up from Pipes
+	create_block();
+	//deposited green/pink hangers and Backed-up from Pipes
 	
 	arm_lower();
 	create_backward(190,150);//approach blue hanger (facing away)
@@ -113,16 +121,20 @@ int main()
 	create_forward(10,100);
 	create_right(5,0,100);//reset angle
 	create_block();
+	//Got blue hanger
 	
 	create_forward_until_lbump();
 	create_block();
+	//get out
 	
 	//create_left(80,0,150);//turn for lift
 	create_right(270,0,150);
+	create_block();
+	arm_lift();
+	create_right(180,0,150);
 	create_backward(75,150);
 	create_block();
 	
-	arm_lift();
 	//create_left(270,0,150);//SPIN
 	create_right(80,0,150);//reset angle
 	create_forward(50,150);
@@ -141,12 +153,14 @@ int main()
 	create_left(14,0,70);//reset
 	create_forward(200,150);//score blue hanger
 	create_block();
+	//blue hanger now scored (on pipe), moving to second blue hanger and dropping 1st off
 	
 	msleep(100);
 	servo_set(HANGER,HANGER_OPEN,0.3);
 	msleep(500);
 	create_forward_until_rbump();
 	create_block();
+	//moving again to second blue hanger
 	
 	create_right(82,0,150);
 	create_backward(100,70);//square up one
@@ -167,6 +181,7 @@ int main()
 	servo_set(ARM,ARM_DMID,0.5);
 	create_forward(350,200);
 	create_block();
+	//collected 2nd blue hanger
 	
 	arm_lift();
 	create_right(2,0,100);
@@ -176,7 +191,7 @@ int main()
 	servo_set(HANGER,HANGER_OPEN,0.3);
 	create_forward(700,300);
 	create_block();
-	printf("%d", seconds()-time);
+	printf("%d\n", seconds()-time);
 	
 	disable_servos(); ao(); printf("Done\n");
 }
