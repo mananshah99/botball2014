@@ -80,26 +80,23 @@ int main()
 	create_stop();
 	create_wait_time(10);
 	create_forward(390, 150);// (distance in mm,speed)
-	create_block();
-	//now out of base
+	create_block();//leaving base
 
 	create_left(82,0,150);
 	create_forward(310, 150);//scrape against pipe is deliberate
-	create_left(84,0,150);//face the rack
+	create_left(90,0,150);//face the rack
 	
 	/** Because arm hits the side of the rack **/
-	create_forward(30,150); //back up a little and let the arm's flexibility swing it over
-	create_wait_time(5);//wait half a second for the arm to swing over
-	create_backward(30,150);//reset position back to 
-	
-	create_backward(230,150);
+	create_forward(10,150); //reset arm
+	create_stop();
+	create_wait_time(5);
+	create_backward(240,150);
 	create_block();//At the Pipes
 	msleep(100);
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
 	create_forward_until_lbump();
-	create_block();
-	//deposited green/pink hangers and Backed-up from Pipes
+	create_block(); //deposited green/pink hangers and Backed-up from Pipes
 	
 	arm_lower();
 	create_backward(190,150);//approach blue hanger (facing away)
@@ -121,7 +118,6 @@ int main()
 	create_forward(10,100);
 	create_right(5,0,100);//reset angle
 	create_block();
-	//Got blue hanger
 	
 	create_forward_until_lbump();
 	create_block();
@@ -129,12 +125,10 @@ int main()
 	
 	//create_left(80,0,150);//turn for lift
 	create_right(270,0,150);
-	create_block();
-	arm_lift();
-	create_right(180,0,150);
 	create_backward(75,150);
 	create_block();
 	
+	arm_lift();
 	//create_left(270,0,150);//SPIN
 	create_right(80,0,150);//reset angle
 	create_forward(50,150);
