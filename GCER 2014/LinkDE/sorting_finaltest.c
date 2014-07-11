@@ -1,3 +1,4 @@
+#ifdef SORTING_FINAL_TEST
 #include "template.h"
 
 #ifndef max
@@ -7,10 +8,6 @@
 #ifndef min
 	#define min( a, b ) ( ((a) < (b)) ? (a) : (b) )
 #endif
-
-
-#define SORTING_FINAL_TEST
-#ifdef SORTING_FINAL_TEST
 
 double turned_angle; 
 int x_rob = 100;  
