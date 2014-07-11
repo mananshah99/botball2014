@@ -1,4 +1,4 @@
-
+/*
 void line_squareup(double srad, double lrad, double sensor_angle){
 	//srad is distance from wheel to close sensor lrad is distance to far sensor
 	//angle is angle between sensors
@@ -65,4 +65,4 @@ void line_squareup(double srad, double lrad, double sensor_angle){
 		//move backward
 		//we could change this to forward to have it square up on the far side of the line.
 	}
-}
+}*/

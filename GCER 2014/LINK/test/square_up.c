@@ -44,8 +44,8 @@ void square_up_angle(){
 			//turn robot until square
 			printf("left: %d\n",leftDistance);
 			printf("right: %d\n",rightDistance);
-			motor(MOT_LEFT,-1*Con*AE);
-			motor(MOT_RIGHT,Con*AE);
+			motor(MOT_LEFT,-1*(Con*AE+10));
+			motor(MOT_RIGHT,Con*AE+10);
 			//msleep(1);
 		}
 	
@@ -78,12 +78,12 @@ void square_up_distance(int distance){
 			printf("rightf: %d\n",rightDistance);
 			if((leftDistance+rightDistance)/2 < distance){
 				//move robot forward
-				motor(MOT_LEFT,sqpow);
-				motor(MOT_RIGHT,sqpow);
-			} else {
-				//move robot backward
 				motor(MOT_LEFT,-sqpow);
 				motor(MOT_RIGHT,-sqpow);
+			} else {
+				//move robot backward
+				motor(MOT_LEFT,sqpow);
+				motor(MOT_RIGHT,sqpow);
 			}
 			msleep(1);
 		}
