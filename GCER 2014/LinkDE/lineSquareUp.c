@@ -11,7 +11,7 @@ void line_squareup(double srad, double lrad, double sensor_angle){
 	
 	int turn_motor = -1;
 	
-	int dark = 800;//test this and change it to be correct
+	int dark = 450;
 	
 	while(lsens >  dark && rsens > dark ) {
 		motor(MOT_LEFT,50);
