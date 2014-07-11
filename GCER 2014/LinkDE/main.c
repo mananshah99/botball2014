@@ -58,33 +58,26 @@ int main() {
 	
 	msleep(100);
 	left(90, 0);
-	forward(10);
+	forward(7);
 	printf("sortteding stuffs\n");
 	sleep(3);
 	set_servo_position(3, basket_closed);
 	motor(MOT_LEFT, -60);
 	motor(MOT_RIGHT, -60);
 	sleep(2);
-	servo_slow(2, basket_up, 4);
-	forward(150);
-	set_servo_position(2, basket_down);
-	left(90,0);
-	backward(25);
-	square_up_angle();
-	square_up_distance(240);
-	square_up_angle();
-	msleep(50);
+	forward(12);
 	right(90,0);
-	backward(10);
-	servo_slow(3, basket_open, 10);
+	forward(20);
+	motor(MOT_LEFT, 68);
+	motor(MOT_RIGHT, 60);
+	sleep(2);
+	backward(1);
+	servo_slow(2,basket_up,4);
+	right(80,0);
+	forward(10);
+	set_servo_position(3, basket_open);
 	sleep(1);
-	forward(25);
-	printf("sortteding stuffs\n");
-	sleep(3);
-	set_servo_position(3, basket_closed);
-	backward(50);
-	right(90,0);
-	
+	backward(20);
 	
 	//will add this back in later
 	/*
