@@ -1,4 +1,6 @@
-#define MAIN
+#ifdef SORTING_FINAL_TEST
+#include "template.h"
+
 #ifndef max
 	#define max( a, b ) ( ((a) > (b)) ? (a) : (b) )
 #endif
@@ -7,10 +9,7 @@
 	#define min( a, b ) ( ((a) < (b)) ? (a) : (b) )
 #endif
 
-#ifdef MAIN
-#include "./template.h"
-
-double turned_angle;
+double turned_angle; 
 int x_rob = 100;  
 int y_rob = -113; //old: 156
 int y_target = 69; //new: 68 (old = 25)
@@ -19,164 +18,17 @@ int y_target = 69; //new: 68 (old = 25)
  * 100 closed
  * 1300 open
  * port 3
-*/
-void correct_angle();
-void correct_distance();
-void square_up_distance(int distance);
-void square_up_angle();
-void line_squareup(double sensor_angle);
+ */
 
 int basket_open = 1300;
 int basket_closed = 171;
 int basket_up = 400;
 int basket_down = 75;
 
-int main() {
-	#define DEBUG // comment this out when in actual competition 
-	
-	set_servo_position(1, 1300);	
-	set_servo_position(2, basket_down);
-	set_servo_position(3, basket_closed);
-	
-	//enabling everything
-	enable_servos();
-	camera_open();
-	camera_update();
-	
-	//line_squareup(0.349);
-	
-	///---Drive 1---///
-	
-	forward(48);
-	
-	set_servo_position(3, basket_open);
-	
-	msleep(100);
-	left(90, 0);
-	forward(10);
-	
-	correct_angle();
-	correct_distance();
-	
-	correct_angle();
-	correct_distance();
-	
-	set_servo_position(3, basket_closed);
-	motor(MOT_LEFT, -60);
-	motor(MOT_RIGHT, -60);
-	sleep(2);
-	servo_slow(2, basket_up, 4);
-	forward(150);
-	set_servo_position(2, basket_down);
-	left(90,0);
-	backward(25);
-	square_up_angle();
-	square_up_distance(240);
-	square_up_angle();
-	msleep(50);
-	right(90,0);
-	backward(10);
-	servo_slow(3, basket_open, 10);
-	sleep(1);
-	forward(25);
-	printf("sortteding stuffs\n");
-	sleep(3);
-	set_servo_position(3, basket_closed);
-	backward(50);
-	right(90,0);
-	
-	
-	//will add this back in later
-	/*
-	#define SPDlb	50
-	#define SPDrb	50
-	#define SPD	20
-	*/
-	/**PICK UP 1*/
-	/*
-	correct_angle();
-	correct_distance();
-	ao();
-	
-	msleep(1500);
-	
-	correct_angle();
-	correct_distance();
-	ao();*/
-	//done with backing up 
-	disable_servos();
-}
-
-void line_squareup(double sensor_angle){
-	//srad is distance from wheel to close sensor lrad is distance to far sensor
-	//angle is angle between sensors
-	
-	int lsens = analog(1);
-	int rsens = analog(0);
-	
-	double turn_angle = 0;
-	double extra_turn = 0;
-	
-	int turn_motor = -1;
-	
-	int dark = 450;
-	
-	while(lsens >  dark && rsens > dark ) {
-		motor(MOT_LEFT,50);
-		motor(MOT_RIGHT,50);
-		//move forward
-		lsens = analog(1);
-		rsens = analog(0);
-		clear_motor_position_counter(MOT_RIGHT);
-		clear_motor_position_counter(MOT_LEFT);
-		if (lsens > dark){
-			while(rsens < dark ) {
-				printf("extra turn:%d\n",extra_turn);
-				lsens = analog(1);
-				rsens = analog(0);
-				motor(MOT_RIGHT,50);
-				mav(MOT_LEFT,0);
-				//turn left by moving right forward
-				turn_angle = sensor_angle - (CMtoBEMF * gmpc(MOT_RIGHT))/ks;
-				extra_turn = turn_angle + (-2*atan((sqrt(41-40*cos(turn_angle))-5*sin(turn_angle))/(4-5*cos(turn_angle))));
-				//values based of of srad and lrad using wolfram alpha i dont know if the link can do all the math
-				//srad is 12, lrad is 15
-				turn_motor = MOT_RIGHT;
-			}
-		}
-		if (rsens > dark){
-			while(lsens < dark ) {
-				lsens = analog(1);
-				rsens = analog(0);
-				motor(MOT_LEFT,50);
-				mav(MOT_RIGHT,0);
-				//turn right by moving left forward
-				turn_angle = sensor_angle - (CMtoBEMF * gmpc(MOT_LEFT))/ks;
-				extra_turn = turn_angle + (-2 * atan((sqrt(41-40*cos(turn_angle))-5*sin(turn_angle))/(4-5*cos(turn_angle))));
-				//values based of of srad and lrad using wolfram alpha i dont know if the link can do all the math
-				//srad is 12, lrad is 15
-				//for new values equation is(srad/lrad)*cos(a)=cos(a+turn_angle) a+turn_angle=extra_turn
-				turn_motor = MOT_LEFT;
-			}
-			
-		}
-	}
-	//turn extra
-	mrp(turn_motor,50,(extra_turn * ks)/CMtoBEMF);
-	while(lsens <  dark && rsens < dark ) {
-		lsens = analog(1);
-		rsens = analog(0);
-		motor(MOT_LEFT,-50);
-		motor(MOT_RIGHT,-50);
-		//move backward
-		//we could change this to forward to have it square up on the far side of the line.
-	}
-}
-
 void correct_angle() {
 	camera_update();
-	
-	//constants
+
+//constants
 	double K_p = 26.0;
 	double K_i = 0.03;
 	double K_d = 0.01;	
@@ -205,14 +57,15 @@ void correct_angle() {
 			x_blob = get_object_center(0,0).x;  
 			y_blob = get_object_center(0,0).y;  
 		}while(cam_area(0)==0);
-				
+		
+		
 		x_blob = get_object_center(0,0).x;  
 		y_blob = get_object_center(0,0).y;
 		
 		printf("x : %d, y: %d\n");
 		double E = atan(
-		((double)(-1*(x_blob-x_rob)))
-		/((double)(y_blob-y_rob))
+			((double)(-1*(x_blob-x_rob)))
+			/((double)(y_blob-y_rob))
 		);
 		
 		//this is a bit sketchy but it should work
@@ -220,7 +73,7 @@ void correct_angle() {
 			prev_error = E;
 			turned_angle = E;
 		}
-		
+			
 		integral += (E*0.001); //update time
 		derivative = (E - prev_error)/0.001;
 		
@@ -319,9 +172,9 @@ void correct_distance() {
 	float v = ( ( ( (float) E) * ks )/1000.);
 	//move back the same amount
 	if(v < 0l) 
-	backward(v);
+		backward(v);
 	else forward(v);
-	
+		
 	float angle = ((float)turned_angle)*RADTODEG;
 	printf("{{ANGLE}} %f\n", angle);
 	printf("   {{TURNED ANGLE}} %f\n", turned_angle);
@@ -393,7 +246,7 @@ void correct_distance() {
 	turned_angle = 0;
 	*******************************/
 }
-
+	
 void square_up_angle(){
 	//P constant
 	double Con = 40.0;
@@ -409,29 +262,29 @@ void square_up_angle(){
 	
 	// distance between IR sensors
 	double dia = 430;//200units = about 3.5 in they are 7.5 in apart
-	
+
 	//difference between the distances
 	int diff = leftDistance-rightDistance;
 	double AE = 0;
 	
-	leftDistance = analog_et(2);
-	rightDistance = analog_et(3);
-	diff = leftDistance-rightDistance;
-	//squares robot
-	while (abs(diff) > aDiff) {
 		leftDistance = analog_et(2);
 		rightDistance = analog_et(3);
 		diff = leftDistance-rightDistance;
-		AE = atan(diff/dia);
-		//turn robot until square
-		printf("left: %d\n",leftDistance);
-		printf("right: %d\n",rightDistance);
-		if(AE*Con<15 && AE*Con>0) AE=15/Con;
-		if(AE*Con<0 && AE*Con>-15) AE=-15/Con;
-		motor(MOT_LEFT,-1*Con*AE);
-		motor(MOT_RIGHT,Con*AE);
-		//msleep(1);
-	}
+		//squares robot
+		while (abs(diff) > aDiff) {
+			leftDistance = analog_et(2);
+			rightDistance = analog_et(3);
+			diff = leftDistance-rightDistance;
+			AE = atan(diff/dia);
+			//turn robot until square
+			printf("left: %d\n",leftDistance);
+			printf("right: %d\n",rightDistance);
+			if(AE*Con<15 && AE*Con>0) AE=15/Con;
+			if(AE*Con<0 && AE*Con>-15) AE=-15/Con;
+			motor(MOT_LEFT,-1*Con*AE);
+			motor(MOT_RIGHT,Con*AE);
+			//msleep(1);
+		}
 	
 	
 }
@@ -452,24 +305,42 @@ void square_up_distance(int distance){
 	
 	//acceptable difference between the distances
 	int aDiff = .1;
+
 	
-	
-	//moves robot to correct distance
-	while (abs((leftDistance+rightDistance)/2-distance) > aDiff){
-		leftDistance = analog_et(2);
-		rightDistance = analog_et(3);
-		printf("leftf: %d\n",leftDistance);
-		printf("rightf: %d\n",rightDistance);
-		if((leftDistance+rightDistance)/2 < distance){
-			//move robot forward
-			motor(MOT_LEFT,-sqpow);
-			motor(MOT_RIGHT,-sqpow);
+		//moves robot to correct distance
+		while (abs((leftDistance+rightDistance)/2-distance) > aDiff){
+			leftDistance = analog_et(2);
+			rightDistance = analog_et(3);
+			printf("leftf: %d\n",leftDistance);
+			printf("rightf: %d\n",rightDistance);
+			if((leftDistance+rightDistance)/2 < distance){
+				//move robot forward
+				motor(MOT_LEFT,-sqpow);
+				motor(MOT_RIGHT,-sqpow);
 			} else {
-			//move robot backward
-			motor(MOT_LEFT,sqpow);
-			motor(MOT_RIGHT,sqpow);
+				//move robot backward
+				motor(MOT_LEFT,sqpow);
+				motor(MOT_RIGHT,sqpow);
+			}
+			msleep(1);
 		}
-		msleep(1);
-	}
 }
+
+int main() {
+	set_servo_position(1, 1300);	
+	set_servo_position(2, basket_down);
+	set_servo_position(3, basket_open);
+	
+	enable_servos();
+	camera_open();
+	camera_update();
+	
+	correct_angle();
+	correct_distance();
+	ao();
+	msleep(1000);
+	correct_angle();
+	correct_distance();
+}
+
 #endif
