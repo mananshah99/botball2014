@@ -67,27 +67,26 @@ void create_forward_until_rbump(){
 /*..............................................Functions End..............................................*/
 int main()
 {
-	create_connect();
-	create_setup();
+	create_connect(); create_setup();
 	//light_start(LIGHTSTART);
-	shut_down_in(119.);
+	shut_down_in(119.); float time = seconds();
+	enable_servos();
 	
-	enable_servos(); double time = seconds();
 	servo_set(HANGER,HANGER_CLOSE,0.3);
 	arm_lift();//DO NOT lift as robot moves, it will break the Create
 	create_right(85,0,150);
 	create_backward(50,50);//square up
 	create_stop();
 	create_wait_time(10);
-	create_forward(390, 150);// (distance in mm,speed)
-	create_block();//leaving base
+	create_forward(410, 150);// (distance in mm,speed)
+	create_block();//left base
 
 	create_left(82,0,150);
 	create_forward(310, 150);//scrape against pipe is deliberate
 	create_left(90,0,150);//face the rack
-	
-	/** Because arm hits the side of the rack **/
-	create_forward(10,150); //reset arm
+
+	create_forward_until_lbump();
+	create_right(1,0,100);
 	create_stop();
 	create_wait_time(5);
 	create_backward(240,150);
@@ -95,8 +94,9 @@ int main()
 	msleep(100);
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
+	servo_set(ARM,ARM_UMID,0.3);
 	create_forward_until_lbump();
-	create_block(); //deposited green/pink hangers and Backed-up from Pipes
+	create_block(); //scored and backed away from hangers
 	
 	arm_lower();
 	create_backward(190,150);//approach blue hanger (facing away)
@@ -151,6 +151,7 @@ int main()
 	
 	msleep(100);
 	servo_set(HANGER,HANGER_OPEN,0.3);
+	servo_set(ARM,ARM_UMID,0.3);
 	msleep(500);
 	create_forward_until_rbump();
 	create_block();
@@ -175,14 +176,14 @@ int main()
 	servo_set(ARM,ARM_DMID,0.5);
 	create_forward(350,200);
 	create_block();
-	//collected 2nd blue hanger
 	
-	arm_lift();
+	arm_lift();q
 	create_right(2,0,100);
 	create_backward(375,100);//score 2nd blue
 	create_block();
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
+	servo_set(ARM,ARM_UMID,0.3);
 	create_forward(700,300);
 	create_block();
 	printf("%d\n", seconds()-time);
