@@ -26,6 +26,10 @@ void create_setup(){
 	create_forward(50,50);
 	create_block();
 	msleep(1000);
+	printf("Press A to start");
+	while(a_button()==0){
+		msleep(1);
+	}
 }
 void arm_lift(){
 	//arm
@@ -86,7 +90,7 @@ int main()
 	create_left(90,0,150);//face the rack
 
 	create_forward_until_lbump();
-	create_right(1,0,100);
+	//create_right(1,0,100);
 	create_stop();
 	create_wait_time(5);
 	create_backward(240,150);
@@ -177,7 +181,7 @@ int main()
 	create_forward(350,200);
 	create_block();
 	
-	arm_lift();q
+	arm_lift();
 	create_right(2,0,100);
 	create_backward(375,100);//score 2nd blue
 	create_block();
