@@ -122,8 +122,8 @@ void line_squareup(double sensor_angle){
 				//turn left by moving right forward
 				turn_angle = sensor_angle - (CMtoBEMF * gmpc(MOT_RIGHT))/ks;
 				extra_turn = turn_angle + (-2*atan((sqrt(41-40*cos(turn_angle))-5*sin(turn_angle))/(4-5*cos(turn_angle))));
-				//values based of of srad and lrad using wolfram alpha i dont know if the link can do all the math
-				//srad is 12, lrad is 15
+			//values based of of srad and lrad using wolfram alpha i dont know if the link can do all the math
+			//srad is 12, lrad is 15
 				turn_motor = MOT_RIGHT;
 			}
 		}
@@ -136,9 +136,9 @@ void line_squareup(double sensor_angle){
 				//turn right by moving left forward
 				turn_angle = sensor_angle - (CMtoBEMF * gmpc(MOT_LEFT))/ks;
 				extra_turn = turn_angle + (-2 * atan((sqrt(41-40*cos(turn_angle))-5*sin(turn_angle))/(4-5*cos(turn_angle))));
-				//values based of of srad and lrad using wolfram alpha i dont know if the link can do all the math
-				//srad is 12, lrad is 15
-				//for new values equation is(srad/lrad)*cos(a)=cos(a+turn_angle) a+turn_angle=extra_turn
+			//values based of of srad and lrad using wolfram alpha i dont know if the link can do all the math
+			//srad is 12, lrad is 15
+			//for new values equation is(srad/lrad)*cos(a)=cos(a+turn_angle) a+turn_angle=extra_turn
 				turn_motor = MOT_LEFT;
 			}
 			
@@ -160,7 +160,7 @@ void correct_angle() {
 	camera_update();
 
 //constants
-	double K_p = 24.0;
+	double K_p = 26.0;
 	double K_i = 0.03;
 	double K_d = 0.01;	
 	
@@ -330,7 +330,7 @@ void correct_distance() {
 		right(-angle, 0);
 	}
 	else {
-		left   (angle, 0);
+		left(angle, 0);
 	}
 	msleep(1000);
 	turned_angle = 0;
@@ -435,7 +435,7 @@ void tsort(){
 		y_blob = get_object_center(0,0).y;  
 	}
 	
-printf("x : %d, y: %d\n");
+	printf("x : %d, y: %d\n");
 		double E = atan(
 			((double)(-1*(x_blob-x_rob)))
 			/((double)(y_blob-y_rob))
