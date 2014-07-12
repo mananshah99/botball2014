@@ -174,7 +174,7 @@ void correct_angle() {
 	double prev_error = 0.0; 
 	
 	//threshold value
-	double EPSILON = 0.03;
+	double EPSILON = 0.07;
 	
 	//init
 	set_servo_position(1, 1584);
