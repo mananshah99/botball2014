@@ -23,6 +23,10 @@ void create_setup(){
 	create_forward(50,50);
 	create_block();
 	msleep(1000);
+	printf("Press A to start");
+	while(a_button()==0){
+		msleep(1);
+	}
 }
 void arm_lift(){
 	//arm
@@ -33,7 +37,7 @@ void arm_lift(){
 	while(digital(SENSOR_UP)==0)
 	{
 		motor(ELEVATOR, 100);
-		motor(ELEVATORTWO,75);
+		motor(ELEVATORTWO,65);
 	}
 	ao();
 }
@@ -61,10 +65,10 @@ int main(){
 	servo_set(ARM,ARM_DOWN,0.3);
 	servo_set(HANGER,HANGER_CLOSE,0.3);
 	
-	create_right(80,0,250);
+	create_right(75,0,250);
 	create_forward(390, 400);// (distance in mm,speed)
 	create_left(90,0,250);
-	create_forward(600, 300);//scpe against pipe is deliberate
+	create_forward(580, 300);//scpe against pipe is deliberate
 	create_block();
 	
 	arm_lift();
@@ -75,6 +79,7 @@ int main(){
 	create_block();//At the Pipes
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
+	servo_set(ARM,ARM_UMID,0.3);
 	wait_till(110); now();
 	create_forward(150,100);
 	//Temp End Code
