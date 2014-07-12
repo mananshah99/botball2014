@@ -65,27 +65,17 @@ int main() {
 	motor(MOT_LEFT, -60);
 	motor(MOT_RIGHT, -60);
 	sleep(2);
-	servo_slow(2, basket_up, 4);
-	forward(150);
-	set_servo_position(2, basket_down);
-	left(90,0);
-	backward(25);
-	square_up_angle();
-	square_up_distance(240);
-	square_up_angle();
-	msleep(50);
-	right(90,0);
-	backward(10);
-	servo_slow(3, basket_open, 10);
-	sleep(1);
-	forward(25);
-	printf("sortteding stuffs\n");
-	sleep(3);
-	set_servo_position(3, basket_closed);
-	backward(50);
-	right(90,0);
 	
-	
+	forward(20);
+	motor(MOT_LEFT, 68);
+	motor(MOT_RIGHT, 60);
+	sleep(2);
+	backward(1);
+	servo_slow(2,basket_up,4);
+	right(80,0);
+	forward(10);
+	set_servo_position(3, basket_open);
+			
 	//will add this back in later
 	/*
 	#define SPDlb	50
@@ -175,8 +165,8 @@ void line_squareup(double sensor_angle){
 
 void correct_angle() {
 	camera_update();
-	
-	//constants
+
+//constants
 	double K_p = 26.0;
 	double K_i = 0.03;
 	double K_d = 0.01;	
@@ -205,14 +195,15 @@ void correct_angle() {
 			x_blob = get_object_center(0,0).x;  
 			y_blob = get_object_center(0,0).y;  
 		}while(cam_area(0)==0);
-				
+		
+		
 		x_blob = get_object_center(0,0).x;  
 		y_blob = get_object_center(0,0).y;
 		
 		printf("x : %d, y: %d\n");
 		double E = atan(
-		((double)(-1*(x_blob-x_rob)))
-		/((double)(y_blob-y_rob))
+			((double)(-1*(x_blob-x_rob)))
+			/((double)(y_blob-y_rob))
 		);
 		
 		//this is a bit sketchy but it should work
@@ -220,7 +211,7 @@ void correct_angle() {
 			prev_error = E;
 			turned_angle = E;
 		}
-		
+			
 		integral += (E*0.001); //update time
 		derivative = (E - prev_error)/0.001;
 		
@@ -319,9 +310,9 @@ void correct_distance() {
 	float v = ( ( ( (float) E) * ks )/1000.);
 	//move back the same amount
 	if(v < 0l) 
-	backward(v);
+		backward(v);
 	else forward(v);
-	
+		
 	float angle = ((float)turned_angle)*RADTODEG;
 	printf("{{ANGLE}} %f\n", angle);
 	printf("   {{TURNED ANGLE}} %f\n", turned_angle);
