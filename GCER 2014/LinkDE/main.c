@@ -334,65 +334,6 @@ void correct_distance() {
 	}
 	msleep(1000);
 	turned_angle = 0;
-	
-	
-	
-	/*************************
-	float x_blob, y_blob, E = 0;
-	
-	camera_update();
-	do{
-		x_blob = get_object_center(0,0).x;  
-		y_blob = get_object_center(0,0).y;  
-	}while(cam_area(0)==0);
-	
-	//E = max(-y_blob + y_target, y_blob + y_target);
-	E = y_blob - y_target;
-	
-	//11 used to be 10.4 here
-	float v = ( ( ( (float) E) * ks )/1000.);
-		printf("v = %f\n", v);
-	if(v < 0l) 
-		backward(v);
-	else {
-		forward(v);
-	}
-		
-	printf("[DONE] done overall correction");
-	msleep(1000);
-	
-	//dropping 
-	servo_slow(1, 200, 5); //port, position, time
-	//set_servo_position(1, 200);
-	//msleep(1500);
-	//shaking
-	forward(.1);
-	msleep(100);
-	backward(.2);
-	msleep(100);
-	forward(.1);
-	msleep(500);
-	set_servo_position(1, 1800);
-	msleep(2000);
-	printf("[DONE] finished tribble pickup");
-	
-	//move back the same amount
-	if(v < 0l) 
-		backward(v);
-	else forward(v);
-		
-	float angle = ((float)turned_angle)*RADTODEG;
-	printf("{{ANGLE}} %f\n", angle);
-	printf("   {{TURNED ANGLE}} %f\n", turned_angle);
-	if(angle < 0l) {
-		right(-angle, 0);
-	}
-	else {
-		left(angle, 0);
-	}
-	msleep(1000);
-	turned_angle = 0;
-	*******************************/
 }
 
 void square_up_angle(){
