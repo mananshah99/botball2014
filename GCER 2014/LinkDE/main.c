@@ -1,4 +1,5 @@
 #define MAIN
+
 #ifndef max
 	#define max( a, b ) ( ((a) > (b)) ? (a) : (b) )
 #endif
@@ -65,12 +66,12 @@ int main() {
 	forward(5);
 	set_servo_position(3, basket_closed);
 	set_servo_position(1, 1300);
-	motor(MOT_LEFT, -60);
-	motor(MOT_RIGHT, -60);
+	motor(MOT_LEFT, -40);
+	motor(MOT_RIGHT, -40);
 	sleep(3);
 	forward(5);
-	motor(MOT_LEFT, -60);
-	motor(MOT_RIGHT, -60);
+	motor(MOT_LEFT, -40);
+	motor(MOT_RIGHT, -40);
 	sleep(1);
 	forward(12);
 	right(90,0);
@@ -207,8 +208,8 @@ void correct_angle() {
 		integral += (E*0.001); //update time
 		derivative = (E - prev_error)/0.001;
 		
-		if(E*K_p<1 && E*K_p>0) E=1/K_p;
-		if(E*K_p<0 && E*K_p>-1) E=-1/K_p;
+		if(E*K_p<3 && E*K_p>0) E=3/K_p;
+		if(E*K_p<0 && E*K_p>-3) E=-3/K_p;
 				
 		motor(MOT_LEFT, -1*((K_p*E)+(integral*K_i)+(derivative*K_d)));
 		motor(MOT_RIGHT, (K_p*E)+(integral*K_i)+(derivative*K_d));
@@ -242,7 +243,7 @@ void correct_distance() {
 	double derivative = 0.0;
 	double prev_error = 0.0; 
 	
-	double EPSILON = 1.1;
+	double EPSILON = 2;
 		
 	
 	//from other code updates v so that it can correct distance 
@@ -276,8 +277,8 @@ void correct_distance() {
 		//this is a bit sketchy but it should work
 		if(prev_error==0) prev_error = E;
 			
-		if(E*K_p<2 && E*K_p>0) E=2/K_p;
-		if(E*K_p<0 && E*K_p>-2) E=-2/K_p;
+		if(E*K_p<4 && E*K_p>0) E=4/K_p;
+		if(E*K_p<0 && E*K_p>-4) E=-4/K_p;
 			
 		integral += (E*0.001); //update time
 		derivative = (E - prev_error)/0.001;
@@ -319,8 +320,8 @@ void correct_distance() {
 	//float v = ( ( ( (float) E) * ks )/1000.);
 	//move back the same amount
 	if(v < 0l) 
-		backward(v);
-	else forward(v);
+		forward(v);
+	else backward(v);
 		
 	float angle = ((float)turned_angle)*RADTODEG;
 	printf("{{ANGLE}} %f\n", angle);
@@ -329,7 +330,7 @@ void correct_distance() {
 		right(-angle, 0);
 	}
 	else {
-		left(angle, 0);
+		left   (angle, 0);
 	}
 	msleep(1000);
 	turned_angle = 0;
