@@ -260,15 +260,20 @@ void correct_distance() {
 	//11 used to be 10.4 here
 	float v = ( ( (float) E) /8);
 
-	
-	
+	/*********Threshold Camera Blob Issue*********/
+	double THRESHOLD_DOUBLEBLOB = 350;
 	while(1) {
 		camera_update();
 		x_blob = get_object_center(0,0).x;  
 		y_blob = get_object_center(0,0).y; 
+		
 		do{
 			camera_update();
-			x_blob = get_object_center(0,0).x;  
+			if(cam_area(0)>THRESHOLD_DOUBLEBLOB) {
+				//change x_blob to pick one of the two blobs
+				x_blob = get_object_center(0,0).x - 10;
+			}
+			else x_blob = get_object_center(0,0).x;  
 			y_blob = get_object_center(0,0).y;  
 		}while(cam_area(0)==0);
 			
@@ -286,8 +291,6 @@ void correct_distance() {
 		int spd = -(K_p*E)+(integral*K_i)+(derivative*K_d);
 		spd = (spd > 60 ? 60 : spd);
 		spd = (spd < -60 ? -60 : spd);
-		
-		
 		
 		motor(MOT_LEFT, spd*3.5);
 		motor(MOT_RIGHT, spd);
