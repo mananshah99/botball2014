@@ -72,8 +72,6 @@ int main(){
 	create_stop(); arm_lift();
 	create_block();
 
-	
-
 	create_left(86,0,250);//face the rack
 	create_forward(100,200);
 	create_backward(290,200);
