@@ -1,5 +1,3 @@
-
-
 #define MAIN
 
 #ifndef max
@@ -48,7 +46,7 @@ int main() {
 	set_servo_position(3, basket_closed);
 	
 	
-	line_squareup(0.349);
+	line_squareup(0.6435);
 	
 	///---Drive 1---///
 	/*
@@ -108,62 +106,67 @@ void line_squareup(double sensor_angle){
 	double turn_angle = 0;
 	double extra_turn = 0;
 	
-	int turn_motor = -1;
+	int turn_motor = 0;
 	
 	int dark = 740; // dark > 740
 	
 	while(lsens <  dark && rsens < dark ) {
 		printf("forward\n");
-		motor(MOT_LEFT,53);
-		motor(MOT_RIGHT,50);
+		motor(MOT_LEFT,27);
+		motor(MOT_RIGHT,20);
 		//move forward
 		lsens = analog(1);
 		rsens = analog(0);
 		clear_motor_position_counter(MOT_RIGHT);
 		clear_motor_position_counter(MOT_LEFT);
-		if (lsens < dark){
-			while(rsens > dark ) {
-				printf("extra turn right:%d\n",extra_turn);
+		if (lsens > dark){
+			ao();
+			turn_motor = MOT_LEFT;
+			msleep(2000);
+			while(rsens < dark ) {
+				printf("extra turn right:%f\n",extra_turn);
 				lsens = analog(1);
 				rsens = analog(0);
-				motor(MOT_RIGHT,50);
-				mav(MOT_LEFT,0);
-				//turn left by moving right forward
-				turn_angle = sensor_angle - (CMtoBEMF * gmpc(MOT_RIGHT))/ks;
-				extra_turn = turn_angle + (-2*atan((sqrt(41-40*cos(turn_angle))-5*sin(turn_angle))/(4-5*cos(turn_angle))));
-				//values based of of srad and lrad using wolfram alpha i dont know if the link can do all the math
-				//srad is 12, lrad is 15
-				turn_motor = MOT_RIGHT;
-				
-			}
-		}
-		if (rsens < dark){
-			while(lsens > dark ) {
-				printf("extra turn left:%d\n",extra_turn);
-				lsens = analog(1);
-				rsens = analog(0);
-				motor(MOT_LEFT,50);
+				motor(MOT_LEFT,20);
 				mav(MOT_RIGHT,0);
-				//turn right by moving left forward
-				turn_angle = sensor_angle - (CMtoBEMF * gmpc(MOT_LEFT))/ks;
-				extra_turn =(-2 * atan((sqrt(41-40*cos(turn_angle))-5*sin(turn_angle))/(4-5*cos(turn_angle))));
+				//turn left by moving right forward
+				turn_angle = sensor_angle - (gmpc(MOT_LEFT)/CMtoBEMF)/ks;
+				extra_turn =(-atan((sqrt(41-40*cos(turn_angle))-5*sin(turn_angle))/(4-5*cos(turn_angle))));
 				//values based of of srad and lrad using wolfram alpha i dont know if the link can do all the math
 				//srad is 12, lrad is 15
-				//for new values equation is(srad/lrad)*cos(a)=cos(a+turn_angle) a+turn_angle=extra_turn
-				turn_motor = MOT_LEFT;
+			}  
+		}
+		else if (rsens > dark){
+			ao();
+			msleep(2000); 
+			turn_motor = MOT_RIGHT;
+			while(lsens < dark ) {
+				printf("extra turn left:%f\n",extra_turn);
+				lsens = analog(1);
+				rsens = analog(0);
+				motor(MOT_RIGHT,20);
+				mav(MOT_LEFT,0);
+				//turn right by moving left forward
+				turn_angle = sensor_angle - (gmpc(MOT_RIGHT)/CMtoBEMF)/ks;
+				extra_turn =(-atan((sqrt(41-40*cos(turn_angle))-5*sin(turn_angle))/(4-5*cos(turn_angle))));
+				//values based of of srad and lrad using wolfram alpha i dont know if the link can do all the math
+				//srad is 12, lrad is 15
+				//for new values equation is(srad/lrad)*cos(a)=cos(a+turn_angle) a=extra_turn
+				
 				
 			}
 		}
 	}
 	ao();
+	msleep(2000);
 	//turn extra
-	mrp(turn_motor,50,(extra_turn * ks)/CMtoBEMF);
+	mrp(turn_motor,20,(extra_turn * ks)*CMtoBEMF);
 	while(lsens >  dark && rsens > dark ) {
-		printf("backward");
+		printf("backward\n");
 		lsens = analog(1);
 		rsens = analog(0);
-		motor(MOT_LEFT,-55);
-		motor(MOT_RIGHT,-50);
+		motor(MOT_LEFT,-36);
+		motor(MOT_RIGHT,-30);
 		//move backward
 		//we could change this to forward to have it square up on the far side of the line.
 	}
