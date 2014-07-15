@@ -36,10 +36,24 @@ int basket_closed = 171;
 int basket_up = 400;
 int basket_down = 75;
 
+#define __PIDTUNING__
+#ifdef __PIDTUNING__
+int main() {
+	enable_servos();
+	camera_open();
+	camera_update();
+	set_servo_position(1, 1300);	
+	set_servo_position(2, basket_down);
+	set_servo_position(3, basket_closed);
+
+#endif	
+
+#ifdef MAINMAIN
 int main() {
 	//#define DEBUG // comment this out when in actual competition 
 	
 	//enabling everything
+	
 	enable_servos();
 	camera_open();
 	camera_update();
@@ -92,7 +106,7 @@ int main() {
 			
 	disable_servos();
 }
-
+#endif
 void line_squareup(double sensor_angle){
 	//srad is distance from wheel to close sensor lrad is distance to far sensor
 	//angle is angle between sensors
@@ -162,7 +176,7 @@ void line_squareup(double sensor_angle){
 void correct_angle() {
 	camera_update();
 
-//constants
+	//constants
 	double K_p = 26.0;
 	double K_i = 0.03;
 	double K_d = 0.01;	
@@ -204,13 +218,13 @@ void correct_angle() {
 			
 		}while(cam_area(0)==0);
 		
-		printf("x : %d, y: %d\n");
+		// printf("x : %d, y: %d\n");
 		double E = atan(
 			((double)(-1*(x_blob-x_rob)))
 			/((double)(y_blob-y_rob))
 		);
 		
-		//this is a bit sketchy but it should work
+		// this is a bit sketchy but it should work
 		if(prev_error==0) {
 			prev_error = E;
 			turned_angle = E;
@@ -306,6 +320,8 @@ void correct_distance() {
 		derivative = (E - prev_error)/0.001;
 		
 		int spd = -(K_p*E)+(integral*K_i)+(derivative*K_d);
+		
+		//limit speed 
 		spd = (spd > 60 ? 60 : spd);
 		spd = (spd < -60 ? -60 : spd);
 		
@@ -313,7 +329,7 @@ void correct_distance() {
 		motor(MOT_RIGHT, spd);
 		msleep(1);
 		
-		printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative);
+		// printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative);
 		prev_error = E;
 		
 		if(E<=EPSILON && E>=-EPSILON) {
@@ -345,8 +361,8 @@ void correct_distance() {
 	else backward(v);
 		
 	float angle = ((float)turned_angle)*RADTODEG;
-	printf("{{ANGLE}} %f\n", angle);
-	printf("   {{TURNED ANGLE}} %f\n", turned_angle);
+	// printf("{{ANGLE}} %f\n", angle);
+	// printf("   {{TURNED ANGLE}} %f\n", turned_angle);
 	if(angle < 0l) {
 		right(-angle, 0);
 	}
