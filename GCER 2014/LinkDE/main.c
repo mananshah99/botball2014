@@ -16,6 +16,9 @@ int x_rob = 100;
 int y_rob = -113; //old: 156
 int y_target = 69; //new: 68 (old = 25)
 
+/**************/
+double MAX_HEIGHT = 18.7; 
+double MAX_WIDTH = 18.7;
 /*
  * 100 closed
  * 1300 open
@@ -183,15 +186,23 @@ void correct_angle() {
 		camera_update();
 		x_blob = get_object_center(0,0).x;  
 		y_blob = get_object_center(0,0).y; 
+		
 		do{
 			camera_update();
 			x_blob = get_object_center(0,0).x;  
-			y_blob = get_object_center(0,0).y;  
+			y_blob = get_object_center(0,0).y; 
+			
+			rectangle nx = get_object_bbox(0, 0);
+			
+			if(nx.height > MAX_HEIGHT) {
+			  y_blob = get_object_center(0, 0).y - 10;
+			}
+			
+			if(nx.width > MAX_WIDTH) {
+			  x_blob = get_object_center(0, 0).x - 10; 
+			}
+			
 		}while(cam_area(0)==0);
-		
-		
-		x_blob = get_object_center(0,0).x;  
-		y_blob = get_object_center(0,0).y;
 		
 		printf("x : %d, y: %d\n");
 		double E = atan(
@@ -261,7 +272,6 @@ void correct_distance() {
 	float v = ( ( (float) E) /8);
 
 	/*********Threshold Camera Blob Issue*********/
-	double THRESHOLD_DOUBLEBLOB = 350;
 	while(1) {
 		camera_update();
 		x_blob = get_object_center(0,0).x;  
@@ -269,12 +279,19 @@ void correct_distance() {
 		
 		do{
 			camera_update();
-			if(cam_area(0)>THRESHOLD_DOUBLEBLOB) {
-				//change x_blob to pick one of the two blobs
-				x_blob = get_object_center(0,0).x - 10;
+			x_blob = get_object_center(0,0).x;  
+			y_blob = get_object_center(0,0).y; 
+			
+			rectangle nx = get_object_bbox(0, 0);
+			
+			if(nx.height > MAX_HEIGHT) {
+			  y_blob = get_object_center(0, 0).y - 10;
 			}
-			else x_blob = get_object_center(0,0).x;  
-			y_blob = get_object_center(0,0).y;  
+			
+			if(nx.width > MAX_WIDTH) {
+			  x_blob = get_object_center(0, 0).x - 10; 
+			}
+			
 		}while(cam_area(0)==0);
 			
 		E = -y_blob+y_target;
@@ -304,6 +321,7 @@ void correct_distance() {
 			break;
 		}
 	}
+	
 	printf("[DONE] done overall correction");
 	msleep(1000);
 	
