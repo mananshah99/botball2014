@@ -183,7 +183,7 @@ void line_squareup(double sensor_angle){
 
 void correct_angle() {
 	camera_update();
-	
+
 	//constants
 	double K_p = 26.0;
 	double K_i = 0.03;
@@ -208,38 +208,46 @@ void correct_angle() {
 		camera_update();
 		x_blob = get_object_center(0,0).x;  
 		y_blob = get_object_center(0,0).y; 
+		
 		do{
 			camera_update();
 			x_blob = get_object_center(0,0).x;  
-			y_blob = get_object_center(0,0).y;  
+			y_blob = get_object_center(0,0).y; 
+			
+			rectangle nx = get_object_bbox(0, 0);
+			
+			if(nx.height > MAX_HEIGHT) {
+			  y_blob = get_object_center(0, 0).y - 10;
+			}
+			
+			if(nx.width > MAX_WIDTH) {
+			  x_blob = get_object_center(0, 0).x - 10; 
+			}
+			
 		}while(cam_area(0)==0);
 		
-		
-		x_blob = get_object_center(0,0).x;  
-		y_blob = get_object_center(0,0).y;
-		
-		printf("x : %d, y: %d\n");
+		// printf("x : %d, y: %d\n");
 		double E = atan(
-		((double)(-1*(x_blob-x_rob)))
-		/((double)(y_blob-y_rob))
+			((double)(-1*(x_blob-x_rob)))
+			/((double)(y_blob-y_rob))
 		);
 		
-		//this is a bit sketchy but it should work
+		// this is a bit sketchy but it should work
 		if(prev_error==0) {
 			prev_error = E;
 			turned_angle = E;
 		}
-		
+			
 		integral += (E*0.001); //update time
 		derivative = (E - prev_error)/0.001;
 		
 		if(E*K_p<3 && E*K_p>0) E=3/K_p;
 		if(E*K_p<0 && E*K_p>-3) E=-3/K_p;
-		
+				
 		motor(MOT_LEFT, -1*((K_p*E)+(integral*K_i)+(derivative*K_d)));
 		motor(MOT_RIGHT, (K_p*E)+(integral*K_i)+(derivative*K_d));
 		
-		//msleep(1);
+		msleep(1);
 		//printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative);
 		prev_error = E;
 		
@@ -248,7 +256,7 @@ void correct_angle() {
 			ao();
 			break;
 		}
-		
+		 
 	}
 	printf("[DONE] done with angle correction");
 	beep();
@@ -260,7 +268,7 @@ void correct_distance() {
 	double K_p = 0.18;
 	double K_i = 0;
 	double K_d = 0;
-	
+		
 	double x_blob, y_blob;
 	double E = 0;	
 	
@@ -269,7 +277,7 @@ void correct_distance() {
 	double prev_error = 0.0; 
 	
 	double EPSILON = 2;
-	
+		
 	
 	//from other code updates v so that it can correct distance 
 	
@@ -284,41 +292,52 @@ void correct_distance() {
 	
 	//11 used to be 10.4 here
 	float v = ( ( (float) E) /8);
-	
-	
-	
+
+	/*********Threshold Camera Blob Issue*********/
 	while(1) {
 		camera_update();
 		x_blob = get_object_center(0,0).x;  
 		y_blob = get_object_center(0,0).y; 
+		
 		do{
 			camera_update();
 			x_blob = get_object_center(0,0).x;  
-			y_blob = get_object_center(0,0).y;  
+			y_blob = get_object_center(0,0).y; 
+			
+			rectangle nx = get_object_bbox(0, 0);
+			
+			if(nx.height > MAX_HEIGHT) {
+			  y_blob = get_object_center(0, 0).y - 10;
+			}
+			
+			if(nx.width > MAX_WIDTH) {
+			  x_blob = get_object_center(0, 0).x - 10; 
+			}
+			
 		}while(cam_area(0)==0);
-		
+			
 		E = -y_blob+y_target;
 		
 		//this is a bit sketchy but it should work
 		if(prev_error==0) prev_error = E;
-		
+			
 		if(E*K_p<4 && E*K_p>0) E=4/K_p;
 		if(E*K_p<0 && E*K_p>-4) E=-4/K_p;
-		
+			
 		integral += (E*0.001); //update time
 		derivative = (E - prev_error)/0.001;
 		
 		int spd = -(K_p*E)+(integral*K_i)+(derivative*K_d);
+		
+		//limit speed 
 		spd = (spd > 60 ? 60 : spd);
 		spd = (spd < -60 ? -60 : spd);
-		
-		
 		
 		motor(MOT_LEFT, spd*3.5);
 		motor(MOT_RIGHT, spd);
 		msleep(1);
 		
-		printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative);
+		// printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative);
 		prev_error = E;
 		
 		if(E<=EPSILON && E>=-EPSILON) {
@@ -326,38 +345,39 @@ void correct_distance() {
 			break;
 		}
 	}
+	
 	printf("[DONE] done overall correction");
-	//msleep(1000);
+	msleep(1000);
 	
 	//dropping 
 	servo_slow(1, 200, 5); //port, position, time
 	//shaking
 	forward(.1);
-	//msleep(100);
+	msleep(100);
 	backward(.2);
-	//msleep(100);
+	msleep(100);
 	forward(.1);
-	msleep(300);
+	msleep(500);
 	set_servo_position(1, 1800);
-	//msleep(2000);
+	msleep(2000);
 	printf("[DONE] finished tribble pickup");
 	
 	//float v = ( ( ( (float) E) * ks )/1000.);
 	//move back the same amount
 	if(v < 0l) 
-	forward(v);
+		forward(v);
 	else backward(v);
-	
+		
 	float angle = ((float)turned_angle)*RADTODEG;
-	printf("{{ANGLE}} %f\n", angle);
-	printf("   {{TURNED ANGLE}} %f\n", turned_angle);
+	// printf("{{ANGLE}} %f\n", angle);
+	// printf("   {{TURNED ANGLE}} %f\n", turned_angle);
 	if(angle < 0l) {
 		right(-angle, 0);
 	}
 	else {
 		left(angle, 0);
 	}
-	msleep(100);
+	msleep(1000);
 	turned_angle = 0;
 }
 
