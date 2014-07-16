@@ -44,8 +44,11 @@ int main() {
 	camera_update();
 	set_servo_position(1, 1300);	
 	set_servo_position(2, basket_down);
-	set_servo_position(3, basket_closed);
-
+	set_servo_position(3, basket_open);
+		
+	correct_angle();
+	correct_distance();
+}
 #endif	
 
 #ifdef MAINMAIN
@@ -192,28 +195,58 @@ void correct_angle() {
 	
 	//threshold value
 	double EPSILON = 0.07;
+	double last_x = -1000, last_y = -1000; // unreasonable at beginning
 	
 	//init
 	set_servo_position(1, 1584);
 	prev_error = 0;
+	
 	while(1/*!in_range(E, 0, EPSILON) || !in_range(E, 0, -EPSILON)*/) {
 		camera_update();
-		x_blob = get_object_center(0,0).x;  
-		y_blob = get_object_center(0,0).y; 
 		
 		do{
 			camera_update();
+			
 			x_blob = get_object_center(0,0).x;  
 			y_blob = get_object_center(0,0).y; 
 			
-			rectangle nx = get_object_bbox(0, 0);
+			if(cam_area(0) == 0) continue;
+				
+			/**checking for two blobs mushed together**/
 			
-			if(nx.height > MAX_HEIGHT) {
-			  y_blob = get_object_center(0, 0).y - 10;
+			rectangle nx = get_object_bbox(0, 0);
+			if(nx.height > MAX_HEIGHT || nx.width > MAX_WIDTH) {
+				if(nx.height > MAX_HEIGHT) {
+					y_blob = get_object_center(0, 0).y - 10;
+				}
+			
+				if(nx.width > MAX_WIDTH) {
+					x_blob = get_object_center(0, 0).x - 10; 
+				}
+				break;
 			}
 			
-			if(nx.width > MAX_WIDTH) {
-			  x_blob = get_object_center(0, 0).x - 10; 
+			/**they weren't mushed together, so checking for nearest one closest to prev position**/
+			if(last_x == -1000 && last_y == -1000) {
+				last_x = x_blob;
+				last_y = y_blob;
+				break;
+			}
+			else {
+				int c2_x = get_object_center(0, 1).x; 
+				int c2_y = get_object_center(0, 1).y; 
+				
+				if(c2_x == -1 && c2_y == -1) break;
+					
+				double c2diff_x = (c2_x - last_x) > 0 ? (c2_x - last_x) : -(c2_x - last_x);
+				double c2diff_y = (c2_x - last_x) > 0 ? (c2_x - last_y) : -(c2_x - last_y);
+				double c1diff_x = (x_blob - last_x) > 0 ? (x_blob - last_x) : -(x_blob - last_x);
+				double c1diff_y = (y_blob - last_y) > 0 ? (y_blob - last_y) : -(y_blob - last_y);
+
+				if(c2diff_x < c1diff_x) x_blob = c2_x;
+				if(c2diff_y < c1diff_y) y_blob = c2_y;
+					
+				break;
 			}
 			
 		}while(cam_area(0)==0);
