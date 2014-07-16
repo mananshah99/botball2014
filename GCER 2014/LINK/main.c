@@ -42,7 +42,7 @@ int main() {
 	camera_update();
 	
 	set_servo_position(1, 1300);	
-	set_servo_position(2, basket_down);
+	set_servo_position(2, basket_down); 
 	set_servo_position(3, basket_closed);
 	
 	
@@ -106,14 +106,14 @@ void line_squareup(double sensor_angle){
 	double turn_angle = 0;
 	double extra_turn = 0;
 	
-	int turn_motor = 0;
+	int turn_motor = -1;
 	
 	int dark = 740; // dark > 740
 	
 	while(lsens <  dark && rsens < dark ) {
 		printf("forward\n");
 		motor(MOT_LEFT,27);
-		motor(MOT_RIGHT,20);
+		motor(MOT_RIGHT,24);
 		//move forward
 		lsens = analog(1);
 		rsens = analog(0);
@@ -122,33 +122,32 @@ void line_squareup(double sensor_angle){
 		if (lsens > dark){
 			ao();
 			turn_motor = MOT_LEFT;
-			msleep(2000);
 			while(rsens < dark ) {
 				printf("extra turn right:%f\n",extra_turn);
 				lsens = analog(1);
 				rsens = analog(0);
 				motor(MOT_LEFT,20);
-				mav(MOT_RIGHT,0);
+				//mav(MOT_RIGHT,0);
 				//turn left by moving right forward
 				turn_angle = sensor_angle - (gmpc(MOT_LEFT)/CMtoBEMF)/ks;
-				extra_turn =(-atan((sqrt(41-40*cos(turn_angle))-5*sin(turn_angle))/(4-5*cos(turn_angle))));
+				extra_turn =(-2*atan((sqrt(41-40*cos(turn_angle))-5*sin(turn_angle))/(4-5*cos(turn_angle))));
 				//values based of of srad and lrad using wolfram alpha i dont know if the link can do all the math
 				//srad is 12, lrad is 15
 			}  
 		}
 		else if (rsens > dark){
 			ao();
-			msleep(2000); 
+			
 			turn_motor = MOT_RIGHT;
 			while(lsens < dark ) {
 				printf("extra turn left:%f\n",extra_turn);
 				lsens = analog(1);
 				rsens = analog(0);
 				motor(MOT_RIGHT,20);
-				mav(MOT_LEFT,0);
+				//mav(MOT_LEFT,0);
 				//turn right by moving left forward
 				turn_angle = sensor_angle - (gmpc(MOT_RIGHT)/CMtoBEMF)/ks;
-				extra_turn =(-atan((sqrt(41-40*cos(turn_angle))-5*sin(turn_angle))/(4-5*cos(turn_angle))));
+				extra_turn =(-2*atan((sqrt(41-40*cos(turn_angle))-5*sin(turn_angle))/(4-5*cos(turn_angle))));
 				//values based of of srad and lrad using wolfram alpha i dont know if the link can do all the math
 				//srad is 12, lrad is 15
 				//for new values equation is(srad/lrad)*cos(a)=cos(a+turn_angle) a=extra_turn
@@ -158,10 +157,19 @@ void line_squareup(double sensor_angle){
 		}
 	}
 	ao();
-	msleep(2000);
 	//turn extra
-	mrp(turn_motor,20,(extra_turn * ks)*CMtoBEMF);
-	while(lsens >  dark && rsens > dark ) {
+	printf("motor:%d\n",turn_motor);
+	
+	if(turn_motor == 2) {
+		right(extra_turn*180/3.14,0);
+	}
+	else if(turn_motor ==1) {
+		left(extra_turn*180/3.14,0);
+	}
+	
+	//clear_motor_position_counter(turn_motor);
+	//mtp(turn_motor,60,(extra_turn * ks)*CMtoBEMF);
+	while(lsens >  dark || rsens > dark ) {
 		printf("backward\n");
 		lsens = analog(1);
 		rsens = analog(0);
