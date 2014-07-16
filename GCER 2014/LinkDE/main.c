@@ -48,6 +48,8 @@ int main() {
 		
 	correct_angle();
 	correct_distance();
+	correct_angle();
+	correct_distance();
 }
 #endif	
 
