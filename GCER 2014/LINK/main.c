@@ -60,12 +60,12 @@ int main() {
 	left(90, 0);
 	forward(8);
 	
-	//correct_angle();
-	//correct_distance();
-	//correct_angle();
-	//correct_distance();
-	tsort();
-	tsort();
+	correct_angle();
+	correct_distance();
+	correct_angle();
+	correct_distance();
+	//tsort();
+	//tsort();
 	
 	
 	forward(2);
