@@ -47,7 +47,7 @@ int main() {
 	set_servo_position(2, basket_down); 
 	set_servo_position(3, basket_closed);
 	
-	
+	 
 	//line_squareup(0.6435);
 	
 	///---Drive 1---///
@@ -60,10 +60,13 @@ int main() {
 	left(90, 0);
 	forward(8);
 	
-	correct_angle();
-	correct_distance();
-	correct_angle();
-	correct_distance();
+	//correct_angle();
+	//correct_distance();
+	//correct_angle();
+	//correct_distance();
+	tsort();
+	tsort();
+	
 	
 	forward(2);
 	set_servo_position(3, basket_closed);
@@ -92,7 +95,12 @@ int main() {
 	correct_distance();
 	
 	set_servo_position(3, basket_closed);
-	backward(50);
+	left(90,0);
+	square_up_angle();
+	square_up_distance(210);
+	square_up_angle();
+	right(90,0);
+	backward(46);
 	right(90,0);
 	forward(15);
 	line_squareup(0.6435);
@@ -118,8 +126,8 @@ void line_squareup(double sensor_angle){
 	
 	while(lsens <  dark && rsens < dark ) {
 		printf("forward\n");
-		motor(MOT_LEFT,28);
-		motor(MOT_RIGHT,20);
+		motor(MOT_LEFT,30);
+		motor(MOT_RIGHT,22);
 		//move forward
 		lsens = analog(1);
 		rsens = analog(0);
@@ -132,7 +140,7 @@ void line_squareup(double sensor_angle){
 				printf("extra turn right:%f\n",extra_turn);
 				lsens = analog(1);
 				rsens = analog(0);
-				motor(MOT_LEFT,20);
+				motor(MOT_LEFT,30);
 				//mav(MOT_RIGHT,0);
 				//turn left by moving right forward
 				turn_angle = sensor_angle - (gmpc(MOT_LEFT)/CMtoBEMF)/ks;
@@ -149,7 +157,7 @@ void line_squareup(double sensor_angle){
 				printf("extra turn left:%f\n",extra_turn);
 				lsens = analog(1);
 				rsens = analog(0);
-				motor(MOT_RIGHT,20);
+				motor(MOT_RIGHT,30);
 				//mav(MOT_LEFT,0);
 				//turn right by moving left forward
 				turn_angle = sensor_angle - (gmpc(MOT_RIGHT)/CMtoBEMF)/ks;
@@ -191,9 +199,9 @@ void correct_angle() {
 	camera_update();
 
 	//constants
-	double K_p = 26.0;
-	double K_i = 0.03;
-	double K_d = 0.01;	
+	double K_p = 23.0;
+	double K_i = 0.0;
+	double K_d = 0.02;	
 	
 	//values (rob is robot) 
 	int x_blob, y_blob;
@@ -205,7 +213,7 @@ void correct_angle() {
 	double prev_error = 0.0; 
 	
 	//threshold value
-	double EPSILON = 0.07;
+	double EPSILON = 0.08;
 	double last_x = -1000, last_y = -1000; // unreasonable at beginning
 	
 	//init
@@ -277,8 +285,8 @@ void correct_angle() {
 		integral += (E*0.001); //update time
 		derivative = (E - prev_error)/0.001;
 		
-		if(E*K_p<3 && E*K_p>0) E=3/K_p;
-		if(E*K_p<0 && E*K_p>-3) E=-3/K_p;
+		if(E*K_p<9 && E*K_p>0) E=9/K_p;
+		if(E*K_p<0 && E*K_p>-9) E=-9/K_p;
 				
 		motor(MOT_LEFT, -1*((K_p*E)+(integral*K_i)+(derivative*K_d)));
 		motor(MOT_RIGHT, (K_p*E)+(integral*K_i)+(derivative*K_d));
@@ -301,7 +309,7 @@ void correct_angle() {
 
 void correct_distance() {
 	
-	double K_p = 0.18;
+	double K_p = 0.11;
 	double K_i = 0;
 	double K_d = 0;
 		
@@ -357,8 +365,8 @@ void correct_distance() {
 		//this is a bit sketchy but it should work
 		if(prev_error==0) prev_error = E;
 			
-		if(E*K_p<4 && E*K_p>0) E=4/K_p;
-		if(E*K_p<0 && E*K_p>-4) E=-4/K_p;
+		if(E*K_p<10 && E*K_p>0) E=10/K_p;
+		if(E*K_p<0 && E*K_p>-10) E=-10/K_p;
 			
 		integral += (E*0.001); //update time
 		derivative = (E - prev_error)/0.001;
@@ -366,8 +374,8 @@ void correct_distance() {
 		int spd = -(K_p*E)+(integral*K_i)+(derivative*K_d);
 		
 		//limit speed 
-		spd = (spd > 60 ? 60 : spd);
-		spd = (spd < -60 ? -60 : spd);
+		//spd = (spd > 60 ? 60 : spd);
+		//spd = (spd < -60 ? -60 : spd);
 		
 		motor(MOT_LEFT, spd*3.5);
 		motor(MOT_RIGHT, spd);
@@ -388,12 +396,14 @@ void correct_distance() {
 	//dropping 
 	servo_slow(1, 200, 5); //port, position, time
 	//shaking
-	forward(.1);
+	forward(.2);
 	msleep(100);
-	backward(.2);
+	backward(.4);
 	msleep(100);
-	forward(.1);
+	forward(.2);
 	msleep(500);
+	right(3,0);
+	left(3,0);
 	set_servo_position(1, 1800);
 	msleep(2000);
 	printf("[DONE] finished tribble pickup");
