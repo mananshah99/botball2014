@@ -80,7 +80,7 @@ int main() {
 	left(90,0);
 	backward(25);
 	square_up_angle();
-	square_up_distance(210);
+	square_up_distance(240);
 	square_up_angle();
 	msleep(50);
 	right(90,0);
@@ -97,7 +97,7 @@ int main() {
 	set_servo_position(3, basket_closed);
 	left(90,0);
 	square_up_angle();
-	square_up_distance(210);
+	square_up_distance(240);
 	square_up_angle();
 	right(90,0);
 	backward(46);
@@ -105,7 +105,21 @@ int main() {
 	forward(15);
 	line_squareup(0.6435);
 	
-	forward(20);
+	
+	//other side//
+	forward(40);
+	right(90,0);
+	servo_slow(3, basket_open, 10);
+	forward(55);
+	
+	correct_angle();
+	correct_distance();
+	correct_angle();
+	correct_distance();
+	
+	servo_slow(3, basket_closed, 10);
+	left(90,0);
+	
 	
 	disable_servos();
 }
