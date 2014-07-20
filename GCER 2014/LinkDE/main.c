@@ -421,7 +421,7 @@ void correct_distance() {
 		
 		//  60 power difference is 5    //
 		//  20 power difference is 10   //
-		motor(MOT_LEFT, /*(spd > 0) ? 50 : -35*/ (spd > 40) ? (spd*5) : (spd < -40) ? spd*5 : spd*(7));
+		motor(MOT_LEFT, /*(spd > 0) ? 50 : -35*/ (spd > 40) ? (spd*5) : (spd < -40) ? spd*2 : spd*(5));
 		motor(MOT_RIGHT, /*(spd > 0) ? 20 : -20*/spd);
 		msleep(1);
 		
