@@ -54,6 +54,16 @@ int main() {
 	
 	correct_angle();
 	correct_distance();
+	
+	/*
+	motor(MOT_LEFT, 50);
+	motor(MOT_RIGHT, 20);
+	msleep(5000);
+	
+	motor(MOT_LEFT, -35);
+	motor(MOT_RIGHT, -20);
+	msleep(5000);*/
+	
 }
 #endif	
 
@@ -219,11 +229,12 @@ void correct_angle() {
 			x_blob = get_object_center(0,0).x;  
 			y_blob = get_object_center(0,0).y; 
 			
-			if(cam_area(0) == 0) continue;
+			if(cam_area(0)==0) return;
+			//if(cam_area(0) == 0) continue;
 				
 			/**checking for two blobs mushed together**/
 			
-			/*rectangle nx = get_object_bbox(0, 0);
+			rectangle nx = get_object_bbox(0, 0);
 			if(nx.height > MAX_HEIGHT || nx.width > MAX_WIDTH) {
 				if(nx.height > MAX_HEIGHT) {
 					y_blob = get_object_center(0, 0).y - 5;
@@ -233,7 +244,7 @@ void correct_angle() {
 					x_blob = get_object_center(0, 0).x - 5; 
 				}
 				break;
-			}*/
+			}
 			
 			/**they weren't mushed together, so checking for nearest one closest to prev position**/
 			if(last_x == -1000 && last_y == -1000) {
@@ -350,6 +361,8 @@ void correct_distance() {
 			int c1_x = get_object_center(0, 0).x; 
 			int c1_y = get_object_center(0, 0).y;
 			
+			if(cam_area(0)==0) return;
+				
 			int c2_x = get_object_center(0, 1).x; 
 			int c2_y = get_object_center(0, 1).y; 
 			
@@ -406,11 +419,10 @@ void correct_distance() {
 		if(spd<6 && spd>=0) spd=6;
 		if(spd<0 && spd>-6) spd=-6;
 		
-		motor(MOT_LEFT, spd*(5));
-		//60 power difference is 5
-		//20 power difference is 10
-		
-		motor(MOT_RIGHT, spd);
+		//  60 power difference is 5    //
+		//  20 power difference is 10   //
+		motor(MOT_LEFT, /*(spd > 0) ? 50 : -35*/ (spd > 40) ? (spd*5) : (spd < -40) ? spd*5 : spd*(7));
+		motor(MOT_RIGHT, /*(spd > 0) ? 20 : -20*/spd);
 		msleep(1);
 		
 		// printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative);
@@ -426,16 +438,17 @@ void correct_distance() {
 	msleep(1000);
 	
 	//dropping 
-	servo_slow(1, 100, 5); //port, position, time
+	servo_slow(1, 100, 8); //port, position, time
 	//shaking
 	forward(.2);
-	msleep(100);
+	//msleep(100);
 	backward(.4);
-	msleep(100);
+	//msleep(100);
 	forward(.2);
-	msleep(500);
+	//msleep(500);
 	right(3,0);
-	left(3,0);
+	left(6,0);
+	right(3,0);
 	set_servo_position(1, 1800);
 	msleep(2000);
 	printf("[DONE] finished tribble pickup");
