@@ -42,6 +42,7 @@ int main() {
 	
 	enable_servos();
 	camera_open();
+	cam_block();
 	camera_update();
 	
 	set_servo_position(1, 1300);	
@@ -50,7 +51,7 @@ int main() {
 		
 	correct_angle();
 	correct_distance();
-	msleep(1000);
+	
 	correct_angle();
 	correct_distance();
 	
