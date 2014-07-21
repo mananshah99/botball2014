@@ -64,7 +64,7 @@ int main(){
 	shut_down_in(119.);  start();
 	enable_servos(); 
 	servo_set(ARM,ARM_DOWN,0.3);
-	servo_set(HANGER,HANGER_CLOSE,0.3);
+	set_servo_position(HANGER,HANGER_CLOSE);
 	
 	create_right(82,0,200);
 	create_forward(390, 300);// (distance in mm,speed)
@@ -80,7 +80,7 @@ int main(){
 	create_forward(75,150);
 	create_block();//At the Pipes
 	
-	servo_set(HANGER,HANGER_OPEN,0.3);
+	set_servo_position(HANGER,HANGER_OPEN,0.3);
 	servo_set(ARM,ARM_UMID,0.3);
 	wait_till(110); now();
 	servo_set(ARM,ARM_UP,0.3);
