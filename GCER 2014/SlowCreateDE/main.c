@@ -1,3 +1,4 @@
+
 #include "createDrive.h"
 #include "generic.h"
 //Start: Tuesday 15 July 2014
@@ -61,7 +62,8 @@ int main(){
 	create_connect();
 	create_setup();
 	//light_start(LIGHTSTART);
-	shut_down_in(119.);  start();
+	shut_down_in(119.);
+	start();
 	enable_servos(); 
 	set_servo_position(ARM,ARM_DOWN/*,0.3*/);
 	set_servo_position(HANGER,HANGER_CLOSE/*,0.3*/);
@@ -70,7 +72,8 @@ int main(){
 	create_forward(390, 300);// (distance in mm,speed)
 	create_left(82,0,200);
 	create_forward(480, 250);//scrape against pipe is deliberate
-	create_stop(); arm_lift();
+	create_stop();
+	arm_lift();
 	create_block();
 
 	create_left(86,0,200);//face the rack
@@ -78,14 +81,17 @@ int main(){
 	create_backward(290,150);
 	create_wait_time(5);
 	create_forward(75,150);
-	create_block();//At the Pipes
+	create_block();
+	//At the Hanger Rack
 	
 	set_servo_position(HANGER,HANGER_OPEN/*,0.3*/);
 	set_servo_position(ARM,ARM_UMID/*,0.3*/);
-	wait_till(110); now();
+	wait_till(110); 
+	now();
 	set_servo_position(ARM,ARM_UP/*,0.3*/);
 	msleep(300);
 	create_forward(150,100);
-	//Temp End Code
-	disable_servos(); printf("Done\n");
+	//11 seconds... most likely/ hopefully
+	disable_servos();
+	printf("Done\n");
 }
