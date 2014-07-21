@@ -15,8 +15,9 @@
 #define ARM_DOWN 2000
 #define HANGER_CLOSE 0
 #define HANGER_OPEN 1365
-//#define LIGHTSTART
-/*..............................................Functions Begin..............................................*/
+//#define LIGHTSTART ???
+/*......................Functions Begin.........................................*/
+
 void create_setup(){
 	create_backward(10,50);
 	create_wait_time(1);
@@ -57,7 +58,8 @@ void arm_lower(){
 	set_servo_position(ARM,ARM_DOWN);
 	msleep(400);
 }
-/*..............................................Functions End..............................................*/
+/*...............................Functions End.................................*/
+
 int main(){
 	create_connect();
 	create_setup();
@@ -85,6 +87,7 @@ int main(){
 	//At the Hanger Rack
 	
 	set_servo_position(HANGER,HANGER_OPEN/*,0.3*/);
+	msleep(100);
 	set_servo_position(ARM,ARM_UMID/*,0.3*/);
 	wait_till(110); 
 	now();
