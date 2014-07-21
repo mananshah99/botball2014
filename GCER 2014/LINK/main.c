@@ -16,7 +16,7 @@ int x_rob = 100;
 int y_rob = -113; //old: 156
 int y_target = 69; //new: 68 (old = 25)
 
-double MAX_HEIGHT = 18.7;
+double MAX_HEIGHT = 18.7; 
 double MAX_WIDTH = 18.7;
 /*
  * 100 closed
@@ -64,8 +64,7 @@ int main() {
 	correct_distance();
 	correct_angle();
 	correct_distance();
-	//tsort();
-	//tsort();
+
 	
 	
 	forward(2);
@@ -75,15 +74,17 @@ int main() {
 	motor(MOT_RIGHT, -40);
 	msleep(2500);
 	servo_slow(2, basket_up, 4);
-	forward(150);
+	forward(155);
 	set_servo_position(2, basket_down);
 	left(90,0);
-	backward(25);
+	backward(18);
+	
 	square_up_angle();
-	square_up_distance(240);
+	square_up_distance(260);
 	square_up_angle();
+	
 	msleep(50);
-	right(90,0);
+	right(85,0);
 	backward(10);
 	servo_slow(3, basket_open, 10);
 	sleep(1);
@@ -96,12 +97,14 @@ int main() {
 	
 	set_servo_position(3, basket_closed);
 	left(90,0);
+	
 	square_up_angle();
-	square_up_distance(240);
+	square_up_distance(260);
 	square_up_angle();
-	right(90,0);
-	backward(46);
-	right(90,0);
+	
+	left(90,0);
+	forward(46);
+	left(90,0);
 	forward(15);
 	line_squareup(0.6435);
 	
@@ -445,7 +448,7 @@ void correct_distance() {
 			spdl=6;
 		}
 		else if (spd<0){
-			spdr=-26;
+			spdr=-19;
 			spdl=-6;
 		}
 		
