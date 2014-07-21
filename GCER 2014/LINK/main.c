@@ -11,7 +11,7 @@
 #ifdef MAIN
 #include "./template.h"
 
-double turned_angle;
+double turned_angle = 0.0;
 int x_rob = 100;  
 int y_rob = -113; //old: 156
 int y_target = 69; //new: 68 (old = 25)
@@ -218,6 +218,8 @@ int y_blob;
 
 void correct_angle() {
 	camera_update();
+	clear_motor_position_counter(MOT_RIGHT);
+	clear_motor_position_counter(MOT_LEFT);
 	
 	//constants
 	double K_p = 27.0;	/***USED TO BE 26***/
@@ -305,7 +307,7 @@ void correct_angle() {
 		// this is a bit sketchy but it should work
 		if(prev_error==0) {
 			prev_error = E;
-			turned_angle = E;
+			//turned_angle = E;
 		}
 		
 		integral += (E*0.001); //update time
@@ -325,6 +327,7 @@ void correct_angle() {
 		msleep(1);
 		//printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative);
 		prev_error = E;
+		turned_angle = (gmpc(MOT_RIGHT)+gmpc(MOT_LEFT)/(CMtoBEMF))/ks;
 		
 		if(E<=EPSILON && E>=-EPSILON) 
 		{
@@ -339,6 +342,8 @@ void correct_angle() {
 }
 
 void correct_distance() {
+	clear_motor_position_counter(MOT_RIGHT);
+	clear_motor_position_counter(MOT_LEFT);
 	
 	double K_p = 0.1;	/****USED TO BE 0.18****/
 	double K_i = 0;
@@ -460,6 +465,7 @@ void correct_distance() {
 		
 		// printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative);
 		prev_error = E;
+		v =(gmpc(MOT_RIGHT)+gmpc(MOT_LEFT))/(2*CMtoBEMF);
 		
 		if(E<=EPSILON && E>=-EPSILON) {
 			ao();
