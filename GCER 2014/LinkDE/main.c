@@ -40,9 +40,9 @@ int basket_down = 75;
 #ifdef __PIDTUNING__
 int main() {
 	
+
 	enable_servos();
 	camera_open();
-	cam_block();
 	camera_update();
 	
 	set_servo_position(1, 1300);	
@@ -199,55 +199,53 @@ void correct_angle() {
 	camera_update();
 
 	//constants
-	double K_p = 28.0;	/***USED TO BE 26***/
+	double K_p = 27.0;	/***USED TO BE 26***/
 	double K_i = 0.00;
-	double K_d = 0.05;	
-
+	double K_d = 0.04;	
+	
 	//values (rob is robot) 
 	int x_target = x_rob; //new: 100
-
+	
 	//for PID
 	double integral = 0.0;
 	double derivative = 0.0;
 	double prev_error = 0.0; 
 	double spd = 0.0;
-
+	
 	//threshold value
 	double EPSILON = 0.04;
 	double last_x = -1000, last_y = -1000; // unreasonable at beginning
-
+	
 	//init
 	set_servo_position(1, 1584);
-	//prev_error = 0;
-
-	//int times = 0;
+	prev_error = 0;
+	
 	while(1/*!in_range(E, 0, EPSILON) || !in_range(E, 0, -EPSILON)*/) {
-		//camera_update();
-
+		camera_update();
+		
 		do{
-			//times++;
 			camera_update();
-
+			
 			x_blob = get_object_center(0,0).x;  
 			y_blob = get_object_center(0,0).y; 
-
-			//if(cam_area(0)==0) return;
+			
+			if(cam_area(0)==0) return;
 			//if(cam_area(0) == 0) continue;
-
+				
 			/**checking for two blobs mushed together**/
-
-			/*rectangle nx = get_object_bbox(0, 0);
+			
+			rectangle nx = get_object_bbox(0, 0);
 			if(nx.height > MAX_HEIGHT || nx.width > MAX_WIDTH) {
 				if(nx.height > MAX_HEIGHT) {
 					y_blob = get_object_center(0, 0).y - 5;
 				}
-
+			
 				if(nx.width > MAX_WIDTH) {
 					x_blob = get_object_center(0, 0).x - 5; 
 				}
 				break;
-			}*/
-
+			}
+			
 			/**they weren't mushed together, so checking for nearest one closest to prev position**/
 			if(last_x == -1000 && last_y == -1000) {
 				last_x = x_blob;
@@ -257,9 +255,9 @@ void correct_angle() {
 			else {
 				int c2_x = get_object_center(0, 1).x; 
 				int c2_y = get_object_center(0, 1).y; 
-
+				
 				if(c2_x == -1 || c2_y == -1) break;
-
+				
 				double c2diff_x = (c2_x - last_x) > 0    ? 	(c2_x - last_x)     :   -(c2_x - last_x);
 				double c2diff_y = (c2_y - last_y) > 0    ? 	(c2_y - last_y)     :   -(c2_y - last_y);
 				double c1diff_x = (x_blob - last_x) > 0  ? 	(x_blob - last_x)   :   -(x_blob - last_x);
@@ -273,45 +271,45 @@ void correct_angle() {
 				}
 				break;
 			}
-
+			
 		}while(cam_area(0)==0);
-
+		
 		// printf("x : %d, y: %d\n");
 		double E = atan(
 			((double)(-1*(x_blob-x_rob)))
 			/((double)(y_blob-y_rob))
 		);
-
+		
 		// this is a bit sketchy but it should work
 		if(prev_error==0) {
 			prev_error = E;
 			turned_angle = E;
 		}
-
+			
 		integral += (E*0.001); //update time
 		derivative = (E - prev_error)/0.001;
-
-
+		
+		
 		printf("****ERROR****  ==== %f\n", E);
-
+		
 		spd = (K_p*E)+(integral*K_i)+(derivative*K_d);
-
+		
 		if(spd<6 && spd>=0) spd=6;
 		if(spd<0 && spd>-6) spd=-6;
-
+				
 		motor(MOT_LEFT, -1*spd);
 		motor(MOT_RIGHT, spd);
-
+		
 		msleep(1);
 		//printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative);
 		prev_error = E;
-
+		
 		if(E<=EPSILON && E>=-EPSILON) 
 		{
 			ao();
 			break;
 		}
-
+		 
 	}
 	printf("[DONE] done with angle correction");
 	beep();
@@ -319,55 +317,55 @@ void correct_angle() {
 }
 
 void correct_distance() {
-
+	
 	double K_p = 0.1;	/****USED TO BE 0.18****/
 	double K_i = 0;
 	double K_d = 0;
-
+		
 	//double x_blob, y_blob;
 	double E = 0;	
-
+	
 	double integral = 0.0;
 	double derivative = 0.0;
 	double prev_error = 0.0; 
-
-	double EPSILON = 1;
-
-
+	
+	double EPSILON = 2;
+		
+	
 	//from other code updates v so that it can correct distance 
-
+	
 	/*camera_update();
 	do{
 		x_blob = get_object_center(0,0).x;  
 		y_blob = get_object_center(0,0).y;  
 	}while(cam_area(0)==0);*/
-
+	
 	//E = max(-y_blob + y_target, y_blob + y_target);
 	E = y_blob - y_target;
-
+	
 	//11 used to be 10.4 here
 	float v = ( ( (float) E) /8);
 
 	/*********Threshold Camera Blob Issue*********/
 	while(1) {
 		camera_update();
-
+		
 		//x_blob = get_object_center(0,0).x;  
 		//y_blob = get_object_center(0,0).y; 
-
+		
 		do{
 			camera_update();
 			//x_blob = get_object_center(0,0).x;  
 			//y_blob = get_object_center(0,0).y; 
-
+			
 			int c1_x = get_object_center(0, 0).x; 
 			int c1_y = get_object_center(0, 0).y;
-
-			//if(cam_area(0)==0) return;
-
+			
+			if(cam_area(0)==0) return;
+				
 			int c2_x = get_object_center(0, 1).x; 
 			int c2_y = get_object_center(0, 1).y; 
-
+			
 			if(c2_x == -1 || c2_y == -1) {
 				x_blob = c1_x;
 				y_blob = c1_y;
@@ -397,52 +395,48 @@ void correct_distance() {
 			  x_blob = get_object_center(0, 0).x - 10; 
 
 			}*/
-
+			
 		}while(cam_area(0)==0);
-
+			
 		E = -y_blob+y_target;
-
+		
 		//this is a bit sketchy but it should work
 		if(prev_error==0) prev_error = E;
-
+			
 		//if(E*K_p<4 && E*K_p>0) K_p=4/E;
 		//if(E*K_p<0 && E*K_p>-4) K_p=-4/E;
-
+			
 		integral += (E*0.001); //update time
 		derivative = (E - prev_error)/0.001;
-
+		
 		double spd = -(K_p*E)+(integral*K_i)+(derivative*K_d);
-
+		
 		//limit speed 
-
+		
 		spd = (spd > 60 ? 60 : spd);
 		spd = (spd < -60 ? -60 : spd);
-
+		
 		if(spd<6 && spd>=0) spd=6;
 		if(spd<0 && spd>-6) spd=-6;
-
+		
 		//  60 power difference is 5    //
 		//  20 power difference is 10   //
-		
-		/*********TUNE THESE TOBY**********/
-		printf("SUPER IMPORTANT (left) : %f\n", (spd > 40) ? (spd*5) : ((spd < -40) ? spd*4 : spd*(8)));
-		printf("SUPER IMPORTANT (right) : %f\n", spd);
-		motor(MOT_LEFT, /*(spd > 0) ? 50 : -35*/ (spd > 40) ? (spd*5) : (spd < -40) ? spd*4 : spd*(6));
-		motor(MOT_RIGHT, /*(spd > 0) ? 20 : -20*/spd/2);
+		motor(MOT_LEFT, /*(spd > 0) ? 50 : -35*/ (spd > 40) ? (spd*5) : (spd < -40) ? spd*2 : spd*(5));
+		motor(MOT_RIGHT, /*(spd > 0) ? 20 : -20*/spd);
 		msleep(1);
-
+		
 		// printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative);
 		prev_error = E;
-
+		
 		if(E<=EPSILON && E>=-EPSILON) {
 			ao();
 			break;
 		}
 	}
-
+	
 	printf("[DONE] done overall correction");
 	msleep(1000);
-
+	
 	//dropping 
 	servo_slow(1, 100, 8); //port, position, time
 	//shaking
@@ -458,14 +452,14 @@ void correct_distance() {
 	set_servo_position(1, 1800);
 	msleep(2000);
 	printf("[DONE] finished tribble pickup");
-
+	
 	//float v = ( ( ( (float) E) * ks )/1000.);
 	//move back the same amount
 	if(v < 0l) 
 		forward(v);
 	else backward(v);
-
-	int angle = ((int)turned_angle);
+		
+	float angle = ((float)turned_angle)*RADTODEG;
 	// printf("{{ANGLE}} %f\n", angle);
 	// printf("   {{TURNED ANGLE}} %f\n", turned_angle);
 	if(angle < 0l) {
