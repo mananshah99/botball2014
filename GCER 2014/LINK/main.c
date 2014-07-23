@@ -47,8 +47,8 @@ int main() {
 	set_servo_position(2, basket_down); 
 	set_servo_position(3, basket_closed);
 	
-	 
-	//line_squareup(0.6435);
+	
+
 	
 	///---Drive 1---///
 	
@@ -64,8 +64,6 @@ int main() {
 	correct_distance();
 	correct_angle();
 	correct_distance();
-
-	
 	
 	forward(2);
 	set_servo_position(3, basket_closed);
@@ -84,7 +82,7 @@ int main() {
 	square_up_angle();
 	
 	msleep(50);
-	right(85,0);
+	right(70,0);
 	backward(10);
 	servo_slow(3, basket_open, 10);
 	sleep(1);
@@ -99,11 +97,11 @@ int main() {
 	left(90,0);
 	
 	square_up_angle();
-	square_up_distance(260);
+	square_up_distance(250);
 	square_up_angle();
 	
 	left(90,0);
-	forward(46);
+	forward(53);
 	left(90,0);
 	forward(15);
 	line_squareup(0.6435);
@@ -218,6 +216,7 @@ int y_blob;
 
 void correct_angle() {
 	camera_update();
+	update_wait();
 	clear_motor_position_counter(MOT_RIGHT);
 	clear_motor_position_counter(MOT_LEFT);
 	
@@ -245,7 +244,7 @@ void correct_angle() {
 	prev_error = 0;
 	
 	while(1/*!in_range(E, 0, EPSILON) || !in_range(E, 0, -EPSILON)*/) {
-		camera_update();
+		camera_update(); 
 		
 		do{
 			camera_update();
@@ -253,8 +252,8 @@ void correct_angle() {
 			x_blob = get_object_center(0,0).x;  
 			y_blob = get_object_center(0,0).y; 
 			
-			if(cam_area(0)==0) return;
-			//if(cam_area(0) == 0) continue;
+			//if(cam_area(0)==0) return;
+			if(cam_area(0) == 0) continue;
 			
 			/**checking for two blobs mushed together**/
 			
@@ -271,31 +270,32 @@ void correct_angle() {
 			}
 			
 			/**they weren't mushed together, so checking for nearest one closest to prev position**/
-			if(last_x == -1000 && last_y == -1000) {
-				last_x = x_blob;
-				last_y = y_blob;
-				//break;
-			}
-			else {
-				int c2_x = get_object_center(0, 1).x; 
-				int c2_y = get_object_center(0, 1).y; 
-				
-				if(c2_x == -1 || c2_y == -1) break;
-				
-				double c2diff_x = (c2_x - last_x) > 0    ? 	(c2_x - last_x)     :   -(c2_x - last_x);
-				double c2diff_y = (c2_y - last_y) > 0    ? 	(c2_y - last_y)     :   -(c2_y - last_y);
-				double c1diff_x = (x_blob - last_x) > 0  ? 	(x_blob - last_x)   :   -(x_blob - last_x);
-				double c1diff_y = (y_blob - last_y) > 0  ? 	(y_blob - last_y)   :   -(y_blob - last_y);
-				
-				if(c2diff_x < c1diff_x) {
-					x_blob = c2_x;
+			if (get_object_count(0)>1){
+				if(last_x == -1000 && last_y == -1000) {
+					last_x = x_blob;
+					last_y = y_blob;
+					break;
 				}
-				if(c2diff_y < c1diff_y) {
-					y_blob = c2_y;
+				else {
+					int c2_x = get_object_center(0, 1).x; 
+					int c2_y = get_object_center(0, 1).y; 
+					
+					if(c2_x == -1 || c2_y == -1) break;
+					
+					double c2diff_x = (c2_x - last_x) > 0    ? 	(c2_x - last_x)     :   -(c2_x - last_x);
+					double c2diff_y = (c2_y - last_y) > 0    ? 	(c2_y - last_y)     :   -(c2_y - last_y);
+					double c1diff_x = (x_blob - last_x) > 0  ? 	(x_blob - last_x)   :   -(x_blob - last_x);
+					double c1diff_y = (y_blob - last_y) > 0  ? 	(y_blob - last_y)   :   -(y_blob - last_y);
+					
+					if(c2diff_x < c1diff_x) {
+						x_blob = c2_x;
+					}
+					if(c2diff_y < c1diff_y) {
+						y_blob = c2_y;
+					}
+					break;
 				}
-				break;
 			}
-			
 		}while(cam_area(0)==0);
 		
 		// printf("x : %d, y: %d\n");
@@ -327,7 +327,7 @@ void correct_angle() {
 		msleep(1);
 		//printf("E -> %f, I -> %f, D -> %f\n", E, integral, derivative);
 		prev_error = E;
-		turned_angle = (gmpc(MOT_RIGHT)+gmpc(MOT_LEFT)/(CMtoBEMF))/ks;
+		turned_angle = (abs(gmpc(MOT_RIGHT)-gmpc(MOT_LEFT)))/(2*CMtoBEMF*ks);
 		
 		if(E<=EPSILON && E>=-EPSILON) 
 		{
@@ -337,8 +337,7 @@ void correct_angle() {
 		
 	}
 	printf("[DONE] done with angle correction");
-	beep();
-	msleep(1000);
+	msleep(100);
 }
 
 void correct_distance() {
@@ -474,7 +473,7 @@ void correct_distance() {
 	}
 	
 	printf("[DONE] done overall correction");
-	msleep(1000);
+	msleep(100);
 	
 	//dropping 
 	servo_slow(1, 100, 8); //port, position, time
@@ -510,6 +509,7 @@ void correct_distance() {
 	msleep(1000);
 	turned_angle = 0;
 }
+
 void square_up_angle(){
 	//P constant
 	double Con = 40.0;
@@ -540,8 +540,8 @@ void square_up_angle(){
 		diff = leftDistance-rightDistance;
 		AE = atan(diff/dia);
 		//turn robot until square
-		printf("left: %d\n",leftDistance);
-		printf("right: %d\n",rightDistance);
+		//printf("left: %d\n",leftDistance); 
+		//printf("right: %d\n",rightDistance);
 		if(AE*Con<10 && AE*Con>0) AE=10/Con;
 		if(AE*Con<0 && AE*Con>-10) AE=-10/Con;
 		motor(MOT_LEFT,-1*Con*AE);
