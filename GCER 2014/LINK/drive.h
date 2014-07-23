@@ -11,9 +11,9 @@
 #define PI 3.14159265358979
 
 /**THESE ARE IMPORTANT**/
-#define SPD 70//turning
-#define SPDl 95.//right forward
-#define SPDr 89.//left forward
+#define SPD 50//turning
+#define SPDl 93.//right forward (arc values vary based on link power)
+#define SPDr 90.//left forward
 
 #define rdistmult 1.0
 #define SPDlb 92.//right backward

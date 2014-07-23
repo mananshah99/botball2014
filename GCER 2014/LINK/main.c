@@ -34,6 +34,7 @@ int basket_open = 1300;
 int basket_closed = 171;
 int basket_up = 400;
 int basket_down = 75;
+int basket_tilt = 200;
 
 int main() {
 	//#define DEBUG // comment this out when in actual competition 
@@ -48,7 +49,6 @@ int main() {
 	set_servo_position(3, basket_closed);
 	
 	
-
 	
 	///---Drive 1---///
 	
@@ -58,7 +58,7 @@ int main() {
 	
 	msleep(100);
 	left(90, 0);
-	forward(8);
+	forward(5);
 	
 	correct_angle();
 	correct_distance();
@@ -68,14 +68,14 @@ int main() {
 	forward(2);
 	set_servo_position(3, basket_closed);
 	set_servo_position(1, 1300);
-	motor(MOT_LEFT, -40);
+	motor(MOT_LEFT, -38);
 	motor(MOT_RIGHT, -40);
 	msleep(2500);
-	servo_slow(2, basket_up, 4);
-	forward(155);
+	servo_slow(2, basket_tilt, 4);
+	forward(153);
 	set_servo_position(2, basket_down);
-	left(90,0);
-	backward(18);
+	left(88,0);
+	backward(20);
 	
 	square_up_angle();
 	square_up_distance(260);
@@ -86,7 +86,7 @@ int main() {
 	backward(10);
 	servo_slow(3, basket_open, 10);
 	sleep(1);
-	forward(25);
+	forward(18);
 	
 	correct_angle();
 	correct_distance();
@@ -100,16 +100,19 @@ int main() {
 	square_up_distance(250);
 	square_up_angle();
 	
-	left(90,0);
+	left(85,0);
+	servo_slow(2, basket_tilt, 4);
 	forward(53);
-	left(90,0);
+	left(85,0);
 	forward(15);
 	line_squareup(0.6435);
 	
 	
 	//other side//
 	forward(40);
+
 	right(90,0);
+	servo_slow(2, basket_down, 4); 
 	servo_slow(3, basket_open, 10);
 	forward(55);
 	
@@ -452,8 +455,8 @@ void correct_distance() {
 			spdl=6;
 		}
 		else if (spd<0){
-			spdr=-19;
-			spdl=-6;
+			spdr=-14;
+			spdl=-7;
 		}
 		
 		//printf("spd (right) : %f\n",spdr);
@@ -488,7 +491,7 @@ void correct_distance() {
 	left(6,0);
 	right(3,0);
 	set_servo_position(1, 1800);
-	msleep(2000);
+	msleep(100);
 	printf("[DONE] finished tribble pickup");
 	
 	//float v = ( ( ( (float) E) * ks )/1000.);
@@ -506,7 +509,7 @@ void correct_distance() {
 	else {
 		left(angle, 0);
 	}
-	msleep(1000);
+	msleep(500);
 	turned_angle = 0;
 }
 
@@ -574,8 +577,8 @@ void square_up_distance(int distance){
 	while (abs((leftDistance+rightDistance)/2-distance) > aDiff){
 		leftDistance = analog_et(2);
 		rightDistance = analog_et(3);
-		printf("leftf: %d\n",leftDistance);
-		printf("rightf: %d\n",rightDistance);
+		//printf("leftf: %d\n",leftDistance);
+		//printf("rightf: %d\n",rightDistance);
 		if((leftDistance+rightDistance)/2 < distance){
 			//move robot forward
 			motor(MOT_LEFT,-sqpow);
