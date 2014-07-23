@@ -111,7 +111,7 @@ int main() {
 	//other side//
 	forward(40);
 
-	right(90,0);
+	right(85,0);
 	servo_slow(2, basket_down, 4); 
 	servo_slow(3, basket_open, 10);
 	forward(55);
@@ -123,6 +123,14 @@ int main() {
 	
 	servo_slow(3, basket_closed, 10);
 	left(90,0);
+	
+	square_up_angle();
+	square_up_distance(250);
+	square_up_angle();
+	
+	left(90,0);
+	forward(130);
+	right(90,0);
 	
 	
 	disable_servos();
@@ -451,8 +459,8 @@ void correct_distance() {
 		//if(spd<0 && spd>-6) spd=-6;
 		
 		if (spd>0){
-			spdr=36; 
-			spdl=6;
+			spdr=25; 
+			spdl=7;
 		}
 		else if (spd<0){
 			spdr=-14;
