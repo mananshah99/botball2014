@@ -68,14 +68,14 @@ int main() {
 	forward(2);
 	set_servo_position(3, basket_closed);
 	set_servo_position(1, 1300);
-	motor(MOT_LEFT, -38);
-	motor(MOT_RIGHT, -40);
+	motor(MOT_LEFT, -37);
+	motor(MOT_RIGHT, -45);
 	msleep(2500);
 	servo_slow(2, basket_tilt, 4);
 	forward(153);
 	set_servo_position(2, basket_down);
-	left(88,0);
-	backward(20);
+	left(85,0);
+	backward(25);
 	
 	square_up_angle();
 	square_up_distance(260);
@@ -102,36 +102,60 @@ int main() {
 	
 	left(85,0);
 	servo_slow(2, basket_tilt, 4);
-	forward(53);
+	forward(50);
 	left(85,0);
-	forward(15);
+	forward(10);
 	line_squareup(0.6435);
 	
 	
 	//other side//
-	forward(40);
-
-	right(85,0);
-	servo_slow(2, basket_down, 4); 
-	servo_slow(3, basket_open, 10);
 	forward(55);
+	backward(5);
+
+	right(94,0);
+	servo_slow(2, basket_down, 4); 
+	servo_slow(3, basket_open, 8);
+	forward(58);
 	
 	correct_angle();
 	correct_distance();
 	correct_angle();
 	correct_distance();
 	
-	servo_slow(3, basket_closed, 10);
+	servo_slow(3, basket_closed, 5);
 	left(90,0);
 	
 	square_up_angle();
 	square_up_distance(250);
 	square_up_angle();
 	
-	left(90,0);
+	left(88,0);
+	servo_slow(2, basket_tilt, 4);
 	forward(130);
-	right(90,0);
+	servo_slow(2, basket_down, 4); 
+	right(88,0);
 	
+	
+	square_up_angle();
+	square_up_distance(250);
+	square_up_angle();
+	
+	backward(15);
+	servo_slow(3, basket_open, 8);
+	forward(25);
+	
+	correct_angle();
+	correct_distance();
+	correct_angle();
+	correct_distance();
+	
+	servo_slow(3, basket_closed, 5);
+	forward(8);
+	left(88,0);
+	servo_slow(2, basket_up, 5);
+	motor(MOT_LEFT, 70);
+	motor(MOT_RIGHT, 68);
+	msleep(2000);
 	
 	disable_servos();
 }
@@ -152,7 +176,7 @@ void line_squareup(double sensor_angle){
 	
 	while(lsens <  dark && rsens < dark ) {
 		printf("forward\n");
-		motor(MOT_LEFT,30);
+		motor(MOT_LEFT,24);
 		motor(MOT_RIGHT,22);
 		//move forward
 		lsens = analog(1);
@@ -244,6 +268,7 @@ void correct_angle() {
 	double derivative = 0.0;
 	double prev_error = 0.0; 
 	double spd = 0.0;
+	int obnum = 0;
 	
 	
 	//threshold value
@@ -258,6 +283,7 @@ void correct_angle() {
 		camera_update(); 
 		
 		do{
+			obnum = get_object_count(0);
 			camera_update();
 			
 			x_blob = get_object_center(0,0).x;  
@@ -281,7 +307,7 @@ void correct_angle() {
 			}
 			
 			/**they weren't mushed together, so checking for nearest one closest to prev position**/
-			if (get_object_count(0)>1){
+			if (obnum>1){
 				if(last_x == -1000 && last_y == -1000) {
 					last_x = x_blob;
 					last_y = y_blob;
@@ -329,8 +355,8 @@ void correct_angle() {
 		
 		spd = (K_p*E)+(integral*K_i)+(derivative*K_d);
 		
-		if(spd<6 && spd>=0) spd=6;
-		if(spd<0 && spd>-6) spd=-6;
+		if(spd<7 && spd>=0) spd=7;
+		if(spd<0 && spd>-7) spd=-7;
 		
 		motor(MOT_LEFT, -1*spd);
 		motor(MOT_RIGHT, spd);
@@ -459,12 +485,12 @@ void correct_distance() {
 		//if(spd<0 && spd>-6) spd=-6;
 		
 		if (spd>0){
-			spdr=25; 
-			spdl=7;
+			spdr=13; 
+			spdl=9;
 		}
 		else if (spd<0){
-			spdr=-14;
-			spdl=-7;
+			spdr=-10;
+			spdl=-9;
 		}
 		
 		//printf("spd (right) : %f\n",spdr);
@@ -553,8 +579,8 @@ void square_up_angle(){
 		//turn robot until square
 		//printf("left: %d\n",leftDistance); 
 		//printf("right: %d\n",rightDistance);
-		if(AE*Con<10 && AE*Con>0) AE=10/Con;
-		if(AE*Con<0 && AE*Con>-10) AE=-10/Con;
+		if(AE*Con<11 && AE*Con>0) AE=11/Con;
+		if(AE*Con<0 && AE*Con>-11) AE=-11/Con;
 		motor(MOT_LEFT,-1*Con*AE);
 		motor(MOT_RIGHT,Con*AE);
 		//msleep(1);

@@ -12,7 +12,7 @@
 
 /**THESE ARE IMPORTANT**/
 #define SPD 50//turning
-#define SPDl 93.//right forward (arc values vary based on link power)
+#define SPDl 90.//right forward (arc values vary based on link power)
 #define SPDr 90.//left forward
 
 #define rdistmult 1.0
