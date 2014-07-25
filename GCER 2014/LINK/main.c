@@ -16,8 +16,10 @@ double x_rob = 100.0;
 double y_rob = -113.0; //old: 156
 double y_target = 69.0; //new: 68 (old = 25)
 
-double MAX_HEIGHT = 30; 
-double MAX_WIDTH = 30;
+double MAX_HEIGHT = 35; 
+double MAX_WIDTH = 35;
+double MIN_SIZE = 500;
+
 /*
  * 100 closed
  * 1300 open
@@ -71,7 +73,7 @@ int main() {
 	forward(2);
 	servo_slow(3, basket_closed,5);
 	set_servo_position(1, 1300);
-	motor(MOT_LEFT, -37);
+	motor(MOT_LEFT, -45);
 	motor(MOT_RIGHT, -45);
 	msleep(2500);
 	servo_slow(2, basket_tilt, 4);
@@ -89,7 +91,7 @@ int main() {
 	backward(10);
 	servo_slow(3, basket_open, 10);
 	sleep(1);
-	forward(18);
+	forward(19);
 	
 	correct_angle();
 	correct_distance();
@@ -100,21 +102,22 @@ int main() {
 	left(90,0);
 	
 	square_up_angle();
-	square_up_distance(250);
+	square_up_distance(230);
 	square_up_angle();
 	
 	left(85,0);
 	servo_slow(2, basket_tilt, 4);
-	forward(50);
+	forward(51);
 	left(85,0);
 	forward(10);
 	line_squareup(0.6435);
 	
 	
 	//other side//
+	
 	forward(60);
 	backward(8);
-
+	
 	right(94,0);
 	servo_slow(2, basket_down, 4); 
 	servo_slow(3, basket_open, 8);
@@ -172,6 +175,8 @@ void line_squareup(double sensor_angle){
 	
 	double turn_angle = 0;
 	double extra_turn = 0;
+	x_blob=0;
+	y_blob=0;
 	
 	int turn_motor = -1;
 	
@@ -252,6 +257,12 @@ void line_squareup(double sensor_angle){
 
 void correct_angle() {
 	camera_update();
+	camera_update();
+	camera_update();
+	camera_update();
+	camera_update();
+	camera_update();
+	camera_update();
 	update_wait();
 	clear_motor_position_counter(MOT_RIGHT);
 	clear_motor_position_counter(MOT_LEFT);
@@ -288,13 +299,14 @@ void correct_angle() {
 			camera_update();
 			obnum = get_object_count(0);
 			printf("obnum: %d\n", obnum);
+			printf("camarea: %d\n", cam_area(0));
 			
 			
 			x_blob = get_object_center(0,0).x;  
 			y_blob = get_object_center(0,0).y; 
 			
-			//if(cam_area(0)==0) return;
-			if(cam_area(0) == 0) continue;
+			if(cam_area(0)==0) continue;
+			
 			
 			/**checking for two blobs mushed together**/
 			
@@ -306,20 +318,20 @@ void correct_angle() {
 					y_blob = get_object_center(0, 0).y - 5;
 					printf("height: %d\n",nx.height);
 					printf("blob Y too big!\n");
-
+					
 				}
 				
 				if(nx.width > MAX_WIDTH) {
 					x_blob = get_object_center(0, 0).x - 5; 
-					printf("width: %d\n",nx.height);
+					printf("width: %d\n",nx.width);
 					printf("blob X too big!\n");
-
+					
 				}
 				break;
 			}
 			
 			/**they weren't mushed together, so checking for nearest one closest to prev position**/
-			if (obnum>1){
+			if (obnum>1 && get_object_area(0,1)<MIN_SIZE){
 				printf("2blobs\n");
 				if(last_x == -1000 && last_y == -1000) {
 					printf("both-1000\n");
@@ -349,6 +361,7 @@ void correct_angle() {
 				}
 			}
 		}while(cam_area(0)==0);
+		
 		
 		// printf("x : %d, y: %d\n");
 		double E = atan(
@@ -521,7 +534,6 @@ void correct_distance() {
 			break;
 		}
 	}
-	
 	printf("[DONE] done overall correction");
 	msleep(100);
 	
