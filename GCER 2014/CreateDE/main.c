@@ -69,7 +69,8 @@ int main(){
 	create_forward(390, 400);// (distance in mm,speed)
 	create_left(82,0,250);
 	create_forward(480, 300);//scrape against pipe is deliberate
-	create_stop(); arm_lift();
+	create_stop(); 
+	arm_lift();
 	create_block();
 
 	create_left(86,0,250);//face the rack
