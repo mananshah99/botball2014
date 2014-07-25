@@ -13,7 +13,7 @@
 #define ARM_DOWN 2000
 #define HANGER_CLOSE 0
 #define HANGER_OPEN 1365
-//#define LIGHTSTART
+#define LIGHTSENSOR 7
 /*..............................................Functions Begin..............................................*/
 void create_setup(){
 	create_backward(10,50);
@@ -23,10 +23,13 @@ void create_setup(){
 	create_forward(50,50);
 	create_block();
 	msleep(1000);
-	printf("Press A to start");
-	while(a_button()==0){
+	enable_servo(ARM);
+	servo_set(ARM,ARM_DOWN,0.3);
+	wait_for_light(LIGHTSENSOR);
+	/*printf("Press A to start");
+	while(a_button()==0){ //MANUAL START
 		msleep(1);
-	}
+	}*/
 }
 void arm_lift(){
 	//arm
