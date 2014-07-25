@@ -5,7 +5,7 @@ float bound(float num, float max)
 	return max;
 	else if (num < -max)
 	return -max;
-	
+	else
 	return num;
 }
 int in_range(int input, int wanted, int fudge)
