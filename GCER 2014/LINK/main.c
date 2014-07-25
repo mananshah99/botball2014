@@ -12,17 +12,20 @@
 #include "./template.h"
 
 double turned_angle = 0.0;
-int x_rob = 100;  
-int y_rob = -113; //old: 156
-int y_target = 69; //new: 68 (old = 25)
+double x_rob = 100.0;  
+double y_rob = -113.0; //old: 156
+double y_target = 69.0; //new: 68 (old = 25)
 
-double MAX_HEIGHT = 18.7; 
-double MAX_WIDTH = 18.7;
+double MAX_HEIGHT = 30; 
+double MAX_WIDTH = 30;
 /*
  * 100 closed
  * 1300 open
  * port 3
 */
+double x_blob=0;
+double y_blob=0;
+
 void correct_angle();
 void correct_distance();
 void square_up_distance(int distance);
@@ -66,7 +69,7 @@ int main() {
 	correct_distance();
 	
 	forward(2);
-	set_servo_position(3, basket_closed);
+	servo_slow(3, basket_closed,5);
 	set_servo_position(1, 1300);
 	motor(MOT_LEFT, -37);
 	motor(MOT_RIGHT, -45);
@@ -93,7 +96,7 @@ int main() {
 	correct_angle();
 	correct_distance();
 	
-	set_servo_position(3, basket_closed);
+	servo_slow(3, basket_closed,5);
 	left(90,0);
 	
 	square_up_angle();
@@ -109,8 +112,8 @@ int main() {
 	
 	
 	//other side//
-	forward(55);
-	backward(5);
+	forward(60);
+	backward(8);
 
 	right(94,0);
 	servo_slow(2, basket_down, 4); 
@@ -246,8 +249,6 @@ void line_squareup(double sensor_angle){
 }
 
 
-int x_blob;
-int y_blob;
 
 void correct_angle() {
 	camera_update();
@@ -256,12 +257,12 @@ void correct_angle() {
 	clear_motor_position_counter(MOT_LEFT);
 	
 	//constants
-	double K_p = 27.0;	/***USED TO BE 26***/
+	double K_p = 27.0;	
 	double K_i = 0.00;
 	double K_d = 0.04;	
 	
 	//values (rob is robot) 
-	int x_target = x_rob; //new: 100
+	double x_target = x_rob; //new: 100
 	
 	//for PID
 	double integral = 0.0;
@@ -279,12 +280,15 @@ void correct_angle() {
 	set_servo_position(1, 1584);
 	prev_error = 0;
 	
-	while(1/*!in_range(E, 0, EPSILON) || !in_range(E, 0, -EPSILON)*/) {
+	while(1) {
 		camera_update(); 
 		
 		do{
-			obnum = get_object_count(0);
+			printf("updatecam\n");
 			camera_update();
+			obnum = get_object_count(0);
+			printf("obnum: %d\n", obnum);
+			
 			
 			x_blob = get_object_center(0,0).x;  
 			y_blob = get_object_center(0,0).y; 
@@ -296,24 +300,35 @@ void correct_angle() {
 			
 			rectangle nx = get_object_bbox(0, 0);
 			if(nx.height > MAX_HEIGHT || nx.width > MAX_WIDTH) {
+				
+				
 				if(nx.height > MAX_HEIGHT) {
 					y_blob = get_object_center(0, 0).y - 5;
+					printf("height: %d\n",nx.height);
+					printf("blob Y too big!\n");
+
 				}
 				
 				if(nx.width > MAX_WIDTH) {
 					x_blob = get_object_center(0, 0).x - 5; 
+					printf("width: %d\n",nx.height);
+					printf("blob X too big!\n");
+
 				}
 				break;
 			}
 			
 			/**they weren't mushed together, so checking for nearest one closest to prev position**/
 			if (obnum>1){
+				printf("2blobs\n");
 				if(last_x == -1000 && last_y == -1000) {
+					printf("both-1000\n");
 					last_x = x_blob;
 					last_y = y_blob;
 					break;
 				}
 				else {
+					printf("notboth-1000\n");
 					int c2_x = get_object_center(0, 1).x; 
 					int c2_y = get_object_center(0, 1).y; 
 					
@@ -324,10 +339,10 @@ void correct_angle() {
 					double c1diff_x = (x_blob - last_x) > 0  ? 	(x_blob - last_x)   :   -(x_blob - last_x);
 					double c1diff_y = (y_blob - last_y) > 0  ? 	(y_blob - last_y)   :   -(y_blob - last_y);
 					
-					if(c2diff_x < c1diff_x) {
+					if(sqrt(c2diff_x*c2diff_x+c2diff_y*c2diff_y) < sqrt(c1diff_x*c1diff_x+c1diff_y*c1diff_y)) {
+						printf("c2xset\n");
 						x_blob = c2_x;
-					}
-					if(c2diff_y < c1diff_y) {
+						printf("c2yset\n");
 						y_blob = c2_y;
 					}
 					break;
@@ -337,11 +352,10 @@ void correct_angle() {
 		
 		// printf("x : %d, y: %d\n");
 		double E = atan(
-		((double)(-1*(x_blob-x_rob)))
-		/((double)(y_blob-y_rob))
+		(-1.0*(x_blob-x_rob))
+		/(y_blob-y_rob)
 		);
 		
-		// this is a bit sketchy but it should work
 		if(prev_error==0) {
 			prev_error = E;
 			//turned_angle = E;
@@ -350,13 +364,12 @@ void correct_angle() {
 		integral += (E*0.001); //update time
 		derivative = (E - prev_error)/0.001;
 		
-		
-		printf("****ERROR****  ==== %f\n", E);
+		printf("E: %1.2f xrob: %1.2f  xblob: %f \n yrob: %1.2f yblob %f\n", E, x_rob, x_blob, y_rob, y_blob);
 		
 		spd = (K_p*E)+(integral*K_i)+(derivative*K_d);
 		
-		if(spd<7 && spd>=0) spd=7;
-		if(spd<0 && spd>-7) spd=-7;
+		if(spd<11 && spd>=0) spd=11;
+		if(spd<0 && spd>-11) spd=-11;
 		
 		motor(MOT_LEFT, -1*spd);
 		motor(MOT_RIGHT, spd);
@@ -485,12 +498,12 @@ void correct_distance() {
 		//if(spd<0 && spd>-6) spd=-6;
 		
 		if (spd>0){
-			spdr=13; 
+			spdr=20; 
 			spdl=9;
 		}
 		else if (spd<0){
-			spdr=-10;
-			spdl=-9;
+			spdr=-12;
+			spdl=-12;
 		}
 		
 		//printf("spd (right) : %f\n",spdr);
@@ -524,7 +537,7 @@ void correct_distance() {
 	right(3,0);
 	left(6,0);
 	right(3,0);
-	set_servo_position(1, 1800);
+	servo_slow(1, 1800,5);
 	msleep(100);
 	printf("[DONE] finished tribble pickup");
 	
@@ -579,8 +592,8 @@ void square_up_angle(){
 		//turn robot until square
 		//printf("left: %d\n",leftDistance); 
 		//printf("right: %d\n",rightDistance);
-		if(AE*Con<11 && AE*Con>0) AE=11/Con;
-		if(AE*Con<0 && AE*Con>-11) AE=-11/Con;
+		if(AE*Con<12 && AE*Con>0) AE=12/Con;
+		if(AE*Con<0 && AE*Con>-12) AE=-12/Con;
 		motor(MOT_LEFT,-1*Con*AE);
 		motor(MOT_RIGHT,Con*AE);
 		//msleep(1);
