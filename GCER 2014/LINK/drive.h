@@ -11,13 +11,13 @@
 #define PI 3.14159265358979
 
 /**THESE ARE IMPORTANT**/
-#define SPD 50//turning
-#define SPDl 96.//right forward (arc values vary based on link power)
+#define SPD 60//turning
+#define SPDl 95.//right forward (arc values vary based on link power)
 #define SPDr 90.//left forward
 
 #define rdistmult 1.0
 #define SPDlb 90.//right backward
-#define SPDrb 90.//left backward
+#define SPDrb 93.//left backward
 #define rdistmultb (SPDrb/SPDlb)
 #define wheeldiameter 5.5
 #define ks 17.5

@@ -36,7 +36,7 @@ void line_squareup(double sensor_angle);
 void tsort();
 
 int basket_open = 1300;
-int basket_closed = 171;
+int basket_closed = 160;
 int basket_up = 400;
 int basket_down = 75;
 int basket_tilt = 200;
@@ -54,7 +54,7 @@ int main() {
 	set_servo_position(3, basket_closed);
 	
 	
-	
+	shut_down_in(119.5);
 	///---Drive 1---///
 	
 	forward(48);
@@ -74,7 +74,7 @@ int main() {
 	servo_slow(3, basket_closed,5);
 	set_servo_position(1, 1300);
 	motor(MOT_LEFT, -45);
-	motor(MOT_RIGHT, -45);
+	motor(MOT_RIGHT, -50);
 	msleep(2500);
 	servo_slow(2, basket_tilt, 4);
 	forward(153);
@@ -163,7 +163,7 @@ int main() {
 	servo_slow(2, basket_up, 5);
 	motor(MOT_LEFT, 70);
 	motor(MOT_RIGHT, 68);
-	msleep(2000);
+	msleep(3000);
 	servo_slow(3, basket_open, 3);
 	servo_slow(3, basket_closed, 3);
 	servo_slow(3, basket_open, 3);
@@ -184,6 +184,7 @@ int main() {
 	forward(65);
 	right(90,0);
 	backward(105);
+	set_servo_position(1, 1300);
 	motor(MOT_LEFT, -45);
 	motor(MOT_RIGHT, -45);
 	msleep(2000);
@@ -546,7 +547,7 @@ void correct_distance() {
 		}
 		else if (spd<0){
 			spdr=-12;
-			spdl=-12;
+			spdl=-14;
 		}
 		
 		//printf("spd (right) : %f\n",spdr);
