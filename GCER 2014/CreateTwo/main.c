@@ -19,7 +19,6 @@
 /*..............................................Functions Begin..............................................*/
 void create_setup(){
 	create_backward(10,50);
-	create_wait_time(1);
 	create_forward(15,50);
 	create_left(85,0,50);
 	create_forward(50,50);
@@ -37,7 +36,7 @@ void arm_lift(){
 	//arm
 	enable_servo(ARM);
 	set_servo_position(ARM,ARM_UP);
-	msleep(1000);
+	msleep(100);
 	//le elevator
 	while(digital(SENSOR_UP)==0)
 	{
@@ -54,36 +53,39 @@ void arm_lower(){
 		motor(ELEVATORTWO,-25);
 	}
 	ao();
-	msleep(400);
+	msleep(100);
 	//arm
 	enable_servo(ARM);
 	set_servo_position(ARM,ARM_DOWN);
-	msleep(400);
+	msleep(100);
 }
 void create_forward_until_lbump(){
 	while(get_create_lbump() == 0){
-		create_drive_direct(100,100);//(r_speed,l_speed)
+		create_drive_direct(150,150);//(r_speed,l_speed)
 	}
 }
 void create_forward_until_rbump(){
 		while(get_create_rbump() == 0){
-		create_drive_direct(100,100);//(r_speed,l_speed)
+		create_drive_direct(150,150);//(r_speed,l_speed)
 	}
 }
 /*..............................................Functions End..............................................*/
 int main()
 {
 	create_connect(); create_setup();
-	//light_start(LIGHTSTART);
-	shut_down_in(119.); float time = seconds();
+	shut_down_in(119.); float time = seconds(); start();
 	enable_servos();
-	
 	servo_set(HANGER,HANGER_CLOSE,0.3);
-	//arm_lift();
+
+	
 	create_right(85,0,150);
 	create_backward(50,50);//square up
 	create_stop();
 	create_wait_time(10);
+	create_block();
+	
+	sleep(12);//WAIT FOR LINK
+	
 	create_forward(400, 150);// (distance in mm,speed)
 	create_stop();
 	arm_lift();
@@ -96,7 +98,7 @@ int main()
 
 	create_forward_until_lbump();
 	create_stop();
-	create_wait_time(5);
+	//create_wait_time(5);
 	create_left(1,0,100);//ANGLE
 	create_backward(240,150);
 	create_block();//At the Pipes
@@ -107,23 +109,24 @@ int main()
 	create_forward_until_lbump();
 	create_block(); //scored and backed away from hangers
 	
+	wait_till(55.);
 	arm_lower();
 	create_right(3,0,100);//COMPENSATE
 	create_backward(215,150);//approach blue hanger (facing away)
 	create_left(5,0,100);//turn
 	create_block();
 	
-	msleep(500);
+	msleep(100);
 	create_backward(40,70);
 	create_block();
 	
 	servo_set(HANGER,HANGER_CLOSE,0.5);
-	msleep(500);
+	msleep(100);
 	create_backward(10,100);
 	create_block();
 	
 	servo_set(ARM,ARM_DMID,0.5);
-	msleep(500);
+	msleep(100);
 	servo_set(ARM,ARM_DOWN,0.5);//get blue
 	create_forward(10,100);
 	//create_right(5,0,100);//reset angle
@@ -167,19 +170,23 @@ int main()
 	//moving again to second blue hanger
 	
 	create_right(82,0,150);
-	create_backward(150,70);//square up one
+	create_drive_direct(-100,-100);//square up one
+	create_wait_time(20);
 	create_forward(145,150);//line up for 2nd 
 	create_right(82,0,150);
-	create_backward(100,50);//square up two
-	create_stop(); create_wait_time(10);
+	create_drive_direct(-100,-100);//square up two
+	create_wait_time(15);
+	create_stop();
 	create_forward(100,150);
 	create_left(176,0,150);
 	create_backward(260,200);//approach 2nd 
 	create_stop();
 	arm_lower();
+	servo_set(ARM,ARM_DMID,0.3);
 	create_block();
 	
 	//arm_lower();
+	servo_set(ARM,ARM_DOWN,0.3);
 	create_backward(275,150);//collect 2nd blue
 	create_block();
 	
