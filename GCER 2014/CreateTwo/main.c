@@ -15,8 +15,7 @@
 #define ARM_DOWN 2000
 #define HANGER_CLOSE 0
 #define HANGER_OPEN 1365
-//#define LIGHTSTART
-//for create cliff sensors
+#define LIGHTSENSOR 7
 /*..............................................Functions Begin..............................................*/
 void create_setup(){
 	create_backward(10,50);
@@ -26,10 +25,13 @@ void create_setup(){
 	create_forward(50,50);
 	create_block();
 	msleep(1000);
-	printf("Press A to start");
-	while(a_button()==0){
+	enable_servo(ARM);
+	servo_set(ARM,ARM_DOWN,0.3);
+	wait_for_light(LIGHTSENSOR);
+	/*printf("Press A to start");
+	while(a_button()==0){ //MANUAL START
 		msleep(1);
-	}
+	}*/
 }
 void arm_lift(){
 	//arm
@@ -82,19 +84,20 @@ int main()
 	create_backward(50,50);//square up
 	create_stop();
 	create_wait_time(10);
-	create_forward(390, 150);// (distance in mm,speed)
+	create_forward(400, 150);// (distance in mm,speed)
 	create_stop();
 	arm_lift();
-	create_block();//left base
+	create_block();//out of base
 
 	create_left(82,0,150);
 	create_forward(340, 150);//scrape against pipe is deliberate
+	create_stop();
 	create_left(85,0,150);//face the rack; IMPORTANT
 
 	create_forward_until_lbump();
-	//create_right(1,0,100);
 	create_stop();
 	create_wait_time(5);
+	create_left(1,0,100);//ANGLE
 	create_backward(240,150);
 	create_block();//At the Pipes
 	msleep(100);
@@ -105,7 +108,7 @@ int main()
 	create_block(); //scored and backed away from hangers
 	
 	arm_lower();
-	create_right(1,0,100);//COMPENSATE
+	create_right(3,0,100);//COMPENSATE
 	create_backward(215,150);//approach blue hanger (facing away)
 	create_left(5,0,100);//turn
 	create_block();
@@ -130,13 +133,10 @@ int main()
 	create_block();
 	//get out
 	
-	//create_left(80,0,150);//turn for lift
 	create_right(265,0,150);//270
 	create_backward(100,150);//OFFSET
 	create_block();
 	
-	//arm_lift();
-	//create_left(270,0,150);//SPIN
 	create_right(80,0,150);//reset angle 
 	create_forward(50,150);
 	create_stop();
@@ -167,10 +167,10 @@ int main()
 	//moving again to second blue hanger
 	
 	create_right(82,0,150);
-	create_backward(100,70);//square up one
-	create_forward(130,150);//line up for 2nd 
+	create_backward(150,70);//square up one
+	create_forward(145,150);//line up for 2nd 
 	create_right(82,0,150);
-	create_backward(50,50);//square up two
+	create_backward(100,50);//square up two
 	create_stop(); create_wait_time(10);
 	create_forward(100,150);
 	create_left(176,0,150);
