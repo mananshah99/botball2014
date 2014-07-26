@@ -118,10 +118,12 @@ int main() {
 	forward(60);
 	backward(8);
 	
-	right(94,0);
+	right(91,0);
 	servo_slow(2, basket_down, 4); 
+	
+	forward(38);
 	servo_slow(3, basket_open, 8);
-	forward(58);
+	forward(10);
 	
 	correct_angle();
 	correct_distance();
@@ -129,7 +131,7 @@ int main() {
 	correct_distance();
 	
 	servo_slow(3, basket_closed, 5);
-	left(90,0);
+	left(86,0);
 	
 	square_up_angle();
 	square_up_distance(250);
@@ -156,12 +158,40 @@ int main() {
 	correct_distance();
 	
 	servo_slow(3, basket_closed, 5);
-	forward(8);
+	forward(10);
 	left(88,0);
 	servo_slow(2, basket_up, 5);
 	motor(MOT_LEFT, 70);
 	motor(MOT_RIGHT, 68);
 	msleep(2000);
+	servo_slow(3, basket_open, 3);
+	servo_slow(3, basket_closed, 3);
+	servo_slow(3, basket_open, 3);
+	motor(MOT_LEFT, 70);
+	motor(MOT_RIGHT, 68);
+	msleep(300);
+	backward(40);
+	set_servo_position(2, basket_down); 
+	set_servo_position(3, basket_closed);
+	backward(73);
+	set_servo_position(2, basket_tilt); 
+	left(90,0);
+	forward(25);
+	line_squareup(0.6435);
+	
+	
+	// back to our side //
+	forward(65);
+	right(90,0);
+	backward(105);
+	motor(MOT_LEFT, -45);
+	motor(MOT_RIGHT, -45);
+	msleep(2000);
+	forward(5);
+	motor(MOT_LEFT, -45);
+	motor(MOT_RIGHT, -45);
+	msleep(1000);
+	forward(20);
 	
 	disable_servos();
 }
@@ -604,8 +634,8 @@ void square_up_angle(){
 		//turn robot until square
 		//printf("left: %d\n",leftDistance); 
 		//printf("right: %d\n",rightDistance);
-		if(AE*Con<12 && AE*Con>0) AE=12/Con;
-		if(AE*Con<0 && AE*Con>-12) AE=-12/Con;
+		if(AE*Con<13 && AE*Con>0) AE=13/Con;
+		if(AE*Con<0 && AE*Con>-13) AE=-13/Con;
 		motor(MOT_LEFT,-1*Con*AE);
 		motor(MOT_RIGHT,Con*AE);
 		//msleep(1);

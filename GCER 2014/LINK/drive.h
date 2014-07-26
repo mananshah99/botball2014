@@ -16,7 +16,7 @@
 #define SPDr 90.//left forward
 
 #define rdistmult 1.0
-#define SPDlb 92.//right backward
+#define SPDlb 90.//right backward
 #define SPDrb 90.//left backward
 #define rdistmultb (SPDrb/SPDlb)
 #define wheeldiameter 5.5
