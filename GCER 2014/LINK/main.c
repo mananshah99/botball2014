@@ -207,7 +207,7 @@ void line_squareup(double sensor_angle){
 	while(lsens <  dark && rsens < dark ) {
 		printf("forward\n");
 		motor(MOT_LEFT,24);
-		motor(MOT_RIGHT,25);
+		motor(MOT_RIGHT,26);
 		//move forward
 		lsens = analog(1);
 		rsens = analog(0);
@@ -663,10 +663,10 @@ void square_up_distance(int distance){
 		if((leftDistance+rightDistance)/2 < distance){
 			//move robot forward
 			motor(MOT_LEFT,-sqpow);
-			motor(MOT_RIGHT,-sqpow);
+			motor(MOT_RIGHT,-sqpow*1.2);
 			} else {
 			//move robot backward
-			motor(MOT_LEFT,sqpow);
+			motor(MOT_LEFT,sqpow*1.1);
 			motor(MOT_RIGHT,sqpow);
 		}
 		msleep(1);
