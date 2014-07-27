@@ -76,7 +76,10 @@ int main()
 	shut_down_in(119.); float time = seconds(); start();
 	enable_servos();
 	servo_set(HANGER,HANGER_CLOSE,0.3);
-
+	printf("GO!");
+	
+	sleep(20);//WAIT FOR LINK
+	servo_set(ARM,ARM_DMID,0.3);
 	
 	create_right(85,0,150);
 	create_backward(50,50);//square up
@@ -84,22 +87,22 @@ int main()
 	create_wait_time(10);
 	create_block();
 	
-	sleep(12);//WAIT FOR LINK
 	
-	create_forward(400, 150);// (distance in mm,speed)
+	
+	create_forward(400, 200);// (distance in mm,speed)
 	create_stop();
 	arm_lift();
 	create_block();//out of base
 
 	create_left(82,0,150);
-	create_forward(340, 150);//scrape against pipe is deliberate
+	create_forward(310, 200);//scrape against pipe is deliberate
 	create_stop();
 	create_left(85,0,150);//face the rack; IMPORTANT
 
 	create_forward_until_lbump();
 	create_stop();
 	//create_wait_time(5);
-	create_left(1,0,100);//ANGLE
+	//create_left(1,0,100);//ANGLE
 	create_backward(240,150);
 	create_block();//At the Pipes
 	msleep(100);
@@ -111,25 +114,28 @@ int main()
 	
 	wait_till(55.);
 	arm_lower();
-	create_right(3,0,100);//COMPENSATE
-	create_backward(215,150);//approach blue hanger (facing away)
+	create_right(1,0,100);//COMPENSATE ANGLE TOWARD BLUE HANGER
+	create_backward(280,100);//WITHOUT THE DOUBLE FORWARD
+	create_block();
+	
+	/*create_backward(215,200);//approach blue hanger (facing away)
 	create_left(5,0,100);//turn
 	create_block();
 	
 	msleep(100);
-	create_backward(40,70);
-	create_block();
+	create_backward(40,150);
+	create_block();*/
 	
 	servo_set(HANGER,HANGER_CLOSE,0.5);
-	msleep(100);
-	create_backward(10,100);
-	create_block();
+	//msleep(50);
+	//create_backward(10,150);
+	//create_block();
 	
 	servo_set(ARM,ARM_DMID,0.5);
-	msleep(100);
+	msleep(50);
 	servo_set(ARM,ARM_DOWN,0.5);//get blue
-	create_forward(10,100);
-	//create_right(5,0,100);//reset angle
+	create_forward(10,150);
+	create_left(2,0,100);//reset angle
 	create_block();
 	
 	create_forward_until_lbump();
@@ -137,18 +143,18 @@ int main()
 	//get out
 	
 	create_right(265,0,150);//270
-	create_backward(100,150);//OFFSET
+	create_backward(100,175);//OFFSET
 	create_block();
 	
 	create_right(80,0,150);//reset angle 
-	create_forward(50,150);
+	create_forward(50,200);
 	create_stop();
 	arm_lift();
 	create_block();
 	
 	servo_set(ARM,ARM_UMID,0.5);
 	//create_left(2,0,100);//turn
-	create_backward(340,100);//approach for score
+	create_backward(340,200);//approach for score
 	create_block();
 	
 	servo_set(ARM,ARM_UP,0.5);
@@ -157,7 +163,7 @@ int main()
 	create_wait_time(10);
 	//create_right(18,0,70);//turn; push hangers out of way
 	//create_left(14,0,70);//reset
-	create_forward(200,150);//score blue hanger
+	create_forward(200,200);//score blue hanger
 	create_block();
 	//blue hanger now scored (on pipe), moving to second blue hanger and dropping 1st off
 	
@@ -172,14 +178,14 @@ int main()
 	create_right(82,0,150);
 	create_drive_direct(-100,-100);//square up one
 	create_wait_time(20);
-	create_forward(145,150);//line up for 2nd 
+	create_forward(145,200);//line up for 2nd 
 	create_right(82,0,150);
 	create_drive_direct(-100,-100);//square up two
 	create_wait_time(15);
 	create_stop();
 	create_forward(100,150);
 	create_left(176,0,150);
-	create_backward(260,200);//approach 2nd 
+	create_backward(260,175);//approach 2nd 
 	create_stop();
 	arm_lower();
 	servo_set(ARM,ARM_DMID,0.3);
@@ -187,17 +193,17 @@ int main()
 	
 	//arm_lower();
 	servo_set(ARM,ARM_DOWN,0.3);
-	create_backward(275,150);//collect 2nd blue
+	create_backward(275,175);//collect 2nd blue
 	create_block();
 	
 	servo_set(HANGER,HANGER_CLOSE,0.3);
 	servo_set(ARM,ARM_DMID,0.5);
-	create_forward(350,200);
+	create_forward(375,200);
 	create_block();
 	
 	arm_lift();
-	create_right(2,0,100);
-	create_backward(375,100);//score 2nd blue
+	create_right(2,0,150);
+	create_backward(400,200);//score 2nd blue
 	create_block();
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
