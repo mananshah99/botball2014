@@ -46,7 +46,7 @@ void right(float degrees, float radius){
 		long turnr=((2*radius-ks)*CMtoBEMF*PI)*(degrees/360.);
     	if(turnl == 0l) return;
     	turnrspeed = round((float)turnr/(float)turnl*SPD);
-    	msleep(30l);
+    	msleep(3l);
     	if(turnl > 0l)
       		motor(MOT_LEFT, SPD);
     	else
@@ -84,7 +84,7 @@ void right(float degrees, float radius){
         }
     }
     drive_off();
-    msleep(30l);
+    msleep(3l);
 }
 /* \fn void left(int degrees, int radius)
  * \brief turns left degrees degrees at int radius radius
@@ -99,7 +99,7 @@ int turnlspeed;
 	long turnr=((2*radius+ks)*CMtoBEMF*PI)*(degrees/360.);
     if(turnr == 0l) return;
     turnlspeed = round((float)turnl/(float)turnr*SPD);
-    msleep(30l);
+    msleep(3l);
     if(turnr > 0l)
       motor(MOT_RIGHT, SPD);
     else
@@ -137,7 +137,7 @@ int turnlspeed;
         }
     }
     drive_off();
-    msleep(30l);
+    msleep(3l);
 }
 
 void multforward(float distance, float speedmult){//go forward a number of CM    NOT    backEMF counts
