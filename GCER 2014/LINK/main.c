@@ -160,40 +160,30 @@ int main() {
 	
 	servo_slow(3, basket_closed, 5);
 	forward(8);
-	left(84,0);
-	servo_slow(2, basket_up, 5);
-	motor(MOT_LEFT, SPDl);
-	motor(MOT_RIGHT, SPDr);
-	msleep(2500);
-	servo_slow(3, basket_open, 3);
-	/*servo_slow(3, basket_closed, 3);
-	servo_slow(3, basket_open, 3);
-	motor(MOT_LEFT, SPDl);
-	motor(MOT_RIGHT, SPDr);
-	msleep(300);*/
-	backward(40);
-	set_servo_position(2, basket_down); 
-	set_servo_position(3, basket_closed);
-	backward(73);
-	set_servo_position(2, basket_tilt); 
-	left(90,0);
+	right(86,0);
+	motor(MOT_LEFT, -SPDlb);
+	motor(MOT_RIGHT, -SPDrb);
+	sleep(1);
+	set_servo_position(1, 1300);
+	motor(MOT_LEFT, -45);
+	motor(MOT_RIGHT, -50);
+	msleep(2000); 
+	set_servo_position(2, basket_tilt);
+	forward(108);
+	right(86,0);
 	forward(25);
 	line_squareup(0.6435);
 	
 	now();
 	// back to our side //
 	forward(60);
-	right(90,0);
-	backward(105);
-	set_servo_position(1, 1300);
-	motor(MOT_LEFT, -45);
-	motor(MOT_RIGHT, -50);
-	msleep(1000);
-	/*forward(5);
-	motor(MOT_LEFT, -45);
-	motor(MOT_RIGHT, -45);
-	msleep(1000);*/
-	forward(20);
+	left(88,0);	
+	servo_slow(2, basket_up, 5);
+	forward(115);
+	servo_slow(3, basket_open, 3);
+	servo_slow(3, basket_closed, 3);
+	servo_slow(3, basket_open, 3);
+	backward(25);
 	
 	disable_servos();
 }
@@ -217,7 +207,7 @@ void line_squareup(double sensor_angle){
 	while(lsens <  dark && rsens < dark ) {
 		printf("forward\n");
 		motor(MOT_LEFT,24);
-		motor(MOT_RIGHT,22);
+		motor(MOT_RIGHT,25);
 		//move forward
 		lsens = analog(1);
 		rsens = analog(0);
@@ -337,7 +327,7 @@ void correct_angle() {
 			x_blob = get_object_center(0,0).x;  
 			y_blob = get_object_center(0,0).y; 
 			
-			if(cam_area(0)==0) continue;
+			if(cam_area(0)==0) return;//continue;
 			
 			
 			/**checking for two blobs mushed together**/
