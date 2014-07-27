@@ -77,9 +77,9 @@ int main()
 	enable_servos();
 	servo_set(HANGER,HANGER_CLOSE,0.3);
 	printf("GO!");
-	
+	disable_servos();
 	sleep(20);//WAIT FOR LINK
-	servo_set(ARM,ARM_DMID,0.3);
+	enable_servos();
 	
 	create_right(85,0,150);
 	create_backward(50,50);//square up
@@ -102,7 +102,7 @@ int main()
 	create_forward_until_lbump();
 	create_stop();
 	//create_wait_time(5);
-	//create_left(1,0,100);//ANGLE
+	create_left(2,0,100);//ANGLE THE FIRST HANGER DROP
 	create_backward(240,150);
 	create_block();//At the Pipes
 	msleep(100);
@@ -114,8 +114,8 @@ int main()
 	
 	wait_till(55.);
 	arm_lower();
-	create_right(1,0,100);//COMPENSATE ANGLE TOWARD BLUE HANGER
-	create_backward(280,100);//WITHOUT THE DOUBLE FORWARD
+	create_right(2,0,100);//COMPENSATE ANGLE TOWARD BLUE HANGER
+	create_backward(320,100);//WITHOUT THE DOUBLE FORWARD
 	create_block();
 	
 	/*create_backward(215,200);//approach blue hanger (facing away)
