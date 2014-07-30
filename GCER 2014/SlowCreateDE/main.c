@@ -12,7 +12,7 @@
 #define ARM_UP 150
 #define ARM_UMID 700
 #define ARM_DMID 1200
-#define ARM_DOWN 2000
+#define ARM_DOWN 2100	//used to be 2000 before changed servo
 #define HANGER_CLOSE 0
 #define HANGER_OPEN 1365
 #define LIGHTSENSOR 7

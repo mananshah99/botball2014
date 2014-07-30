@@ -12,7 +12,7 @@
 #define ARM_UP 150
 #define ARM_UMID 700
 #define ARM_DMID 1200
-#define ARM_DOWN 2000
+#define ARM_DOWN 2100 //used to be 2000 b4 new servo
 #define HANGER_CLOSE 0
 #define HANGER_OPEN 1365
 #define LIGHTSENSOR 7
@@ -24,8 +24,8 @@ void create_setup(){
 	create_forward(50,50);
 	create_block();
 	msleep(1000);
-	enable_servo(ARM);
-	servo_set(ARM,ARM_DOWN,0.3);
+	/*enable_servo(ARM);
+	servo_set(ARM,ARM_DOWN,0.3);*/
 	wait_for_light(LIGHTSENSOR);
 	/*printf("Press A to start");
 	while(a_button()==0){ //MANUAL START
@@ -72,7 +72,9 @@ void create_forward_until_rbump(){
 /*..............................................Functions End..............................................*/
 int main()
 {
-	create_connect(); create_setup();
+	create_connect();
+	create_full();
+	create_setup();
 	shut_down_in(119.); float time = seconds(); start();
 	enable_servos();
 	servo_set(HANGER,HANGER_CLOSE,0.3);
@@ -95,7 +97,8 @@ int main()
 	create_block();//out of base
 
 	create_left(82,0,150);
-	create_forward(310, 200);//scrape against pipe is deliberate
+	create_forward(314, 200);//scrape against pipe is deliberate
+	//the forward used to be 310
 	create_stop();
 	create_left(85,0,150);//face the rack; IMPORTANT
 
