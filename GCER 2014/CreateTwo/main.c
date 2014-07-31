@@ -25,8 +25,8 @@ void create_setup(){
 	create_block();
 	msleep(1000);
 	/*enable_servo(ARM);
-	set_servo_position(ARM,ARM_DOWN);*/
-	/**wait_for_light(LIGHTSENSOR);**/ /** PUT BACK **/
+	servo_set(ARM,ARM_DOWN,0.3);*/
+	wait_for_light(LIGHTSENSOR);
 	/*printf("Press A to start");
 	while(a_button()==0){ //MANUAL START
 		msleep(1);
@@ -77,7 +77,7 @@ int main()
 	create_setup();
 	shut_down_in(119.); float time = seconds(); start();
 	enable_servos();
-	set_servo_position(HANGER,HANGER_CLOSE);
+	servo_set(HANGER,HANGER_CLOSE,0.3);
 	printf("GO!");
 	disable_servos();
 	sleep(20);//WAIT FOR LINK
@@ -110,8 +110,8 @@ int main()
 	create_block();//At the Pipes
 	msleep(100);
 	
-	set_servo_position(HANGER,HANGER_OPEN);
-	set_servo_position(ARM,ARM_UMID);
+	servo_set(HANGER,HANGER_OPEN,0.3);
+	servo_set(ARM,ARM_UMID,0.3);
 	create_forward_until_lbump();
 	create_block(); //scored and backed away from hangers
 	
@@ -129,14 +129,14 @@ int main()
 	create_backward(40,150);
 	create_block();*/
 	
-	set_servo_position(HANGER,HANGER_CLOSE);
+	servo_set(HANGER,HANGER_CLOSE,0.5);
 	//msleep(50);
 	//create_backward(10,150);
 	//create_block();
 	
-	set_servo_position(ARM,ARM_DMID);
+	servo_set(ARM,ARM_DMID,0.5);
 	msleep(50);
-	set_servo_position(ARM,ARM_DOWN);//get blue
+	servo_set(ARM,ARM_DOWN,0.5);//get blue
 	create_forward(10,150);
 	create_left(2,0,100);//reset angle
 	create_block();
@@ -155,12 +155,12 @@ int main()
 	arm_lift();
 	create_block();
 	
-	set_servo_position(ARM,ARM_UMID);
+	servo_set(ARM,ARM_UMID,0.5);
 	//create_left(2,0,100);//turn
 	create_backward(340,200);//approach for score
 	create_block();
 	
-	set_servo_position(ARM,ARM_UP);
+	servo_set(ARM,ARM_UP,0.5);
 	create_backward(5,200);//jerk to lift arm
 	create_stop();
 	create_wait_time(10);
@@ -171,8 +171,8 @@ int main()
 	//blue hanger now scored (on pipe), moving to second blue hanger and dropping 1st off
 	
 	msleep(100);
-	set_servo_position(HANGER,HANGER_OPEN);
-	set_servo_position(ARM,ARM_UMID);
+	servo_set(HANGER,HANGER_OPEN,0.3);
+	servo_set(ARM,ARM_UMID,0.3);
 	msleep(500);
 	create_forward_until_rbump();
 	create_block();
@@ -191,16 +191,16 @@ int main()
 	create_backward(260,175);//approach 2nd 
 	create_stop();
 	arm_lower();
-	set_servo_position(ARM,ARM_DMID);
+	servo_set(ARM,ARM_DMID,0.3);
 	create_block();
 	
 	//arm_lower();
-	set_servo_position(ARM,ARM_DOWN);
+	servo_set(ARM,ARM_DOWN,0.3);
 	create_backward(275,175);//collect 2nd blue
 	create_block();
 	
-	set_servo_position(HANGER,HANGER_CLOSE);
-	set_servo_position(ARM,ARM_DMID);
+	servo_set(HANGER,HANGER_CLOSE,0.3);
+	servo_set(ARM,ARM_DMID,0.5);
 	create_forward(375,200);
 	create_block();
 	
@@ -209,8 +209,8 @@ int main()
 	create_backward(400,200);//score 2nd blue
 	create_block();
 	
-	set_servo_position(HANGER,HANGER_OPEN);
-	set_servo_position(ARM,ARM_UMID);
+	servo_set(HANGER,HANGER_OPEN,0.3);
+	servo_set(ARM,ARM_UMID,0.3);
 	create_forward(700,300);
 	create_block();
 	printf("%d\n", seconds()-time);
