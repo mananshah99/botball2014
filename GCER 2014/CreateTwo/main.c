@@ -10,9 +10,10 @@
 #define SENSOR_UP 15
 #define SENSOR_DOWN 14
 #define ARM_UP 150
-#define ARM_UMID 700
-#define ARM_DMID 1200
-#define ARM_DOWN 2100 //used to be 2000 b4 new servo
+//#define ARM_UMID 700 //SERVO VALUES CHANGED SO NOT WORKING ANYMORE
+#define ARM_UMID1 400
+#define ARM_DMID 1000	//new servo, old value 1200
+#define ARM_DOWN 2000
 #define HANGER_CLOSE 0
 #define HANGER_OPEN 1365
 #define LIGHTSENSOR 7
@@ -80,10 +81,11 @@ int main()
 	servo_set(HANGER,HANGER_CLOSE,0.3);
 	printf("GO!");
 	disable_servos();
-	sleep(20);//WAIT FOR LINK
+	sleep(16);//WAIT FOR LINK, used to be 20
 	enable_servos();
 	
-	create_right(85,0,150);
+	servo_set(ARM,ARM_DMID,0.3);//to protect it from hitting the pipe
+	create_right(85,0,150);//hits pvc pipe, causes problems
 	create_backward(50,50);//square up
 	create_stop();
 	create_wait_time(10);
@@ -91,16 +93,17 @@ int main()
 	
 	
 	
-	create_forward(400, 200);// (distance in mm,speed)
+	create_forward(390, 200);// (distance in mm,speed), used to be 400
 	create_stop();
 	arm_lift();
 	create_block();//out of base
 
 	create_left(82,0,150);
-	create_forward(314, 200);//scrape against pipe is deliberate
+	create_forward(317, 200);//scrape against pipe is deliberate
 	//the forward used to be 310
 	create_stop();
-	create_left(85,0,150);//face the rack; IMPORTANT
+	create_left(86,0,150);//face the rack; IMPORTANT
+	//used to be 85 degrees
 
 	create_forward_until_lbump();
 	create_stop();
@@ -111,14 +114,15 @@ int main()
 	msleep(100);
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
-	servo_set(ARM,ARM_UMID,0.3);
+	servo_set(ARM,ARM_UMID1,0.5); //now slower
 	create_forward_until_lbump();
 	create_block(); //scored and backed away from hangers
 	
 	wait_till(55.);
 	arm_lower();
-	create_right(2,0,100);//COMPENSATE ANGLE TOWARD BLUE HANGER
-	create_backward(320,100);//WITHOUT THE DOUBLE FORWARD
+	create_right(5,0,100);//COMPENSATE ANGLE TOWARD BLUE HANGER
+	create_backward(310,100);//WITHOUT THE DOUBLE FORWARD
+	//used to be 320
 	create_block();
 	
 	/*create_backward(215,200);//approach blue hanger (facing away)
@@ -155,7 +159,7 @@ int main()
 	arm_lift();
 	create_block();
 	
-	servo_set(ARM,ARM_UMID,0.5);
+	servo_set(ARM,ARM_UMID1,0.5);
 	//create_left(2,0,100);//turn
 	create_backward(340,200);//approach for score
 	create_block();
@@ -172,7 +176,7 @@ int main()
 	
 	msleep(100);
 	servo_set(HANGER,HANGER_OPEN,0.3);
-	servo_set(ARM,ARM_UMID,0.3);
+	servo_set(ARM,ARM_UMID1,0.3);
 	msleep(500);
 	create_forward_until_rbump();
 	create_block();
@@ -210,7 +214,7 @@ int main()
 	create_block();
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
-	servo_set(ARM,ARM_UMID,0.3);
+	servo_set(ARM,ARM_UMID1,0.3);
 	create_forward(700,300);
 	create_block();
 	printf("%d\n", seconds()-time);
