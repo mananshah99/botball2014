@@ -8,9 +8,10 @@
 #define SENSOR_UP 15
 #define SENSOR_DOWN 14
 #define ARM_UP 150
-#define ARM_UMID 700
-#define ARM_DMID 1200
-#define ARM_DOWN 2100	//used to be 2100 before new servo
+//#define ARM_UMID 700 //SERVO VALUES CHANGED SO NOT WORKING ANYMORE
+#define ARM_UMID1 400
+#define ARM_DMID 1000	//new servo, old value 1200
+#define ARM_DOWN 2000
 #define HANGER_CLOSE 0
 #define HANGER_OPEN 1365
 #define LIGHTSENSOR 7
@@ -35,7 +36,7 @@ void arm_lift(){
 	//arm
 	enable_servo(ARM);
 	set_servo_position(ARM,ARM_UP);
-	msleep(1000);
+	msleep(100);
 	//le elevator
 	while(digital(SENSOR_UP)==0)
 	{
@@ -52,26 +53,25 @@ void arm_lower(){
 		motor(ELEVATORTWO,-25);
 	}
 	ao();
-	msleep(400);
+	msleep(100);
 	//arm
 	enable_servo(ARM);
 	set_servo_position(ARM,ARM_DOWN);
-	msleep(400);
+	msleep(100);
 }
 /*..............................................Functions End..............................................*/
 int main(){
 	create_connect();
 	create_setup();
-	//light_start(LIGHTSTART);
-	shut_down_in(119.);  start();
+	shut_down_in(119.);  start(); printf("GO!");
 	enable_servos(); 
-	servo_set(ARM,ARM_DOWN,0.3);
 	servo_set(HANGER,HANGER_CLOSE,0.3);
 	
-	create_right(82,0,250);
-	create_forward(390, 400);// (distance in mm,speed)
+	servo_set(ARM,ARM_DMID,0.3);//to protect it from hitting the pipe
+	create_right(82,0,200);//ADJUST
+	create_forward(375, 400);// OUT OF BASE DISTANCE
 	create_left(82,0,250);
-	create_forward(480, 300);//scrape against pipe is deliberate
+	create_forward(495, 300);//HORIZONTAL DISTANCE
 	create_stop(); 
 	arm_lift();
 	create_block();
@@ -83,7 +83,7 @@ int main(){
 	create_block();//At the Pipes
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
-	servo_set(ARM,ARM_UMID,0.3);
+	servo_set(ARM,ARM_UMID1,0.3);
 	wait_till(110); now();
 	servo_set(ARM,ARM_UP,0.3);
 	create_forward(150,100);
