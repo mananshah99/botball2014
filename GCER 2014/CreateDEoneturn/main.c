@@ -71,8 +71,8 @@ int main(){
 	servo_set(ARM,ARM_DMID,0.3);//to protect it from hitting the pipe
 	create_left(80,0,200);//ADJUST
 	create_backward(350, 300);// OUT OF BASE DISTANCE
-	create_left(37,0,250);//ANGLE TOWARD RACK
-	create_backward(320, 300);//FORWARD TOWARD RACK
+	create_left(35,0,250);//ANGLE TOWARD RACK
+	create_backward(290, 300);//FORWARD TOWARD RACK
 	create_stop(); 
 	arm_lift();
 	create_block();
