@@ -66,6 +66,7 @@ void arm_lower(){
 
 int main(){
 	create_connect();
+	create_full();
 	create_setup();
 	shut_down_in(119.); start(); printf("GO!");
 	enable_servos(); 
@@ -75,24 +76,25 @@ int main(){
 	create_right(82,0,200);
 	create_forward(380, 300);//OUT OF BASE DISTANCE
 	create_left(82,0,200);
-	create_forward(480, 250);//HORIZONTAL DISTANCE
+	create_forward(440, 250);//HORIZONTAL DISTANCE
 	create_stop();
 	arm_lift();
 	create_block();
 
-	create_left(86,0,200);//face the rack
+	create_left(84,0,200);//face the rack
 	create_forward(100,150);
-	create_backward(290,150);
+	create_backward(275,150);
 	create_wait_time(5);
-	create_forward(75,150);
+	create_forward(90,150);
 	create_block();
 	//At the Hanger Rack
 	
 	set_servo_position(HANGER,HANGER_OPEN/*,0.3*/); msleep(100);
 	set_servo_position(ARM,ARM_UMID1/*,0.3*/);
-	wait_till(110); now();
+	
+	wait_till(105); now();
 	set_servo_position(ARM,ARM_UP/*,0.3*/); msleep(300);
-	create_forward(150,100);
+	create_forward(300,150);
 	disable_servos(); ao();
 	printf("Done\n");
 }
