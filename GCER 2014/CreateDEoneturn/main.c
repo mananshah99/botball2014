@@ -1,8 +1,6 @@
-
 #include "createDrive.h"
 #include "generic.h"
-//Start: Tuesday 15 July 2014
-//Howard Wang
+//Start: Thursday 3 July 2014
 #define ARM 0
 #define HANGER 3
 #define ELEVATOR 0
@@ -17,8 +15,7 @@
 #define HANGER_CLOSE 0
 #define HANGER_OPEN 1365
 #define LIGHTSENSOR 7
-/*......................Functions Begin.........................................*/
-
+/*..............................................Functions Begin..............................................*/
 void create_setup(){
 	create_backward(10,50);
 	create_wait_time(1);
@@ -62,36 +59,32 @@ void arm_lower(){
 	set_servo_position(ARM,ARM_DOWN);
 	msleep(100);
 }
-/*...............................Functions End.................................*/
-
+/*..............................................Functions End..............................................*/
 int main(){
 	create_connect();
 	create_setup();
-	shut_down_in(119.); start(); printf("GO!");
+	shut_down_in(119.);  start(); printf("GO!");
 	enable_servos(); 
-	set_servo_position(HANGER,HANGER_CLOSE/*,0.3*/);
+	servo_set(HANGER,HANGER_CLOSE,0.3);
 	
 	servo_set(ARM,ARM_DMID,0.3);//to protect it from hitting the pipe
-	create_right(82,0,200);
-	create_forward(380, 300);//OUT OF BASE DISTANCE
-	create_left(82,0,200);
-	create_forward(480, 250);//HORIZONTAL DISTANCE
-	create_stop();
+	create_left(80,0,200);//ADJUST
+	create_backward(350, 400);// OUT OF BASE DISTANCE
+	create_left(40,0,250);
+	create_backward(400, 400);//FORWARD TOWARD RACK
+	create_stop(); 
 	arm_lift();
 	create_block();
-
-	create_left(86,0,200);//face the rack
-	create_forward(100,150);
-	create_backward(290,150);
-	create_wait_time(5);
-	create_forward(75,150);
-	create_block();
-	//At the Hanger Rack
 	
-	set_servo_position(HANGER,HANGER_OPEN/*,0.3*/); msleep(100);
-	set_servo_position(ARM,ARM_UMID1/*,0.3*/);
+	msleep(100);
+	create_backward(150,300);
+	create_forward(125,200);
+	create_block();//At the Pipes
+	
+	servo_set(HANGER,HANGER_OPEN,0.3);
+	servo_set(ARM,ARM_UMID1,0.3);
 	wait_till(110); now();
-	set_servo_position(ARM,ARM_UP/*,0.3*/); msleep(300);
+	servo_set(ARM,ARM_UP,0.3);
 	create_forward(150,100);
 	disable_servos(); ao();
 	printf("Done\n");

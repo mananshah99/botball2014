@@ -68,18 +68,19 @@ int main(){
 	servo_set(HANGER,HANGER_CLOSE,0.3);
 	
 	servo_set(ARM,ARM_DMID,0.3);//to protect it from hitting the pipe
-	create_right(82,0,200);//ADJUST
+	create_right(80,0,200);//ADJUST
 	create_forward(375, 400);// OUT OF BASE DISTANCE
-	create_left(82,0,250);
-	create_forward(495, 300);//HORIZONTAL DISTANCE
+	create_left(83,0,250);
+	create_forward(510, 400);//HORIZONTAL DISTANCE
 	create_stop(); 
 	arm_lift();
 	create_block();
 
 	create_left(86,0,250);//face the rack
-	create_forward(100,200);
-	create_backward(290,200);
-	create_forward(75,200);
+	create_forward(100,350);
+	msleep(100);//NECESSARY FOR ARM LIFT
+	create_backward(290,300);
+	create_forward(125,200);
 	create_block();//At the Pipes
 	
 	servo_set(HANGER,HANGER_OPEN,0.3);
@@ -87,6 +88,6 @@ int main(){
 	wait_till(110); now();
 	servo_set(ARM,ARM_UP,0.3);
 	create_forward(150,100);
-	//Temp End Code
-	disable_servos(); printf("Done\n");
+	disable_servos(); ao();
+	printf("Done\n");
 }
