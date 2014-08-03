@@ -72,13 +72,13 @@ int main(){
 	create_left(80,0,200);//ADJUST
 	create_backward(350, 300);// OUT OF BASE DISTANCE
 	create_left(35,0,250);//ANGLE TOWARD RACK
-	create_backward(290, 300);//FORWARD TOWARD RACK
+	create_backward(390, 300);//FORWARD TOWARD RACK
 	create_stop(); 
 	arm_lift();
 	create_block();
 	
 	msleep(100);
-	create_backward(150,300);
+	create_right(10,0,200);
 	create_forward(150,200);
 	create_block();//At the Pipes
 	
