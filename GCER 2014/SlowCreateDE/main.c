@@ -85,7 +85,7 @@ int main(){
 	create_forward(100,150);
 	create_backward(275,150);
 	create_wait_time(5);
-	create_forward(100,150);
+	create_forward(90,150);
 	create_block();
 	//At the Hanger Rack
 	
