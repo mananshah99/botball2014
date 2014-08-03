@@ -92,9 +92,12 @@ int main(){
 	set_servo_position(HANGER,HANGER_OPEN/*,0.3*/); msleep(100);
 	set_servo_position(ARM,ARM_UMID1/*,0.3*/);
 	
-	wait_till(105); now();
-	set_servo_position(ARM,ARM_UP/*,0.3*/); msleep(300);
-	create_forward(300,150);
+	wait_till(100); now();
+	//set_servo_position(ARM,ARM_UP/*,0.3*/); msleep(300);
+	create_forward(200,150);
+	create_left(10,0,100);
+	create_backward(250,150);
+	
 	disable_servos(); ao();
 	printf("Done\n");
 }
